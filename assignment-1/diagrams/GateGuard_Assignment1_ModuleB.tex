@@ -1,0 +1,1991 @@
+% ============================================================================
+% GateGuard — Assignment 1 Module B Report
+% CS432 Track-1 | IIT Gandhinagar
+% ============================================================================
+\documentclass[a4paper, 12pt]{article}
+
+% ======================== PACKAGES ========================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, shapes.multipart, arrows.meta, calc, decorations.pathreplacing, backgrounds, shadows}
+% \usepackage{svg}  % Comment out - not available on Overleaf by default
+\usepackage{float}
+\usepackage{pdflscape}
+\usepackage{afterpage}
+\usepackage{pdfpages}
+\usepackage[titles]{tocloft}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{textcomp}
+\usepackage{hyperref}  % MUST be loaded last
+
+% ======================== COLOR DEFINITIONS ========================
+\definecolor{iitgnblue}{RGB}{0, 51, 102}
+\definecolor{iitgngold}{RGB}{204, 153, 0}
+\definecolor{sectioncolor}{RGB}{0, 70, 130}
+\definecolor{subseccolor}{RGB}{0, 100, 160}
+\definecolor{codegreen}{RGB}{0, 128, 0}
+\definecolor{codegray}{RGB}{128, 128, 128}
+\definecolor{codepurple}{RGB}{128, 0, 128}
+\definecolor{codeblue}{RGB}{0, 0, 180}
+\definecolor{backcolour}{RGB}{248, 248, 248}
+\definecolor{tableheader}{RGB}{220, 235, 250}
+\definecolor{tablealt}{RGB}{240, 245, 255}
+\definecolor{criticalred}{RGB}{200, 30, 30}
+\definecolor{successgreen}{RGB}{30, 130, 50}
+
+% ======================== HYPERREF SETUP ========================
+\hypersetup{
+    colorlinks=true,
+    linkcolor=iitgnblue,
+    citecolor=iitgnblue,
+    urlcolor=iitgnblue,
+    bookmarksopen=true,
+    pdfauthor={Team GateGuard},
+    pdftitle={GateGuard - Assignment 1 Module B Report},
+    pdfsubject={CS432 Database Systems},
+}
+
+% ======================== HEADER/FOOTER ========================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{iitgnblue}{CS432 — Assignment 1 Module B}}
+\fancyhead[R]{\small\textcolor{iitgnblue}{GateGuard}}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{\small\textcolor{codegray}{IIT Gandhinagar}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+% ======================== SECTION STYLING ========================
+\titleformat{\section}
+  {\color{sectioncolor}\Large\bfseries}
+  {\thesection.}{0.5em}{}[\color{sectioncolor}\titlerule]
+
+\titleformat{\subsection}
+  {\color{subseccolor}\large\bfseries}
+  {\thesubsection}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\color{subseccolor}\normalsize\bfseries}
+  {\thesubsubsection}{0.5em}{}
+
+% ======================== CODE LISTING STYLE ========================
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen}\itshape,
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    frame=single,
+    rulecolor=\color{codegray!50},
+    language=SQL,
+    morekeywords={SERIAL, CONSTRAINT, REFERENCES, CASCADE, RESTRICT, TIMESTAMP, BYTEA, VARCHAR, INTEGER, BOOLEAN, DEFAULT, CURRENT_TIMESTAMP, INDEX, UNIQUE, CHECK, NOT, NULL, ON, DELETE, UPDATE, SET, WHERE, LIKE, LENGTH, IN, AND, OR, IS, PRIMARY, KEY, FOREIGN, TABLE, CREATE, INSERT, INTO, VALUES, SELECT, FROM, DROP, IF, EXISTS, BEGIN, COMMIT, SETVAL},
+}
+
+% ======================== CUSTOM COMMANDS ========================
+\newcommand{\entityname}[1]{\texttt{\textbf{#1}}}
+\newcommand{\attrname}[1]{\texttt{#1}}
+\newcommand{\pkmark}{\textcolor{iitgnblue}{\textbf{PK}}}
+\newcommand{\fkmark}{\textcolor{criticalred}{\textbf{FK}}}
+\newcommand{\nnmark}{\textcolor{successgreen}{\textbf{NN}}}
+\newcommand{\uqmark}{\textcolor{codepurple}{\textbf{UQ}}}
+\newcommand{\figplaceholder}[2]{%
+  \begin{figure}[H]
+    \centering
+    \fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}%
+      {\Large\textcolor{codegray}{#1}}\\[0.5cm]%
+      {\small\textcolor{codegray}{#2}}%
+      \vspace{3cm}}}
+  \end{figure}%
+}
+
+% ======================== TABLE OF CONTENTS STYLING ========================
+\setlength{\cftbeforesecskip}{6pt}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+
+% ============================================================================
+% DOCUMENT BEGINS
+% ============================================================================
+\begin{document}
+
+% ============================================================================
+% TITLE PAGE
+% ============================================================================
+\begin{titlepage}
+% Add IIT Gandhinagar logo as watermark background
+\begin{tikzpicture}[remember picture, overlay]
+  \node[opacity=0.08] at (current page.center) {%
+    \includegraphics[width=0.6\paperwidth]{diagrams/Final_IITGN_Logo_symmetric.png}%
+  };
+\end{tikzpicture}
+
+\begin{center}
+
+\vspace*{0.1cm}
+
+% Institution Header
+\textcolor{iitgnblue}{\rule{\textwidth}{2pt}}
+
+\vspace{0.15cm}
+{\LARGE\bfseries\textcolor{iitgnblue}{Indian Institute of Technology Gandhinagar}}
+
+\vspace{0.15cm}
+{\large\textcolor{iitgnblue}{Department of Computer Science \& Engineering}}
+
+\vspace{0.1cm}
+\textcolor{iitgnblue}{\rule{\textwidth}{2pt}}
+
+\vspace{1cm}
+
+% Course Details
+{\Large\textbf{CS 432 -- Databases }}
+
+\vspace{0.3cm}
+{\large Track-1 $\cdot$ Assignment 1 $\cdot$ Module B}
+
+\vspace{1cm}
+
+% Project Title
+\textcolor{iitgngold}{\rule{\textwidth}{1.5pt}}
+
+\vspace{0.4cm}
+{\Huge\bfseries\textcolor{iitgnblue}{GateGuard}}
+
+\vspace{0.2cm}
+{\Large Entry Gate Management System}
+
+\vspace{0.15cm}
+{\large Conceptual Design Report}
+
+\vspace{0.4cm}
+\textcolor{iitgngold}{\rule{\textwidth}{1.5pt}}
+
+\vspace{0.8cm}
+
+% Team Name
+{\large\textbf{Team Name:} Lumos}
+
+\vspace{0.5cm}
+
+% Team Members
+{\large\textbf{Team Members}}
+
+\vspace{0.6cm}
+\begin{tabular}{ll}
+\toprule
+\textbf{Name} & \textbf{Roll Number} \\
+\midrule
+Pushkar Nikunjkumar Modi & 25120035 \\
+Chintan Bhikhabhai Akhaja & 25120027 \\
+Krina Paghadar & 24110169 \\
+Divisht & 24110112 \\
+Akshata Pawar & 25120026 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1.3cm}
+
+% Instructor
+\textbf{Instructor:} Prof.\ Yogesh K.\ Meena
+
+\vspace{1cm}
+
+\vfill
+
+\textcolor{iitgnblue}{\rule{\textwidth}{1pt}}
+
+\end{center}
+\end{titlepage}
+
+% ============================================================================
+% TABLE OF CONTENTS
+% ============================================================================
+\newpage
+\tableofcontents
+\newpage
+\listoffigures
+\listoftables
+\newpage
+
+% ============================================================================
+% SECTION 1: INTRODUCTION
+% ============================================================================
+\section{Introduction}
+\label{sec:introduction}
+
+\subsection{Problem Statement}
+
+In campuses, residential complexes, and corporate facilities, entry and exit management is often handled by security personnel using handwritten logs or verbal verification. This manual process is slow, error-prone, and vulnerable to security breaches, as unauthorised visitors or vehicles can enter without proper tracking.
+
+During peak hours, long queues form at gates, causing congestion and increasing the risk of missed or incorrect entries. Additionally, authorities lack real-time visibility into who is on the premises, making it difficult to respond to emergencies or monitor occupancy levels effectively.
+
+\subsection{Proposed Solution}
+
+\textbf{GateGuard} is an Entry Gate Management System designed specifically for the IIT Gandhinagar campus to address these challenges. The system provides:
+
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{Automated Entry/Exit Tracking} -- Recording every person and vehicle entry/exit with timestamps and gate identification.
+    \item \textbf{Real-time Occupancy Monitoring} -- Maintaining live occupancy counts at each gate for congestion analysis.
+    \item \textbf{Role-Based Access Control} -- Implementing a Guard/Admin/SuperAdmin hierarchy for system security.
+    \item \textbf{Comprehensive Visitor Tracking} -- Categorising members as Residents, Students, or Visitors with distinct access policies.
+    \item \textbf{Vehicle Registration \& Verification} -- Linking vehicles to owners and tracking vehicle movements independently.
+    \item \textbf{Multi-Gate Synchronisation} -- Supporting different entry and exit gates for the same visit, reflecting real campus operations.
+    \item \textbf{Audit Trail} -- Maintaining \texttt{CreatedAt}/\texttt{UpdatedAt} timestamps on all records for accountability.
+\end{itemize}
+
+\subsection{Project Scope}
+
+The GateGuard system is built on a robust relational database architecture comprising \textbf{10 interconnected entities}, organised into four functional layers:
+
+\begin{enumerate}[leftmargin=*, nosep]
+    \item \textbf{Member Management} -- \entityname{MemberType}, \entityname{Member}
+    \item \textbf{Vehicle Management} -- \entityname{VehicleType}, \entityname{Vehicle}
+    \item \textbf{Gate Control} -- \entityname{Gate}, \entityname{GateOccupancy}
+    \item \textbf{Security \& Users} -- \entityname{Role}, \entityname{User}
+    \item \textbf{Visit Tracking} -- \entityname{PersonVisit}, \entityname{VehicleVisit}
+\end{enumerate}
+
+The database follows \textbf{Third Normal Form (3NF)} to ensure data integrity, eliminate redundancy, and maintain consistency. With \textbf{12 foreign key relationships}, \textbf{30+ constraints}, and \textbf{105 sample records}, the system demonstrates a production-ready design.
+
+\subsection{Assignment Objectives}
+
+This Module B report demonstrates:
+\begin{enumerate}[leftmargin=*, nosep]
+    \item Comprehensive UML class diagram design with 10 classes and 12 associations.
+    \item Additional behavioural UML diagrams (Sequence, Activity) modelling system workflows.
+    \item Detailed Entity-Relationship (ER) diagram following standard notation.
+    \item Systematic UML-to-ER transition methodology.
+    \item Justification of all 12 relationships with real-world examples from sample data.
+    \item Documentation of all constraints (CHECK, UNIQUE, FK, NOT NULL).
+\end{enumerate}
+
+\subsection{Core Functionalities}
+
+The system supports \textbf{seven core functionalities}, exceeding the minimum requirement of five:
+
+\begin{table}[H]
+\centering
+\caption{GateGuard Core Functionalities}
+\label{tab:functionalities}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{c l X}
+\toprule
+\textbf{\#} & \textbf{Functionality} & \textbf{Description} \\
+\midrule
+F1 & Member Registration & Register new members with categorisation (Resident/Student/Visitor) \\
+F2 & Vehicle Registration & Register vehicles with type classification and optional owner linkage \\
+F3 & Person Entry Tracking & Record person entry with gate, timestamp, and optional vehicle \\
+F4 & Person Exit Tracking & Record person exit with different gate support and duration calculation \\
+F5 & Vehicle Entry/Exit Tracking & Independent vehicle movement tracking through gates \\
+F6 & Occupancy Monitoring & Real-time gate-wise occupancy count management \\
+F7 & User Authentication & Role-based system access for Guards, Admins, and SuperAdmins \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ============================================================================
+% SECTION 2: UML DIAGRAMS
+% ============================================================================
+\newpage
+\section{UML Diagrams}
+\label{sec:uml}
+
+UML (Unified Modeling Language) diagrams provide a high-level conceptual design of the GateGuard system. Following the methodology described in \textit{Elmasri \& Navathe, Chapter 10}~\cite{elmasri2015}, we model the system using multiple UML diagram types to capture both structural and behavioural aspects.
+
+% --- 2.1 UML CLASS DIAGRAM ---
+\subsection{UML Class Diagram}
+\label{subsec:uml-class}
+
+The UML class diagram (Figure~\ref{fig:uml-class}) presents the complete structural design of GateGuard, showing all 10 entity classes organised into five packages: \textit{Member Management}, \textit{Vehicle Management}, \textit{Gate Control}, \textit{Security \& Users}, and \textit{Visit Tracking}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/1. class-diagram/Uml-class.png}
+    \caption{GateGuard -- UML Class Diagram (Complete System)}
+    \label{fig:uml-class}
+\end{figure}
+
+% Uncomment the following and remove the placeholder above once you have the image:
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{Uml-class.png}
+%     \caption{GateGuard -- UML Class Diagram (Complete System)}
+%     \label{fig:uml-class}
+% \end{figure}
+
+\subsubsection{Class Diagram Key Features}
+
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{10 Classes} across 5 packages, each with attributes, methods, and stereotype annotations.
+    \item \textbf{Stereotypes:} \texttt{<<PK>>} for Primary Keys, \texttt{<<FK>>} for Foreign Keys.
+    \item \textbf{Visibility:} All attributes are private (\texttt{-}), all methods are public (\texttt{+}).
+    \item \textbf{Constraints:} Annotated directly on attributes: \texttt{\{NOT NULL\}}, \texttt{\{UNIQUE, NOT NULL\}}.
+    \item \textbf{Relationships:} 10 associations shown with multiplicity labels.
+    \item \textbf{Composition ($\blacklozenge$):} \entityname{MemberType}--\entityname{Member}, \entityname{VehicleType}--\entityname{Vehicle}, \entityname{Gate}--\entityname{GateOccupancy}.
+    \item \textbf{Association (--):} All other relationships use standard association lines.
+\end{itemize}
+
+\subsubsection{Classes Summary}
+
+\begin{table}[H]
+\centering
+\caption{UML Classes and Their Attributes}
+\label{tab:uml-classes}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{l l c c X}
+\toprule
+\textbf{Package} & \textbf{Class} & \textbf{Attrs} & \textbf{Methods} & \textbf{Key Attributes} \\
+\midrule
+Member Mgmt & MEMBERTYPE & 4 & 3 & typeID \pkmark, typeName \\
+Member Mgmt & MEMBER & 10 & 4 & memberID \pkmark, email \uqmark, typeID \fkmark \\
+Vehicle Mgmt & VEHICLETYPE & 4 & 3 & typeID \pkmark, typeName \\
+Vehicle Mgmt & VEHICLE & 6 & 3 & vehicleID \pkmark, licensePlate \uqmark, typeID \fkmark, ownerID \fkmark \\
+Gate Control & GATE & 5 & 3 & gateID \pkmark, name, location \\
+Gate Control & GATEOCCUPANCY & 3 & 3 & gateID \pkmark\fkmark, occupancyCount \\
+Security & ROLE & 4 & 2 & roleID \pkmark, roleName \\
+Security & USER & 6 & 3 & userID \pkmark, username \uqmark, roleID \fkmark \\
+Visit Tracking & PERSONVISIT & 9 & 3 & visitID \pkmark, personID \fkmark, entryGateID \fkmark \\
+Visit Tracking & VEHICLEVISIT & 8 & 3 & visitID \pkmark, vehicleID \fkmark, entryGateID \fkmark \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Relationships in UML Class Diagram}
+
+\begin{table}[H]
+\centering
+\caption{UML Associations and Multiplicity}
+\label{tab:uml-relationships}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{c l l c l}
+\toprule
+\textbf{\#} & \textbf{Source} & \textbf{Target} & \textbf{Multiplicity} & \textbf{Label} \\
+\midrule
+R1 & MEMBERTYPE & MEMBER & 1 $\rightarrow$ 0..* & categorizes \\
+R2 & VEHICLETYPE & VEHICLE & 1 $\rightarrow$ 0..* & categorizes \\
+R3 & GATE & GATEOCCUPANCY & 1 $\rightarrow$ 1 & maintains \\
+R4 & MEMBER & PERSONVISIT & 1 $\rightarrow$ 0..* & makes \\
+R5 & MEMBER & VEHICLE & 0..* $\rightarrow$ 0..1 & owns \\
+R6 & VEHICLE & PERSONVISIT & 1 $\rightarrow$ 0..* & used\_in \\
+R7 & VEHICLE & VEHICLEVISIT & 1 $\rightarrow$ 0..* & logs \\
+R8 & GATE & PERSONVISIT & 1 $\rightarrow$ 0..* & entry / exit \\
+R9 & GATE & VEHICLEVISIT & 1 $\rightarrow$ 0..* & entry / exit \\
+R10 & ROLE & USER & 1 $\rightarrow$ 0..* & assigned\_to \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Note on Gate Relationships:} In the UML diagram, Gate has a single association line to PersonVisit and VehicleVisit labeled ``entry / exit''. In the database implementation, this is decomposed into \textit{two} separate foreign keys (\texttt{EntryGateID} and \texttt{ExitGateID}), yielding 12 total foreign key relationships.
+
+% --- 2.2 SEQUENCE DIAGRAM ---
+\newpage
+\subsection{Sequence Diagram}
+\label{subsec:sequence}
+
+The sequence diagram (Figure~\ref{fig:sequence}) models the temporal interaction between system components during a complete entry and exit cycle. It shows message flow between actors (Guard), the terminal interface, and the database system.
+
+\begin{figure}[H]
+    \centering
+    \mbox{}
+    \caption{GateGuard -- Sequence Diagram (Entry/Exit)}
+    \label{fig:sequence}
+\end{figure}
+
+\newpage
+\mbox{}
+\newpage
+\mbox{}
+\newpage
+
+% Uncomment once image is available and remove blank pages above:
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{diagrams/2. sequence-diagram/gateguard_sequence_complete.pdf}
+%     \caption{GateGuard -- Sequence Diagram (Entry/Exit)}
+%     \label{fig:sequence}
+% \end{figure}
+
+\subsubsection{Sequence Diagram Description}
+
+The sequence diagram captures two main workflows:
+
+\textbf{Entry Flow (17 actions):}
+\begin{enumerate}[leftmargin=*, nosep]
+    \item Guard verifies ID card of approaching person.
+    \item Guard approves entry and enters Member ID into the terminal.
+    \item System checks if person has a vehicle (decision point).
+    \item If vehicle present: Guard enters license plate and vehicle type; system finds or creates vehicle record.
+    \item If no vehicle: System bypasses vehicle processing.
+    \item System executes three \textbf{parallel operations} (FORK):
+    \begin{itemize}[nosep]
+        \item Path 1: \texttt{INSERT INTO PersonVisit} (entry record)
+        \item Path 2: \texttt{INSERT INTO VehicleVisit} (conditional, if vehicle present)
+        \item Path 3: \texttt{UPDATE GateOccupancy SET OccupancyCount = OccupancyCount + 1}
+    \end{itemize}
+    \item System displays confirmation; Guard allows entry.
+\end{enumerate}
+
+\textbf{Exit Flow (10 actions):}
+\begin{enumerate}[leftmargin=*, nosep]
+    \item Guard enters Member ID for exit at exit gate.
+    \item System finds active visit: \texttt{SELECT FROM PersonVisit WHERE ExitTime IS NULL}.
+    \item System executes three \textbf{parallel operations} (FORK):
+    \begin{itemize}[nosep]
+        \item Path 1: \texttt{UPDATE PersonVisit SET ExitTime, ExitGateID}
+        \item Path 2: \texttt{UPDATE VehicleVisit SET ExitTime, ExitGateID} (conditional)
+        \item Path 3: \texttt{UPDATE GateOccupancy SET OccupancyCount = OccupancyCount - 1}
+    \end{itemize}
+    \item System displays exit confirmation; Guard allows exit.
+\end{enumerate}
+
+% --- 2.3 USE CASE DIAGRAM ---
+\newpage
+\subsection{Use Case Diagram}
+\label{subsec:usecase}
+
+The use case diagram (Figure~\ref{fig:usecase}) depicts the functional requirements from the perspective of different system actors and their interactions with GateGuard.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/3. use-case-diagram/usecase.png}
+    \caption{GateGuard -- Use Case Diagram}
+    \label{fig:usecase}
+\end{figure}
+
+\subsubsection{Actors and Use Cases}
+
+\begin{table}[H]
+\centering
+\caption{Actors and Their Use Cases}
+\label{tab:usecases}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Actor} & \textbf{Use Cases} \\
+\midrule
+Guard & Verify ID, Record Entry, Record Exit, Check Vehicle, View Occupancy \\
+Admin & Manage Members, Manage Vehicles, Manage Gates, View Reports \\
+SuperAdmin & Manage Users, Manage Roles, System Configuration, Full Access \\
+Member & Present ID at Gate, Register Vehicle \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% --- 2.4 ACTIVITY DIAGRAM ---
+\newpage
+\subsection{Activity Diagram}
+\label{subsec:activity}
+
+The activity diagram (Figure~\ref{fig:activity}) models the workflow logic and decision points during gate entry and exit operations, including parallel processing paths.
+
+\begin{figure}[H]
+    \centering
+    \mbox{}
+    \caption{GateGuard -- Activity Diagram (Entry and Exit Flow)}
+    \label{fig:activity}
+\end{figure}
+
+\newpage
+\mbox{}
+\newpage
+
+% Uncomment once image is available and remove blank pages above:
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{diagrams/4. activity-diagram/gateguard_activity_diagram.pdf}
+%     \caption{GateGuard -- Activity Diagram (Entry and Exit Flow)}
+%     \label{fig:activity}
+% \end{figure}
+
+\subsubsection{Activity Diagram Description}
+
+The activity diagram models two swim-lane processes:
+
+\textbf{Entry Process:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Begins with ID card verification by the Guard.
+    \item \textbf{Decision Node:} ``Has Vehicle?'' -- splits into vehicle and pedestrian paths.
+    \item Vehicle path: Enter plate number $\rightarrow$ Find/Create vehicle in database $\rightarrow$ Decision: ``Plate exists?'' (reuse or create).
+    \item \textbf{Merge Node:} All paths converge.
+    \item \textbf{Fork Node:} Three parallel database operations execute simultaneously.
+    \item \textbf{Join Node:} Synchronises all three operations before displaying confirmation.
+\end{itemize}
+
+\textbf{Exit Process:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Guard enters Member ID for exit at the exit gate terminal.
+    \item System locates the active PersonVisit record (\texttt{WHERE ExitTime IS NULL}).
+    \item \textbf{Fork Node:} Three parallel UPDATE operations (PersonVisit, VehicleVisit, GateOccupancy).
+    \item \textbf{Join Node:} Synchronises all updates before displaying exit confirmation.
+\end{itemize}
+
+% ============================================================================
+% SECTION 3: ER DIAGRAM
+% ============================================================================
+\newpage
+\section{Entity-Relationship (ER) Diagram}
+\label{sec:er}
+
+The ER diagram provides a detailed database-level conceptual model of GateGuard, following standard notation as described in \textit{Elmasri \& Navathe, Chapter 7}~\cite{elmasri2015} and \textit{Silberschatz, Korth \& Sudarshan, Chapter 6}~\cite{silberschatz2019}.
+
+\subsection{Complete ER Diagram}
+
+The complete ER diagram is rendered using Ti\textit{k}Z/\LaTeX{} and is presented as a full-page landscape figure on the following page for maximum clarity.
+
+\afterpage{%
+\begin{landscape}
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=0.95\linewidth]{diagrams/5. ER-diagram/UML_Diagrams_with_TikZ_UML.pdf}
+    \caption{GateGuard -- Complete ER Diagram (Crow's Foot Notation with TikZ)}
+    \label{fig:er-diagram}
+\end{figure}
+\end{landscape}
+}
+
+\subsection{ER Diagram Components}
+
+\subsubsection{Entity Classification}
+
+The 10 entities are organised into four functional categories, each colour-coded in the diagram:
+
+\begin{table}[H]
+\centering
+\caption{Entity Classification and Colour Coding}
+\label{tab:entity-classification}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{Category} & \textbf{Colour} & \textbf{Entities} & \textbf{Purpose} \\
+\midrule
+Master Data & Yellow & MemberType, VehicleType, Role & Reference/lookup tables \\
+Core Entities & Blue & Member, Vehicle, Gate & Primary domain entities \\
+Transactional & Green & PersonVisit, VehicleVisit, GateOccupancy & Event/state tracking \\
+System & Purple & User & Security and access control \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Attribute Types in the ER Diagram}
+
+The diagram uses standard ER notation to distinguish attribute types:
+
+\begin{table}[H]
+\centering
+\caption{Attribute Type Notation}
+\label{tab:attr-types}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Notation} & \textbf{Type} & \textbf{Examples in GateGuard} \\
+\midrule
+Solid ellipse, underlined & Key attribute & \underline{MemberID}, \underline{VisitID}, \underline{GateID} \\
+Solid ellipse & Simple attribute & Name, Email, Location, Username \\
+Dashed ellipse & Derived attribute & Age, Duration, IsActive \\
+Double ellipse & Multi-valued attribute & \{Contacts\} \\
+Ellipse with sub-ellipses & Composite attribute & Name (FirstName, LastName) \\
+Dashed key ellipse & Partial key (weak) & \underline{GateID} in GateOccupancy \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Relationship Types}
+
+\begin{table}[H]
+\centering
+\caption{Relationship Types and Notation}
+\label{tab:rel-types}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{Symbol} & \textbf{Type} & \textbf{Notation} & \textbf{Example} \\
+\midrule
+Single diamond & Regular relationship & Single line & categorizes, owns \\
+Double diamond & Identifying relationship & Double line & tracks (Gate--GateOccupancy) \\
+Single line & Partial participation & -- & Member in ``owns'' \\
+Double line & Total participation & === & Member in ``categorizes'' \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Weak Entity}
+
+\entityname{GateOccupancy} is modelled as a \textbf{weak entity} because:
+\begin{itemize}[leftmargin=*, nosep]
+    \item It cannot exist independently without its parent \entityname{Gate} entity.
+    \item Its primary key (\texttt{GateID}) is simultaneously a foreign key referencing \entityname{Gate}.
+    \item It is connected via an \textbf{identifying relationship} (``tracks''), represented by a double diamond.
+    \item In the diagram, it is shown with a \textbf{double rectangle} border.
+    \item Deletion of a Gate cascades to its GateOccupancy record (\texttt{ON DELETE CASCADE}).
+\end{itemize}
+
+% ============================================================================
+% SECTION 4: UML TO ER TRANSITION
+% ============================================================================
+\newpage
+\section{UML to ER Transition}
+\label{sec:transition}
+
+This section describes the systematic methodology used to convert the UML class diagram into the ER diagram, following the principles from \textit{Elmasri \& Navathe, Chapters 7 and 10}~\cite{elmasri2015}.
+
+\subsection{Classes to Entities Conversion}
+
+Each UML class maps directly to an ER entity. Attributes are preserved, but UML methods (behavioural elements) are \textit{not} represented in the ER model, as ER diagrams focus exclusively on data structure.
+
+\begin{table}[H]
+\centering
+\caption{UML Class to ER Entity Mapping}
+\label{tab:class-to-entity}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{UML Class} & \textbf{ER Entity} & \textbf{Entity Type} & \textbf{Conversion Notes} \\
+\midrule
+MEMBERTYPE & MemberType & Strong, Master & Direct mapping; 4 attributes retained \\
+MEMBER & Member & Strong, Core & 10 attributes; ER adds composite Name, derived Age \\
+VEHICLETYPE & VehicleType & Strong, Master & Direct mapping; 4 attributes retained \\
+VEHICLE & Vehicle & Strong, Core & 6 attributes retained \\
+GATE & Gate & Strong, Core & 5 attributes retained \\
+GATEOCCUPANCY & GateOccupancy & \textbf{Weak} & Identified by Gate via GateID \\
+ROLE & Role & Strong, Master & Direct mapping; 4 attributes retained \\
+USER & User & Strong, System & 6 attributes retained \\
+PERSONVISIT & PersonVisit & Strong, Transactional & 9 attributes; ER adds derived Duration, IsActive \\
+VEHICLEVISIT & VehicleVisit & Strong, Transactional & 8 attributes; ER adds derived Duration, IsActive \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Key Conversion Rules:}
+\begin{enumerate}[leftmargin=*, nosep]
+    \item UML class name $\rightarrow$ ER entity name (rectangle).
+    \item UML private attributes (\texttt{-}) $\rightarrow$ ER attributes (ellipses).
+    \item UML stereotypes (\texttt{<<PK>>}) $\rightarrow$ ER key attributes (underlined ellipses).
+    \item UML stereotypes (\texttt{<<FK>>}) $\rightarrow$ ER relationships (diamond connectors).
+    \item UML methods (\texttt{+}) $\rightarrow$ \textit{Not represented} in ER (data-only model).
+    \item UML constraint annotations $\rightarrow$ ER participation constraints (single/double lines).
+\end{enumerate}
+
+\subsection{Associations to Relationships Conversion}
+
+UML associations are converted to ER relationships with appropriate cardinality constraints:
+
+\begin{table}[H]
+\centering
+\caption{UML Association to ER Relationship Mapping}
+\label{tab:assoc-to-rel}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{l l l l X}
+\toprule
+\textbf{UML Association} & \textbf{UML Type} & \textbf{ER Relationship} & \textbf{Cardinality} & \textbf{Implementation} \\
+\midrule
+MemberType--Member & Composition & categorizes & 1:N & TypeID FK in Member \\
+VehicleType--Vehicle & Composition & classifies & 1:N & TypeID FK in Vehicle \\
+Member--Vehicle & Association & owns & 1:N & OwnerID FK in Vehicle \\
+Member--PersonVisit & Association & makes visit & 1:N & PersonID FK in PersonVisit \\
+Vehicle--PersonVisit & Association & used in & 1:N & VehicleID FK in PersonVisit \\
+Vehicle--VehicleVisit & Association & makes v\_visit & 1:N & VehicleID FK in VehicleVisit \\
+Gate--GateOccupancy & Composition & tracks & 1:1 & GateID as PK+FK \\
+Gate--PersonVisit & Association & entry & 1:N & EntryGateID FK \\
+Gate--PersonVisit & Association & exit & 1:N & ExitGateID FK \\
+Gate--VehicleVisit & Association & v\_entry & 1:N & EntryGateID FK \\
+Gate--VehicleVisit & Association & v\_exit & 1:N & ExitGateID FK \\
+Role--User & Association & assigned to & 1:N & RoleID FK in User \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Association Type Mapping Rules:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{Composition} ($\blacklozenge$) in UML $\rightarrow$ Strong/identifying relationship in ER, typically with \texttt{CASCADE} delete.
+    \item \textbf{Association} (--) in UML $\rightarrow$ Standard relationship in ER, typically with \texttt{RESTRICT} delete.
+    \item \textbf{1:M} cardinality $\rightarrow$ Foreign key placed in the ``many'' side entity.
+    \item \textbf{1:1} cardinality $\rightarrow$ Foreign key placed in the dependent entity (GateOccupancy).
+\end{itemize}
+
+\subsection{Key Definitions}
+
+\subsubsection{Primary Keys}
+
+UML \texttt{<<PK>>} stereotypes translate directly to ER key attributes (underlined):
+
+\begin{table}[H]
+\centering
+\caption{Primary Key Mapping}
+\label{tab:pk-mapping}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{Entity} & \textbf{Primary Key} & \textbf{Type} & \textbf{Notes} \\
+\midrule
+MemberType & TypeID & SERIAL & Auto-incrementing \\
+Member & MemberID & SERIAL & Auto-incrementing \\
+VehicleType & TypeID & SERIAL & Auto-incrementing \\
+Vehicle & VehicleID & SERIAL & Auto-incrementing \\
+Gate & GateID & SERIAL & Auto-incrementing \\
+GateOccupancy & GateID & INTEGER & Also FK -- identifying relationship \\
+Role & RoleID & SERIAL & Auto-incrementing \\
+User & UserID & SERIAL & Auto-incrementing \\
+PersonVisit & VisitID & SERIAL & Auto-incrementing \\
+VehicleVisit & VisitID & SERIAL & Auto-incrementing \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsubsection{Foreign Keys}
+
+UML \texttt{<<FK>>} stereotypes translate to ER relationships (diamonds connecting entities):
+
+\begin{table}[H]
+\centering
+\caption{Foreign Key Mapping (12 Relationships)}
+\label{tab:fk-mapping}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{l l l l l}
+\toprule
+\textbf{Child Table} & \textbf{FK Column} & \textbf{References} & \textbf{ON DELETE} & \textbf{ON UPDATE} \\
+\midrule
+Member & TypeID & MemberType(TypeID) & RESTRICT & CASCADE \\
+Vehicle & TypeID & VehicleType(TypeID) & RESTRICT & CASCADE \\
+Vehicle & OwnerID & Member(MemberID) & SET NULL & CASCADE \\
+GateOccupancy & GateID & Gate(GateID) & CASCADE & CASCADE \\
+User & RoleID & Role(RoleID) & RESTRICT & CASCADE \\
+PersonVisit & PersonID & Member(MemberID) & RESTRICT & CASCADE \\
+PersonVisit & EntryGateID & Gate(GateID) & RESTRICT & CASCADE \\
+PersonVisit & ExitGateID & Gate(GateID) & RESTRICT & CASCADE \\
+PersonVisit & VehicleID & Vehicle(VehicleID) & SET NULL & CASCADE \\
+VehicleVisit & VehicleID & Vehicle(VehicleID) & RESTRICT & CASCADE \\
+VehicleVisit & EntryGateID & Gate(GateID) & RESTRICT & CASCADE \\
+VehicleVisit & ExitGateID & Gate(GateID) & RESTRICT & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Multiplicity Adjustments}
+
+UML multiplicity notation is mapped to ER cardinality as follows:
+
+\begin{table}[H]
+\centering
+\caption{UML Multiplicity to ER Cardinality Mapping}
+\label{tab:multiplicity}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{UML Notation} & \textbf{ER Notation} & \textbf{Database Implementation} \\
+\midrule
+\texttt{1} & 1 & Exactly one; FK is NOT NULL \\
+\texttt{0..1} & 0..1 & Zero or one; FK is nullable \\
+\texttt{0..*} & 0..N & Zero or many; FK in child table \\
+\texttt{1..*} & 1..N & One or many (min participation = 1) \\
+\texttt{*} & N & Many (unspecified lower bound) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Concrete examples from GateGuard:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{MemberType ``1'' $\rightarrow$ Member ``0..*'':} One type categorises many members; each member has exactly one type. Implemented via \texttt{Member.TypeID NOT NULL}.
+    \item \textbf{Member ``0..*'' $\rightarrow$ Vehicle ``0..1'':} A member may own many vehicles; a vehicle may have zero or one owner. Implemented via \texttt{Vehicle.OwnerID} (nullable FK).
+    \item \textbf{Gate ``1'' $\rightarrow$ GateOccupancy ``1'':} Each gate has exactly one occupancy record. Implemented via \texttt{GateOccupancy.GateID} as both PK and FK.
+\end{itemize}
+
+\subsection{Participation Constraints}
+
+\begin{table}[H]
+\centering
+\caption{Participation Constraints in the ER Diagram}
+\label{tab:participation}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l l X}
+\toprule
+\textbf{Entity} & \textbf{Relationship} & \textbf{Participation} & \textbf{Justification} \\
+\midrule
+Member & categorizes & Total (double line) & Every member must have a type \\
+Vehicle & classifies & Total (double line) & Every vehicle must have a type \\
+PersonVisit & makes visit & Total (double line) & Every visit must have a person \\
+VehicleVisit & makes v\_visit & Total (double line) & Every vehicle visit must have a vehicle \\
+PersonVisit & entry & Total (double line) & Every visit must have an entry gate \\
+User & assigned to & Total (double line) & Every user must have a role \\
+GateOccupancy & tracks & Total (double line) & Every occupancy record needs a gate \\
+Gate & tracks & Total (double line) & Every gate must have an occupancy record \\
+\addlinespace
+Member & owns & Partial (single line) & Not all members own vehicles \\
+PersonVisit & used in & Partial (single line) & Not all visits involve vehicles \\
+PersonVisit & exit & Partial (single line) & Active visits have no exit yet \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ============================================================================
+% SECTION 5: RELATIONSHIP JUSTIFICATIONS
+% ============================================================================
+\newpage
+\section{Relationship Justifications}
+\label{sec:relationships}
+
+This section provides detailed justification for each of the \textbf{12 foreign key relationships} in the GateGuard database, including cardinality analysis, participation constraints, real-world examples from the sample data, and the SQL implementation.
+
+% --- R1 ---
+\subsection{R1: MemberType \texorpdfstring{$\rightarrow$}{->} Member (categorizes)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on Member side; Partial on MemberType side \\
+FK Column & \texttt{Member.TypeID} $\rightarrow$ \texttt{MemberType.TypeID} \\
+ON DELETE & RESTRICT (cannot delete a type if members exist) \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One member type can categorise multiple members, but each member belongs to exactly one type. This classification is essential for access control -- the system applies different entry/exit policies for Residents, Students, and Visitors.
+
+\textbf{Real-World Example from Sample Data:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item MemberType ``Student'' (TypeID = 2) categorises 8 members: Arjun Mehta (ID 8), Kavya Nair (ID 9), Rohan Gupta (ID 10), Divya Iyer (ID 11), Siddharth Rao (ID 12), Ananya Krishnan (ID 13), Varun Menon (ID 14), Isha Agarwal (ID 15).
+    \item MemberType ``Resident'' (TypeID = 1) categorises 7 members: Dr.\ Rajesh Kumar (ID 1) through Dr.\ Manoj Joshi (ID 7).
+    \item MemberType ``Visitor'' (TypeID = 3) categorises 5 members: Ramesh Kumar (ID 16) through Pradeep Nair (ID 20).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R1 Implementation}, label={lst:r1}]
+CREATE TABLE Member (
+    MemberID SERIAL PRIMARY KEY,
+    TypeID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_member_type FOREIGN KEY (TypeID)
+        REFERENCES MemberType(TypeID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R2 ---
+\subsection{R2: VehicleType \texorpdfstring{$\rightarrow$}{->} Vehicle (classifies)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on Vehicle side; Partial on VehicleType side \\
+FK Column & \texttt{Vehicle.TypeID} $\rightarrow$ \texttt{VehicleType.TypeID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One vehicle type can classify multiple vehicles, but each vehicle has exactly one type. This categorisation is necessary for parking management, lane assignment, and security screening -- different vehicle types (PrivateCar, Taxi, Bike, Truck, Bus) may have different access privileges or parking zones.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item VehicleType ``PrivateCar'' (TypeID = 1) classifies 10 vehicles: GJ-06-AB-1234 through GJ-06-ST-7531.
+    \item VehicleType ``Bike'' (TypeID = 3) classifies 5 vehicles: GJ-06-UV-6420 through GJ-06-BB-2086.
+    \item VehicleType ``Taxi'' (TypeID = 2) classifies 3 vehicles: GJ-06-CC-1975, GJ-06-DD-0864, GJ-06-EE-9753.
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R2 Implementation}, label={lst:r2}]
+CREATE TABLE Vehicle (
+    VehicleID SERIAL PRIMARY KEY,
+    TypeID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_vehicle_type FOREIGN KEY (TypeID)
+        REFERENCES VehicleType(TypeID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R3 ---
+\subsection{R3: Member \texorpdfstring{$\rightarrow$}{->} Vehicle (owns)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N), optional both sides \\
+Participation & Partial on both sides \\
+FK Column & \texttt{Vehicle.OwnerID} $\rightarrow$ \texttt{Member.MemberID} \\
+ON DELETE & SET NULL (vehicle becomes unowned) \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One member can own zero or many vehicles, and each vehicle can have zero or one owner. This relationship is optional on both sides because:
+\begin{itemize}[leftmargin=*, nosep]
+    \item Not all members own vehicles (visitors typically walk in).
+    \item Some vehicles are public/commercial (taxis) and have no registered member owner.
+    \item Members can own multiple vehicles (e.g., a faculty member with a car and a bike).
+\end{itemize}
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Dr.\ Rajesh Kumar (MemberID = 1) owns Vehicle GJ-06-AB-1234 (VehicleID = 1).
+    \item Arjun Mehta (MemberID = 8) owns Vehicle GJ-06-KL-2468 (VehicleID = 6).
+    \item Vehicles GJ-06-CC-1975, GJ-06-DD-0864, GJ-06-EE-9753 (Taxis) have \texttt{OwnerID = NULL} -- no member owner.
+    \item Members Ramesh Kumar (ID 16), Sunita Devi (ID 17), etc.\ (Visitors) own no vehicles.
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R3 Implementation}, label={lst:r3}]
+CREATE TABLE Vehicle (
+    VehicleID SERIAL PRIMARY KEY,
+    OwnerID INTEGER,  -- Nullable: partial participation
+    CONSTRAINT fk_vehicle_owner FOREIGN KEY (OwnerID)
+        REFERENCES Member(MemberID)
+        ON DELETE SET NULL ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R4 ---
+\subsection{R4: Member \texorpdfstring{$\rightarrow$}{->} PersonVisit (makes)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on PersonVisit side; Partial on Member side \\
+FK Column & \texttt{PersonVisit.PersonID} $\rightarrow$ \texttt{Member.MemberID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One member can make multiple visits over time, but each visit record belongs to exactly one member. This is the core tracking relationship -- every entry through a gate must be attributed to a specific, identified person for security and accountability.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Arjun Mehta (MemberID = 8) made 2 visits: VisitID 1 (Jan 16, completed) and VisitID 20 (Jan 20, active -- still on campus).
+    \item Siddharth Rao (MemberID = 12) made 1 visit: VisitID 5 (Jan 16, completed).
+    \item Ramesh Kumar (MemberID = 16, Visitor) made 2 visits: VisitID 12 (Jan 18, completed) and VisitID 25 (Jan 20, active).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R4 Implementation}, label={lst:r4}]
+CREATE TABLE PersonVisit (
+    VisitID SERIAL PRIMARY KEY,
+    PersonID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_personvisit_person FOREIGN KEY (PersonID)
+        REFERENCES Member(MemberID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R5 ---
+\subsection{R5: Vehicle \texorpdfstring{$\rightarrow$}{->} PersonVisit (used\_in)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N), optional \\
+Participation & Partial on both sides \\
+FK Column & \texttt{PersonVisit.VehicleID} $\rightarrow$ \texttt{Vehicle.VehicleID} \\
+ON DELETE & SET NULL \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} A vehicle can be associated with multiple person visits (used at different times), and a person visit may optionally involve a vehicle. This is partial on both sides because:
+\begin{itemize}[leftmargin=*, nosep]
+    \item People can enter on foot, by bicycle, or as passengers (no vehicle recorded).
+    \item Not all registered vehicles are necessarily associated with a person visit.
+\end{itemize}
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item PersonVisit ID 1 (Arjun Mehta, Jan 16): used Vehicle GJ-06-KL-2468 (VehicleID = 6).
+    \item PersonVisit ID 9 (Ananya Krishnan, Jan 17): \texttt{VehicleID = NULL} -- walked in.
+    \item PersonVisit ID 20 (Arjun Mehta, Jan 20): \texttt{VehicleID = NULL} -- entered without vehicle this time.
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R5 Implementation}, label={lst:r5}]
+CREATE TABLE PersonVisit (
+    VehicleID INTEGER,  -- Nullable: partial participation
+    CONSTRAINT fk_personvisit_vehicle FOREIGN KEY (VehicleID)
+        REFERENCES Vehicle(VehicleID)
+        ON DELETE SET NULL ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R6 ---
+\subsection{R6: Vehicle \texorpdfstring{$\rightarrow$}{->} VehicleVisit (makes v\_visit)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on VehicleVisit side; Partial on Vehicle side \\
+FK Column & \texttt{VehicleVisit.VehicleID} $\rightarrow$ \texttt{Vehicle.VehicleID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One vehicle can make multiple visits through the gate system, and each vehicle visit must be associated with exactly one vehicle. This provides standalone vehicle-level tracking, useful for delivery trucks, service vehicles, or when only vehicle registration is captured at the gate.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Vehicle GJ-06-AB-1234 (VehicleID = 1) made VehicleVisit ID 1 (Jan 17, completed).
+    \item Vehicle GJ-06-KL-2468 (VehicleID = 6) made VehicleVisit ID 4 (Jan 16, completed).
+    \item Vehicle GJ-06-CC-1975 (VehicleID = 16, Taxi) made VehicleVisit IDs 10 (completed) and 19 (active).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R6 Implementation}, label={lst:r6}]
+CREATE TABLE VehicleVisit (
+    VehicleID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_vehiclevisit_vehicle FOREIGN KEY (VehicleID)
+        REFERENCES Vehicle(VehicleID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R7 ---
+\subsection{R7: Gate \texorpdfstring{$\rightarrow$}{->} PersonVisit -- Entry (entry)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on PersonVisit side; Partial on Gate side \\
+FK Column & \texttt{PersonVisit.EntryGateID} $\rightarrow$ \texttt{Gate.GateID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One gate can serve as the entry point for multiple person visits, and every person visit \textit{must} have an entry gate. This tracks which specific gate was used for entry, enabling gate-wise traffic analysis and security monitoring.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Main Gate (GateID = 1) was entry for VisitIDs: 1, 5, 6, 12, 16, 20, 24 (7 visits).
+    \item East Gate (GateID = 2) was entry for VisitIDs: 2, 4, 7, 10, 13, 17, 21, 25 (8 visits).
+    \item West Gate (GateID = 3) was entry for VisitIDs: 3, 8, 11, 14, 18, 22 (6 visits).
+    \item South Gate (GateID = 4) was entry for VisitIDs: 15, 19, 23 (3 visits).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R7 Implementation}, label={lst:r7}]
+CREATE TABLE PersonVisit (
+    EntryGateID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_personvisit_entrygate FOREIGN KEY (EntryGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R8 ---
+\subsection{R8: Gate \texorpdfstring{$\rightarrow$}{->} PersonVisit -- Exit (exit)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N), optional \\
+Participation & Partial on both sides \\
+FK Column & \texttt{PersonVisit.ExitGateID} $\rightarrow$ \texttt{Gate.GateID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One gate can serve as the exit point for multiple visits, and a person visit \textit{may} have an exit gate (optional because the person might still be on campus). Critically, the exit gate can differ from the entry gate, supporting IIT Gandhinagar's multi-gate campus layout.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item VisitID 6 (Dr.\ Rajesh Kumar): Entered via Main Gate (GateID = 1), exited via \textbf{West Gate} (GateID = 3) -- demonstrates multi-gate flexibility.
+    \item VisitID 7 (Prof.\ Priya Sharma): Entered via East Gate (GateID = 2), exited via \textbf{South Gate} (GateID = 4).
+    \item VisitID 20 (Arjun Mehta): \texttt{ExitGateID = NULL}, \texttt{ExitTime = NULL} -- person still on campus.
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R8 Implementation}, label={lst:r8}]
+CREATE TABLE PersonVisit (
+    ExitGateID INTEGER,  -- Nullable: partial participation
+    CONSTRAINT fk_personvisit_exitgate FOREIGN KEY (ExitGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_exitgate_if_exittime CHECK (
+        (ExitTime IS NULL AND ExitGateID IS NULL) OR
+        (ExitTime IS NOT NULL AND ExitGateID IS NOT NULL)
+    )
+);
+\end{lstlisting}
+
+% --- R9 ---
+\subsection{R9: Gate \texorpdfstring{$\rightarrow$}{->} VehicleVisit -- Entry (v\_entry)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on VehicleVisit side; Partial on Gate side \\
+FK Column & \texttt{VehicleVisit.EntryGateID} $\rightarrow$ \texttt{Gate.GateID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} Mirrors R7 for vehicles. One gate can be the entry point for multiple vehicle visits, and every vehicle visit must have an entry gate. This provides vehicle-specific entry tracking independent of person visits.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Main Gate (GateID = 1) was vehicle entry for: VehicleVisit IDs 1, 4, 8, 12, 13, 15, 19 (7 visits).
+    \item East Gate (GateID = 2) was vehicle entry for: VehicleVisit IDs 2, 5, 7, 10, 14, 20 (6 visits).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R9 Implementation}, label={lst:r9}]
+CREATE TABLE VehicleVisit (
+    EntryGateID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_vehiclevisit_entrygate FOREIGN KEY (EntryGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- R10 ---
+\subsection{R10: Gate \texorpdfstring{$\rightarrow$}{->} VehicleVisit -- Exit (v\_exit)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N), optional \\
+Participation & Partial on both sides \\
+FK Column & \texttt{VehicleVisit.ExitGateID} $\rightarrow$ \texttt{Gate.GateID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} Mirrors R8 for vehicles. Exit gate is optional (vehicle may still be parked on campus) and can differ from entry gate.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item VehicleVisit ID 1 (Vehicle GJ-06-AB-1234): Entered Main Gate (1), exited \textbf{West Gate} (3).
+    \item VehicleVisit ID 2 (Vehicle GJ-06-CD-5678): Entered East Gate (2), exited \textbf{South Gate} (4).
+    \item VehicleVisit ID 13 (Vehicle GJ-06-GH-3456): \texttt{ExitGateID = NULL} -- vehicle still parked on campus.
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R10 Implementation}, label={lst:r10}]
+CREATE TABLE VehicleVisit (
+    ExitGateID INTEGER,  -- Nullable: partial participation
+    CONSTRAINT fk_vehiclevisit_exitgate FOREIGN KEY (ExitGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_exitgate_if_exittime CHECK (
+        (ExitTime IS NULL AND ExitGateID IS NULL) OR
+        (ExitTime IS NOT NULL AND ExitGateID IS NOT NULL)
+    )
+);
+\end{lstlisting}
+
+% --- R11 ---
+\subsection{R11: Gate \texorpdfstring{$\rightarrow$}{->} GateOccupancy (tracks) -- Identifying}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-One (1:1) \\
+Participation & Total on both sides (Identifying relationship) \\
+FK Column & \texttt{GateOccupancy.GateID} $\rightarrow$ \texttt{Gate.GateID} \\
+ON DELETE & CASCADE (weak entity dependency) \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} Each gate has exactly one occupancy record, and each occupancy record belongs to exactly one gate. This is an \textbf{identifying relationship} where GateOccupancy is a \textbf{weak entity} -- it cannot exist without its parent Gate. The occupancy count provides real-time gate congestion monitoring.
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Main Gate (GateID = 1) $\leftrightarrow$ GateOccupancy (GateID = 1, OccupancyCount = 5).
+    \item East Gate (GateID = 2) $\leftrightarrow$ GateOccupancy (GateID = 2, OccupancyCount = 3).
+    \item West Gate (GateID = 3) $\leftrightarrow$ GateOccupancy (GateID = 3, OccupancyCount = 8).
+    \item South Gate (GateID = 4) $\leftrightarrow$ GateOccupancy (GateID = 4, OccupancyCount = 2).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R11 Implementation}, label={lst:r11}]
+CREATE TABLE GateOccupancy (
+    GateID INTEGER PRIMARY KEY,  -- PK + FK (identifying)
+    OccupancyCount INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT fk_occupancy_gate FOREIGN KEY (GateID)
+        REFERENCES Gate(GateID)
+        ON DELETE CASCADE  -- Weak entity: cascade on delete
+        ON UPDATE CASCADE,
+    CONSTRAINT chk_occupancy_count CHECK (OccupancyCount >= 0)
+);
+\end{lstlisting}
+
+% --- R12 ---
+\subsection{R12: Role \texorpdfstring{$\rightarrow$}{->} User (assigned\_to)}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Property} & \textbf{Value} \\
+\midrule
+Cardinality & One-to-Many (1:N) \\
+Participation & Total on User side; Partial on Role side \\
+FK Column & \texttt{User.RoleID} $\rightarrow$ \texttt{Role.RoleID} \\
+ON DELETE & RESTRICT \\
+ON UPDATE & CASCADE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Justification:} One role can be assigned to multiple users, but each user has exactly one role. This implements \textbf{Role-Based Access Control (RBAC)} where system permissions are determined by user role (Guard, Admin, SuperAdmin).
+
+\textbf{Real-World Example:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item Role ``Guard'' (RoleID = 1) is assigned to 5 users: guard1 (ID 1), guard2 (ID 2), guard3 (ID 3), guard4 (ID 4), guard5 (ID 8).
+    \item Role ``Admin'' (RoleID = 2) is assigned to 2 users: admin1 (ID 5), admin2 (ID 6).
+    \item Role ``SuperAdmin'' (RoleID = 3) is assigned to 1 user: superadmin (ID 7).
+\end{itemize}
+
+\begin{lstlisting}[style=sqlstyle, caption={R12 Implementation}, label={lst:r12}]
+CREATE TABLE "User" (
+    UserID SERIAL PRIMARY KEY,
+    RoleID INTEGER NOT NULL,  -- Total participation
+    CONSTRAINT fk_user_role FOREIGN KEY (RoleID)
+        REFERENCES Role(RoleID)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+);
+\end{lstlisting}
+
+% --- Relationship Summary ---
+\subsection{Relationship Summary}
+
+\begin{table}[H]
+\centering
+\caption{Complete Relationship Summary (12 Foreign Keys)}
+\label{tab:rel-summary}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{c l l c c c}
+\toprule
+\textbf{\#} & \textbf{Relationship} & \textbf{ER Name} & \textbf{Card.} & \textbf{DELETE} & \textbf{Nullable?} \\
+\midrule
+R1 & MemberType $\to$ Member & categorizes & 1:N & RESTRICT & No \\
+R2 & VehicleType $\to$ Vehicle & classifies & 1:N & RESTRICT & No \\
+R3 & Member $\to$ Vehicle & owns & 1:N & SET NULL & Yes \\
+R4 & Member $\to$ PersonVisit & makes visit & 1:N & RESTRICT & No \\
+R5 & Vehicle $\to$ PersonVisit & used in & 1:N & SET NULL & Yes \\
+R6 & Vehicle $\to$ VehicleVisit & makes v\_visit & 1:N & RESTRICT & No \\
+R7 & Gate $\to$ PersonVisit (entry) & entry & 1:N & RESTRICT & No \\
+R8 & Gate $\to$ PersonVisit (exit) & exit & 1:N & RESTRICT & Yes \\
+R9 & Gate $\to$ VehicleVisit (entry) & v\_entry & 1:N & RESTRICT & No \\
+R10 & Gate $\to$ VehicleVisit (exit) & v\_exit & 1:N & RESTRICT & Yes \\
+R11 & Gate $\to$ GateOccupancy & tracks & 1:1 & CASCADE & No \\
+R12 & Role $\to$ User & assigned to & 1:N & RESTRICT & No \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ============================================================================
+% SECTION 6: ADDITIONAL CONSTRAINTS
+% ============================================================================
+\newpage
+\section{Additional Constraints}
+\label{sec:constraints}
+
+Beyond primary key and foreign key constraints, the GateGuard database implements comprehensive integrity constraints to enforce business rules and ensure data validity.
+
+\subsection{CHECK Constraints}
+
+\subsubsection{Temporal Constraints (Visit Tables)}
+
+\begin{lstlisting}[style=sqlstyle, caption={Exit Time Validation}, label={lst:chk-time}]
+-- PersonVisit & VehicleVisit
+CONSTRAINT chk_exittime_after_entrytime CHECK (
+    ExitTime IS NULL OR ExitTime >= EntryTime
+)
+\end{lstlisting}
+
+\textbf{Purpose:} Ensures logical timing -- a person or vehicle cannot exit before entering.\\
+\textbf{Valid:} Entry at 09:00, Exit at 17:00 $\checkmark$ \quad | \quad Entry at 09:00, Exit NULL $\checkmark$ (still on campus)\\
+\textbf{Invalid:} Entry at 09:00, Exit at 08:00 $\times$ (rejected by constraint)
+
+\subsubsection{Exit Gate Consistency}
+
+\begin{lstlisting}[style=sqlstyle, caption={Exit Gate/Time Consistency}, label={lst:chk-exit}]
+-- PersonVisit & VehicleVisit
+CONSTRAINT chk_exitgate_if_exittime CHECK (
+    (ExitTime IS NULL AND ExitGateID IS NULL) OR
+    (ExitTime IS NOT NULL AND ExitGateID IS NOT NULL)
+)
+\end{lstlisting}
+
+\textbf{Purpose:} Ensures data consistency -- cannot have an exit time without an exit gate, or vice versa.\\
+\textbf{Valid States:} Both NULL (on campus) or both set (exited).\\
+\textbf{Invalid:} ExitTime set but ExitGateID NULL, or ExitGateID set but ExitTime NULL.
+
+\subsubsection{Occupancy Count}
+
+\begin{lstlisting}[style=sqlstyle, caption={Occupancy Count Validation}, label={lst:chk-occ}]
+CONSTRAINT chk_occupancy_count CHECK (OccupancyCount >= 0)
+\end{lstlisting}
+
+\textbf{Purpose:} Occupancy cannot be negative -- minimum is zero (no one at gate).
+
+\subsubsection{Email Format Validation}
+
+\begin{lstlisting}[style=sqlstyle, caption={Email Format CHECK}, label={lst:chk-email}]
+CONSTRAINT chk_member_email CHECK (Email LIKE '%@%.%')
+\end{lstlisting}
+
+\textbf{Purpose:} Basic email format validation ensuring the presence of `@' and `.' characters.\\
+\textbf{Valid:} \texttt{arjun.mehta@iitgn.ac.in} $\checkmark$ \quad \textbf{Invalid:} \texttt{arjunmehta} $\times$
+
+\subsubsection{Age Range Validation}
+
+\begin{lstlisting}[style=sqlstyle, caption={Age Range CHECK}, label={lst:chk-age}]
+CONSTRAINT chk_member_age CHECK (Age IS NULL OR (Age > 0 AND Age < 150))
+\end{lstlisting}
+
+\textbf{Purpose:} Ensures realistic age values when provided.\\
+\textbf{Valid:} 20, 45, NULL $\checkmark$ \quad \textbf{Invalid:} 0, $-5$, 200 $\times$
+
+\subsubsection{License Plate Format}
+
+\begin{lstlisting}[style=sqlstyle, caption={License Plate Length CHECK}, label={lst:chk-plate}]
+CONSTRAINT chk_licenseplate_format CHECK (LENGTH(LicensePlate) >= 5)
+\end{lstlisting}
+
+\textbf{Purpose:} Indian vehicle registration numbers require a minimum length.\\
+\textbf{Valid:} \texttt{GJ-06-AB-1234} $\checkmark$ \quad \textbf{Invalid:} \texttt{ABC} $\times$
+
+\subsubsection{Username and Password Constraints}
+
+\begin{lstlisting}[style=sqlstyle, caption={User Table Constraints}, label={lst:chk-user}]
+CONSTRAINT chk_username_length CHECK (LENGTH(Username) >= 3)
+CONSTRAINT chk_passwordhash_length CHECK (LENGTH(PasswordHash) >= 32)
+\end{lstlisting}
+
+\textbf{Purpose:} Ensure meaningful usernames (min 3 chars) and properly hashed passwords (min 32 chars for MD5).
+
+\subsubsection{Type Name Enumeration Constraints}
+
+\begin{lstlisting}[style=sqlstyle, caption={Enumeration CHECK Constraints}, label={lst:chk-enum}]
+-- MemberType
+CONSTRAINT chk_membertype_name CHECK (
+    TypeName IN ('Resident', 'Student', 'Visitor'))
+-- VehicleType
+CONSTRAINT chk_vehicletype_name CHECK (
+    TypeName IN ('PrivateCar', 'Taxi', 'Bike', 'Truck', 'Bus'))
+-- Role
+CONSTRAINT chk_role_name CHECK (
+    RoleName IN ('Guard', 'Admin', 'SuperAdmin'))
+\end{lstlisting}
+
+\textbf{Purpose:} Enforce controlled vocabulary -- only predefined type/role values are allowed.
+
+\subsection{UNIQUE Constraints}
+
+\begin{table}[H]
+\centering
+\caption{UNIQUE Constraints}
+\label{tab:unique}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Table} & \textbf{Column} & \textbf{Purpose} \\
+\midrule
+Member & Email & Each member has a unique email for identification \\
+Vehicle & LicensePlate & Each vehicle has a unique registration number \\
+User & Username & Each system user has a unique login identifier \\
+MemberType & TypeName & Prevent duplicate member type definitions \\
+VehicleType & TypeName & Prevent duplicate vehicle type definitions \\
+Role & RoleName & Prevent duplicate role definitions \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{NOT NULL Constraints}
+
+Every table meets the minimum requirement of \textbf{at least 3 NOT NULL columns}:
+
+\begin{table}[H]
+\centering
+\caption{NOT NULL Column Counts per Table}
+\label{tab:notnull}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l c X}
+\toprule
+\textbf{Table} & \textbf{NN Count} & \textbf{NOT NULL Columns} \\
+\midrule
+MemberType & 3 & TypeID, TypeName, CreatedAt \\
+Member & 7 & MemberID, Name, Email, ContactNumber, TypeID, CreatedAt, UpdatedAt \\
+VehicleType & 3 & TypeID, TypeName, CreatedAt \\
+Vehicle & 5 & VehicleID, LicensePlate, TypeID, CreatedAt, UpdatedAt \\
+Gate & 4 & GateID, Name, Location, CreatedAt \\
+GateOccupancy & 3 & GateID, OccupancyCount, UpdatedAt \\
+Role & 3 & RoleID, RoleName, CreatedAt \\
+User & 6 & UserID, Username, PasswordHash, RoleID, CreatedAt, UpdatedAt \\
+PersonVisit & 5 & VisitID, PersonID, EntryGateID, EntryTime, CreatedAt \\
+VehicleVisit & 5 & VisitID, VehicleID, EntryGateID, EntryTime, CreatedAt \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Referential Integrity Summary}
+
+\begin{table}[H]
+\centering
+\caption{Referential Integrity Actions}
+\label{tab:ref-integrity}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{l l l l X}
+\toprule
+\textbf{Child Table} & \textbf{FK} & \textbf{ON DELETE} & \textbf{ON UPDATE} & \textbf{Rationale} \\
+\midrule
+Member & TypeID & RESTRICT & CASCADE & Cannot delete type with members \\
+Vehicle & TypeID & RESTRICT & CASCADE & Cannot delete type with vehicles \\
+Vehicle & OwnerID & SET NULL & CASCADE & Vehicle becomes unowned \\
+GateOccupancy & GateID & CASCADE & CASCADE & Weak entity: delete with gate \\
+User & RoleID & RESTRICT & CASCADE & Cannot delete role with users \\
+PersonVisit & PersonID & RESTRICT & CASCADE & Cannot delete member with visits \\
+PersonVisit & EntryGateID & RESTRICT & CASCADE & Cannot delete gate with visits \\
+PersonVisit & ExitGateID & RESTRICT & CASCADE & Cannot delete gate with visits \\
+PersonVisit & VehicleID & SET NULL & CASCADE & Visit record preserved \\
+VehicleVisit & VehicleID & RESTRICT & CASCADE & Cannot delete vehicle with visits \\
+VehicleVisit & EntryGateID & RESTRICT & CASCADE & Cannot delete gate with visits \\
+VehicleVisit & ExitGateID & RESTRICT & CASCADE & Cannot delete gate with visits \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Indexes}
+
+The database defines \textbf{22 indexes} for query performance optimisation:
+
+\begin{table}[H]
+\centering
+\caption{Database Indexes}
+\label{tab:indexes}
+\rowcolors{2}{tablealt}{white}
+\small
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Table} & \textbf{Index} & \textbf{Purpose} \\
+\midrule
+MemberType & idx\_membertype\_name & Fast lookup by type name \\
+Member & idx\_member\_type & Fast join on TypeID \\
+Member & idx\_member\_email & Fast email search (also UNIQUE) \\
+Member & idx\_member\_name & Fast name-based queries \\
+VehicleType & idx\_vehicletype\_name & Fast lookup by type name \\
+Vehicle & idx\_vehicle\_type & Fast join on TypeID \\
+Vehicle & idx\_vehicle\_owner & Fast join on OwnerID \\
+Vehicle & idx\_vehicle\_licenseplate & Fast plate lookup (UNIQUE) \\
+Gate & idx\_gate\_name, idx\_gate\_location & Fast gate identification \\
+GateOccupancy & idx\_occupancy\_count & Occupancy reporting queries \\
+Role & idx\_role\_name & Fast role lookup \\
+User & idx\_user\_role, idx\_user\_username & Fast auth and role joins \\
+PersonVisit & 7 indexes & PersonID, gates, vehicle, timestamps, active visits \\
+VehicleVisit & 6 indexes & VehicleID, gates, timestamps, active visits \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Partial Index (advanced):}
+\begin{lstlisting}[style=sqlstyle, caption={Partial Index for Active Visits}, label={lst:partial-idx}]
+CREATE INDEX idx_personvisit_active
+    ON PersonVisit(PersonID, ExitTime) WHERE ExitTime IS NULL;
+CREATE INDEX idx_vehiclevisit_active
+    ON VehicleVisit(VehicleID, ExitTime) WHERE ExitTime IS NULL;
+\end{lstlisting}
+These partial indexes significantly speed up queries for currently active visits (people/vehicles still on campus).
+
+% ============================================================================
+% SECTION 7: DATABASE SCHEMA OVERVIEW
+% ============================================================================
+\newpage
+\section{Database Schema Overview}
+\label{sec:schema}
+
+This section provides a consolidated view of the complete database schema as implemented in Module A.
+
+\subsection{Schema Statistics}
+
+\begin{table}[H]
+\centering
+\caption{GateGuard Database Statistics}
+\label{tab:stats}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l r}
+\toprule
+\textbf{Metric} & \textbf{Value} \\
+\midrule
+Total Tables & 10 \\
+Total Foreign Key Relationships & 12 \\
+Total CHECK Constraints & 12 \\
+Total UNIQUE Constraints & 6 \\
+Total Indexes & 22 \\
+Total Sample Data Records & 105 \\
+Normalization Level & 3NF \\
+Database Engine & PostgreSQL 12+ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Sample Data Distribution}
+
+\begin{table}[H]
+\centering
+\caption{Sample Data Record Counts}
+\label{tab:data-dist}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l r X}
+\toprule
+\textbf{Table} & \textbf{Rows} & \textbf{Data Description} \\
+\midrule
+MemberType & 3 & Resident, Student, Visitor \\
+Member & 20 & 7 Residents, 8 Students, 5 Visitors \\
+VehicleType & 5 & PrivateCar, Taxi, Bike, Truck, Bus \\
+Vehicle & 18 & 10 Cars, 5 Bikes, 3 Taxis \\
+Gate & 4 & Main, East, West, South gates \\
+GateOccupancy & 4 & One record per gate \\
+Role & 3 & Guard, Admin, SuperAdmin \\
+User & 8 & 5 Guards, 2 Admins, 1 SuperAdmin \\
+PersonVisit & 25 & 15 completed, 10 active \\
+VehicleVisit & 20 & 12 completed, 8 active \\
+\midrule
+\textbf{Total} & \textbf{105} & \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Normalization Analysis}
+
+The GateGuard schema satisfies \textbf{Third Normal Form (3NF)}:
+
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{1NF:} All attributes are atomic. No repeating groups or multi-valued attributes in the relational schema. Each cell contains a single value.
+    \item \textbf{2NF:} All non-key attributes are fully functionally dependent on the entire primary key. No partial dependencies exist (all tables use single-column primary keys).
+    \item \textbf{3NF:} No transitive dependencies. Non-key attributes depend only on the primary key, not on other non-key attributes. Type names are stored in separate lookup tables (MemberType, VehicleType, Role) rather than directly in entity tables.
+\end{itemize}
+
+\textbf{Design Decisions for Normalization:}
+\begin{itemize}[leftmargin=*, nosep]
+    \item \entityname{MemberType}, \entityname{VehicleType}, and \entityname{Role} are extracted as separate lookup tables to eliminate transitive dependencies and enable controlled vocabulary enforcement via CHECK constraints.
+    \item \entityname{GateOccupancy} is separated from \entityname{Gate} to isolate frequently-updated occupancy counts from relatively static gate information, reducing write contention.
+    \item \entityname{PersonVisit} and \entityname{VehicleVisit} are kept as separate tables (rather than a single ``Visit'' table) to avoid NULL-heavy rows and to clearly model the different attributes and constraints of person visits vs.\ vehicle visits.
+\end{itemize}
+
+% ============================================================================
+% SECTION 8: TEAM MEMBER CONTRIBUTIONS
+% ============================================================================
+\newpage
+\section{Team Member Contributions}
+\label{sec:contributions}
+
+\begin{table}[H]
+\centering
+\caption{Team Member Contributions}
+\label{tab:contributions}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l l X}
+\toprule
+\textbf{Name} & \textbf{Roll No.} & \textbf{Contributions} \\
+\midrule
+Pushkar Nikunjkumar Modi & 25120035 &
+Database schema design (10 tables, constraints, indexes); SQL dump creation and testing; Module B report compilation; UML--ER alignment verification \\
+\addlinespace
+Chintan Bhikhabhai Akhaja & 25120027 &
+ER diagram design using Ti\textit{k}Z/\LaTeX; Entity-relationship modelling; Attribute type notation (derived, composite, multi-valued); Relationship cardinality verification \\
+\addlinespace
+Krina Paghadar & 24110169 &
+UML class diagram design (PlantUML); Sequence diagram creation; Class attribute and method specification; Multiplicity and association labelling \\
+\addlinespace
+Divisht & 24110112 &
+Use case diagram design; Activity diagram creation; Workflow modelling (entry/exit flows); System actor identification \\
+\addlinespace
+Akshata Pawar & 25120026 &
+Sample data generation (105 records); Data validation and integrity testing; Seed SQL script creation; Constraint violation testing \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Collaborative Efforts}
+
+The following tasks were completed collaboratively by all team members:
+\begin{itemize}[leftmargin=*, nosep]
+    \item System requirements analysis and scope definition.
+    \item Database architecture discussions and entity identification.
+    \item Normalization review and 3NF verification.
+    \item Cross-verification of UML diagram $\leftrightarrow$ ER diagram $\leftrightarrow$ SQL schema alignment.
+    \item Peer review of all diagrams and documentation.
+    \item Testing of the SQL dump file on a fresh PostgreSQL database.
+    \item Final quality assurance and submission preparation.
+\end{itemize}
+
+\subsection{Tools and Technologies}
+
+\begin{table}[H]
+\centering
+\caption{Tools and Technologies Used}
+\label{tab:tools}
+\rowcolors{2}{tablealt}{white}
+\begin{tabularx}{\textwidth}{l X}
+\toprule
+\textbf{Category} & \textbf{Tool} \\
+\midrule
+Database & PostgreSQL 12+ \\
+SQL Development & pgAdmin 4, psql CLI \\
+UML Diagrams & PlantUML, Visual Studio Code \\
+ER Diagram & \LaTeX{} with Ti\textit{k}Z/PGF \\
+Sequence/Activity Diagrams & Mermaid.js, PlantUML \\
+Report Compilation & \LaTeX{} (pdflatex) \\
+Version Control & Git, GitHub \\
+Collaboration & VS Code Live Share, Discord \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ============================================================================
+% SECTION 9: CONCLUSION
+% ============================================================================
+\newpage
+\section{Conclusion}
+\label{sec:conclusion}
+
+This report presents the complete conceptual design of the \textbf{GateGuard Entry Gate Management System} for IIT Gandhinagar, developed as part of CS432 Track-1 Assignment 1, Module B.
+
+\subsection{Summary of Deliverables}
+
+\begin{enumerate}[leftmargin=*, nosep]
+    \item \textbf{UML Diagrams:} Four UML diagrams were created -- Class Diagram (showing 10 classes with attributes, methods, and 10 associations), Sequence Diagram (modelling entry/exit workflows), Use Case Diagram (capturing actor--system interactions), and Activity Diagram (modelling decision points and parallel operations).
+
+    \item \textbf{ER Diagram:} A comprehensive Entity-Relationship diagram was designed using Ti\textit{k}Z/\LaTeX, featuring 10 entities (including 1 weak entity), 12 relationships, colour-coded functional regions, and standard ER notation for key attributes, derived attributes, composite attributes, multi-valued attributes, and participation constraints.
+
+    \item \textbf{UML-to-ER Transition:} A detailed systematic mapping was documented, showing how UML classes convert to ER entities, UML associations convert to ER relationships, stereotypes map to keys, and multiplicity translates to cardinality.
+
+    \item \textbf{Relationship Justifications:} All 12 foreign key relationships were individually justified with cardinality analysis, participation constraints, real-world examples from the 105-record sample dataset, and the actual SQL implementation code.
+
+    \item \textbf{Constraint Documentation:} All 30+ constraints (12 CHECK, 6 UNIQUE, 12 FK, and NOT NULL constraints across all tables) were documented with purpose, examples, and valid/invalid cases.
+\end{enumerate}
+
+\subsection{Key Design Strengths}
+
+\begin{itemize}[leftmargin=*, nosep]
+    \item \textbf{3NF Compliance:} Eliminates all transitive dependencies through proper table decomposition.
+    \item \textbf{Multi-Gate Support:} Entry and exit gates can differ, modelling real campus scenarios.
+    \item \textbf{Weak Entity Modelling:} GateOccupancy correctly modelled as a weak entity with identifying relationship.
+    \item \textbf{Dual Visit Tracking:} Separate PersonVisit and VehicleVisit tables for clean, flexible tracking.
+    \item \textbf{Comprehensive Constraints:} Business rules enforced at the database level, not just the application level.
+    \item \textbf{Performance Indexes:} 22 indexes including partial indexes for active visit queries.
+    \item \textbf{105 Sample Records:} Realistic data covering completed visits, active visits, multi-gate exits, pedestrian entries, and unowned vehicles.
+\end{itemize}
+
+% ============================================================================
+% REFERENCES
+% ============================================================================
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{elmasri2015}
+Elmasri, R.\ \& Navathe, S.\ B.\ (2015).
+\textit{Fundamentals of Database Systems} (7th ed.).
+Pearson Education.
+-- Chapters 7 (ER Modelling) and 10 (UML/Object Modelling).
+
+\bibitem{silberschatz2019}
+Silberschatz, A., Korth, H.\ F.\ \& Sudarshan, S.\ (2019).
+\textit{Database System Concepts} (7th ed.).
+McGraw-Hill Education.
+-- Chapter 6 (Database Design Using the E-R Model).
+
+\bibitem{connolly2014}
+Connolly, T.\ \& Begg, C.\ (2014).
+\textit{Database Systems: A Practical Approach to Design, Implementation, and Management} (6th ed.).
+Pearson Education.
+
+\bibitem{postgresql2024}
+PostgreSQL Global Development Group.\ (2024).
+\textit{PostgreSQL 16 Documentation}.
+\url{https://www.postgresql.org/docs/16/}
+
+\bibitem{omg2015}
+Object Management Group (OMG).\ (2015).
+\textit{OMG Unified Modeling Language (UML) Version 2.5}.
+\url{https://www.omg.org/spec/UML/2.5/}
+
+\bibitem{plantuml2024}
+PlantUML.\ (2024).
+\textit{PlantUML Class Diagram Syntax}.
+\url{https://plantuml.com/class-diagram}
+
+\bibitem{tikz2024}
+Tantau, T.\ (2024).
+\textit{The TikZ and PGF Packages -- Manual for version 3.1.10}.
+\url{https://tikz.dev/}
+
+\bibitem{cs432notes}
+CS432 Database Management Systems -- Lecture Notes and Slides.
+IIT Gandhinagar, Spring 2026.
+
+\end{thebibliography}
+
+% ============================================================================
+% APPENDIX
+% ============================================================================
+\newpage
+\appendix
+
+\section{Complete SQL Schema}
+\label{app:schema}
+
+The complete SQL schema from Module A (\texttt{gateguard\_module\_a\_dump.sql}) is reproduced below for reference:
+
+\begingroup
+\lstset{aboveskip=2pt, belowskip=2pt, basicstyle=\ttfamily\scriptsize}
+\begin{lstlisting}[style=sqlstyle, caption={GateGuard Complete Schema (Module A)}, label={lst:full-schema}]
+-- 1. MemberType
+CREATE TABLE MemberType (
+    TypeID SERIAL PRIMARY KEY,
+    TypeName VARCHAR(50) NOT NULL UNIQUE,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_membertype_name
+        CHECK (TypeName IN ('Resident', 'Student', 'Visitor'))
+);
+
+-- 2. Member
+CREATE TABLE Member (
+    MemberID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(255) NOT NULL UNIQUE,
+    ContactNumber VARCHAR(20) NOT NULL,
+    Image BYTEA,
+    Age INTEGER,
+    Department VARCHAR(100),
+    TypeID INTEGER NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_member_type FOREIGN KEY (TypeID)
+        REFERENCES MemberType(TypeID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_member_email CHECK (Email LIKE '%@%.%'),
+    CONSTRAINT chk_member_age
+        CHECK (Age IS NULL OR (Age > 0 AND Age < 150))
+);
+
+-- 3. VehicleType
+CREATE TABLE VehicleType (
+    TypeID SERIAL PRIMARY KEY,
+    TypeName VARCHAR(50) NOT NULL UNIQUE,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_vehicletype_name
+        CHECK (TypeName IN ('PrivateCar','Taxi','Bike','Truck','Bus'))
+);
+
+-- 4. Vehicle
+CREATE TABLE Vehicle (
+    VehicleID SERIAL PRIMARY KEY,
+    LicensePlate VARCHAR(20) NOT NULL UNIQUE,
+    TypeID INTEGER NOT NULL,
+    OwnerID INTEGER,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_vehicle_type FOREIGN KEY (TypeID)
+        REFERENCES VehicleType(TypeID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_vehicle_owner FOREIGN KEY (OwnerID)
+        REFERENCES Member(MemberID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT chk_licenseplate_format
+        CHECK (LENGTH(LicensePlate) >= 5)
+);
+
+-- 5. Gate
+CREATE TABLE Gate (
+    GateID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Location VARCHAR(255) NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_gate_name CHECK (LENGTH(Name) > 0)
+);
+
+-- 6. GateOccupancy (Weak Entity)
+CREATE TABLE GateOccupancy (
+    GateID INTEGER PRIMARY KEY,
+    OccupancyCount INTEGER NOT NULL DEFAULT 0,
+    UpdatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_occupancy_gate FOREIGN KEY (GateID)
+        REFERENCES Gate(GateID)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT chk_occupancy_count
+        CHECK (OccupancyCount >= 0)
+);
+
+-- 7. Role
+CREATE TABLE Role (
+    RoleID SERIAL PRIMARY KEY,
+    RoleName VARCHAR(50) NOT NULL UNIQUE,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_role_name
+        CHECK (RoleName IN ('Guard', 'Admin', 'SuperAdmin'))
+);
+
+-- 8. User
+CREATE TABLE "User" (
+    UserID SERIAL PRIMARY KEY,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    RoleID INTEGER NOT NULL,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user_role FOREIGN KEY (RoleID)
+        REFERENCES Role(RoleID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_username_length
+        CHECK (LENGTH(Username) >= 3),
+    CONSTRAINT chk_passwordhash_length
+        CHECK (LENGTH(PasswordHash) >= 32)
+);
+
+-- 9. PersonVisit
+CREATE TABLE PersonVisit (
+    VisitID SERIAL PRIMARY KEY,
+    PersonID INTEGER NOT NULL,
+    EntryGateID INTEGER NOT NULL,
+    EntryTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ExitGateID INTEGER,
+    ExitTime TIMESTAMP,
+    VehicleID INTEGER,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_personvisit_person FOREIGN KEY (PersonID)
+        REFERENCES Member(MemberID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_personvisit_entrygate
+        FOREIGN KEY (EntryGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_personvisit_exitgate
+        FOREIGN KEY (ExitGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_personvisit_vehicle
+        FOREIGN KEY (VehicleID)
+        REFERENCES Vehicle(VehicleID)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT chk_exittime_after_entrytime
+        CHECK (ExitTime IS NULL OR ExitTime >= EntryTime),
+    CONSTRAINT chk_exitgate_if_exittime CHECK (
+        (ExitTime IS NULL AND ExitGateID IS NULL) OR
+        (ExitTime IS NOT NULL AND ExitGateID IS NOT NULL))
+);
+
+-- 10. VehicleVisit
+CREATE TABLE VehicleVisit (
+    VisitID SERIAL PRIMARY KEY,
+    VehicleID INTEGER NOT NULL,
+    EntryGateID INTEGER NOT NULL,
+    EntryTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ExitGateID INTEGER,
+    ExitTime TIMESTAMP,
+    CreatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_vehiclevisit_vehicle
+        FOREIGN KEY (VehicleID)
+        REFERENCES Vehicle(VehicleID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_vehiclevisit_entrygate
+        FOREIGN KEY (EntryGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_vehiclevisit_exitgate
+        FOREIGN KEY (ExitGateID)
+        REFERENCES Gate(GateID)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT chk_exittime_after_entrytime
+        CHECK (ExitTime IS NULL OR ExitTime >= EntryTime),
+    CONSTRAINT chk_exitgate_if_exittime CHECK (
+        (ExitTime IS NULL AND ExitGateID IS NULL) OR
+        (ExitTime IS NOT NULL AND ExitGateID IS NOT NULL))
+);
+\end{lstlisting}
+\endgroup
+
+\end{document}
