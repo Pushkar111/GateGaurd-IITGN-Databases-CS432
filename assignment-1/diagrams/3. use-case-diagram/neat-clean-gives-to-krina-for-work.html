@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GateGuard · UML Use Case Diagram</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  display:flex;
+  justify-content:center;
+  padding:40px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15),0 8px 16px rgba(0,0,0,0.1),0 2px 6px rgba(0,0,0,0.08);
+  padding:40px;
+}
+.legend{
+  margin-top:20px;
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  font-size:13px;
+}
+.legend span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.color-box{
+  width:14px;height:14px;border-radius:4px;
+}
+.title-box{
+  text-align:center;
+  margin-top:20px;
+  font-weight:600;
+  font-size:18px;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<svg width="1700" height="1100" viewBox="0 0 1700 1100">
+
+<defs>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+</filter>
+
+<marker id="arrowInclude" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+  <polygon points="0,0 10,5 0,10" fill="#555"/>
+</marker>
+
+<marker id="arrowExtend" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+  <polygon points="0,0 10,5 0,10" fill="#888"/>
+</marker>
+
+<marker id="arrowGeneral" markerWidth="14" markerHeight="14" refX="12" refY="7" orient="auto">
+  <polygon points="0,0 14,7 0,14" fill="#fff" stroke="#333" stroke-width="1.5"/>
+</marker>
+</defs>
+
+<!-- System Boundary -->
+
+<rect x="250" y="50" width="1300" height="900" rx="20" fill="none" stroke="#ccc" stroke-width="1.5"/>
+<text x="900" y="40" text-anchor="middle" font-size="18" font-weight="600">GateGuard — Entry & Exit Management System</text>
+
+<!-- GROUP A -->
+
+<rect x="350" y="120" width="420" height="260" rx="14" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" opacity="0.35"/>
+<text x="560" y="145" text-anchor="middle" font-size="16" font-weight="600">Gate Operations</text>
+
+<!-- UC1 -->
+
+<ellipse cx="470" cy="200" rx="80" ry="32" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="470" y="196" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Record Person</text>
+<text x="470" y="212" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Entry</text>
+
+<!-- UC2 -->
+
+<ellipse cx="650" cy="200" rx="80" ry="32" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="650" y="196" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Record Person</text>
+<text x="650" y="212" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Exit</text>
+
+<!-- UC3 -->
+
+<ellipse cx="470" cy="280" rx="80" ry="32" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="470" y="276" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Record Vehicle</text>
+<text x="470" y="292" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Entry</text>
+
+<!-- UC4 -->
+
+<ellipse cx="650" cy="280" rx="80" ry="32" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="650" y="276" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Record Vehicle</text>
+<text x="650" y="292" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Exit</text>
+
+<!-- UC5 -->
+
+<ellipse cx="560" cy="340" rx="80" ry="32" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="560" y="336" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">View Gate</text>
+<text x="560" y="352" text-anchor="middle" font-size="13" fill="#1976D2" font-weight="500">Occupancy</text>
+
+<!-- GROUP B -->
+
+<rect x="350" y="420" width="420" height="200" rx="14" fill="#E8F5E9" stroke="#388E3C" stroke-width="2" opacity="0.35"/>
+<text x="560" y="445" text-anchor="middle" font-size="16" font-weight="600">Search & Lookup</text>
+
+<ellipse cx="470" cy="500" rx="80" ry="32" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="470" y="505" text-anchor="middle" font-size="13" fill="#388E3C" font-weight="500">Search Member</text>
+
+<ellipse cx="650" cy="500" rx="80" ry="32" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="650" y="505" text-anchor="middle" font-size="13" fill="#388E3C" font-weight="500">Search Vehicle</text>
+
+<ellipse cx="560" cy="560" rx="80" ry="32" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="560" y="556" text-anchor="middle" font-size="13" fill="#388E3C" font-weight="500">View Visit</text>
+<text x="560" y="572" text-anchor="middle" font-size="13" fill="#388E3C" font-weight="500">History</text>
+
+<!-- GROUP C -->
+
+<rect x="350" y="680" width="420" height="240" rx="14" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" opacity="0.35"/>
+<text x="560" y="705" text-anchor="middle" font-size="16" font-weight="600">Administration</text>
+
+<ellipse cx="470" cy="760" rx="80" ry="32" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="470" y="765" text-anchor="middle" font-size="13" fill="#7B1FA2" font-weight="500">Manage Members</text>
+
+<ellipse cx="650" cy="760" rx="80" ry="32" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="650" y="765" text-anchor="middle" font-size="13" fill="#7B1FA2" font-weight="500">Manage Vehicles</text>
+
+<ellipse cx="470" cy="840" rx="80" ry="32" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="470" y="845" text-anchor="middle" font-size="13" fill="#7B1FA2" font-weight="500">Manage Gates</text>
+
+<ellipse cx="650" cy="840" rx="80" ry="32" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="650" y="845" text-anchor="middle" font-size="13" fill="#7B1FA2" font-weight="500">Manage Users</text>
+
+<ellipse cx="560" cy="900" rx="80" ry="32" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="560" y="905" text-anchor="middle" font-size="13" fill="#7B1FA2" font-weight="500">Manage Roles</text>
+
+<!-- GROUP D -->
+
+<rect x="900" y="150" width="420" height="200" rx="14" fill="#FFFDE7" stroke="#F9A825" stroke-width="2" opacity="0.35"/>
+<text x="1110" y="175" text-anchor="middle" font-size="16" font-weight="600">Reporting</text>
+
+<ellipse cx="1020" cy="240" rx="80" ry="32" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1020" y="245" text-anchor="middle" font-size="13" fill="#F9A825" font-weight="500">Entry/Exit Report</text>
+
+<ellipse cx="1200" cy="240" rx="80" ry="32" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1200" y="245" text-anchor="middle" font-size="13" fill="#F9A825" font-weight="500">Occupancy Report</text>
+
+<ellipse cx="1110" cy="300" rx="80" ry="32" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1110" y="305" text-anchor="middle" font-size="13" fill="#F9A825" font-weight="500">System Statistics</text>
+
+<!-- GROUP E -->
+
+<rect x="900" y="420" width="420" height="200" rx="14" fill="#FFF3E0" stroke="#F57C00" stroke-width="2" opacity="0.35"/>
+<text x="1110" y="445" text-anchor="middle" font-size="16" font-weight="600">System Automation</text>
+
+<ellipse cx="1020" cy="500" rx="80" ry="32" fill="white" stroke="#F57C00" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1020" y="505" text-anchor="middle" font-size="13" fill="#F57C00" font-weight="500">Update Gate</text>
+<text x="1020" y="521" text-anchor="middle" font-size="13" fill="#F57C00" font-weight="500">Occupancy</text>
+
+<ellipse cx="1200" cy="500" rx="80" ry="32" fill="white" stroke="#F57C00" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1200" y="505" text-anchor="middle" font-size="13" fill="#F57C00" font-weight="500">Validate Visit</text>
+<text x="1200" y="521" text-anchor="middle" font-size="13" fill="#F57C00" font-weight="500">Constraints</text>
+
+<ellipse cx="1110" cy="560" rx="80" ry="32" fill="white" stroke="#F57C00" stroke-width="2.5" filter="url(#shadow)"/>
+<text x="1110" y="565" text-anchor="middle" font-size="13" fill="#F57C00" font-weight="500">Log Audit Trail</text>
+
+<!-- ACTORS -->
+
+<!-- Guard -->
+
+<circle cx="120" cy="220" r="18" stroke="#1976D2" stroke-width="2.5" fill="none"/>
+<line x1="120" y1="238" x2="120" y2="300" stroke="#1976D2" stroke-width="2.5"/>
+<line x1="90" y1="260" x2="150" y2="260" stroke="#1976D2" stroke-width="2.5"/>
+<line x1="120" y1="300" x2="95" y2="340" stroke="#1976D2" stroke-width="2.5"/>
+<line x1="120" y1="300" x2="145" y2="340" stroke="#1976D2" stroke-width="2.5"/>
+<text x="120" y="370" text-anchor="middle" font-weight="600" font-size="15">Guard</text>
+
+<!-- Admin -->
+
+<circle cx="120" cy="720" r="18" stroke="#7B1FA2" stroke-width="2.5" fill="none"/>
+<line x1="120" y1="738" x2="120" y2="800" stroke="#7B1FA2" stroke-width="2.5"/>
+<line x1="90" y1="760" x2="150" y2="760" stroke="#7B1FA2" stroke-width="2.5"/>
+<line x1="120" y1="800" x2="95" y2="840" stroke="#7B1FA2" stroke-width="2.5"/>
+<line x1="120" y1="800" x2="145" y2="840" stroke="#7B1FA2" stroke-width="2.5"/>
+<text x="120" y="870" text-anchor="middle" font-weight="600" font-size="15">Admin</text>
+
+<!-- System Actor -->
+
+<circle cx="1550" cy="520" r="18" stroke="#F57C00" stroke-width="2.5" fill="none"/>
+<line x1="1550" y1="538" x2="1550" y2="600" stroke="#F57C00" stroke-width="2.5"/>
+<line x1="1520" y1="560" x2="1580" y2="560" stroke="#F57C00" stroke-width="2.5"/>
+<line x1="1550" y1="600" x2="1525" y2="640" stroke="#F57C00" stroke-width="2.5"/>
+<line x1="1550" y1="600" x2="1575" y2="640" stroke="#F57C00" stroke-width="2.5"/>
+<text x="1550" y="670" text-anchor="middle" font-weight="600" font-size="15">System</text>
+
+<!-- Generalization -->
+
+<line x1="120" y1="700" x2="120" y2="380" stroke="#333" stroke-width="2" marker-end="url(#arrowGeneral)"/>
+
+</svg>
+
+<div class="title-box">GateGuard System · UML 2.5 Use Case Diagram</div>
+
+<div class="legend">
+<span><div class="color-box" style="background:#1976D2"></div>Gate Operations</span>
+<span><div class="color-box" style="background:#388E3C"></div>Search & Lookup</span>
+<span><div class="color-box" style="background:#7B1FA2"></div>Administration</span>
+<span><div class="color-box" style="background:#F9A825"></div>Reporting</span>
+<span><div class="color-box" style="background:#F57C00"></div>System Automation</span>
+</div>
+
+</div>
+</body>
+</html>

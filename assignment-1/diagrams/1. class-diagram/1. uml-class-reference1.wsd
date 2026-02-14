@@ -1,0 +1,237 @@
+@startuml
+' =====================================================
+' GateGuard – Ultra Pro Max UML Class Diagram
+' =====================================================
+
+' -------------------------
+' Global visual tuning
+' -------------------------
+skinparam dpi 150
+skinparam defaultFontName Arial
+skinparam classFontSize 12
+skinparam classAttributeFontSize 11
+skinparam classBorderThickness 1
+skinparam classRoundCorner 14
+skinparam shadowing true
+skinparam nodesep 85
+skinparam ranksep 95
+skinparam classMargin 20
+skinparam ArrowColor Black
+skinparam backgroundColor White
+skinparam linetype ortho
+left to right direction
+
+title GateGuard – Entry & Exit Management System (IIT Gandhinagar)
+
+' -------------------------
+' System context anchor
+' -------------------------
+class SYSTEM_CONTEXT <<system>> {
+  GateGuard
+  PostgreSQL (Relational DB)
+  UML 2.5
+}
+
+note right of SYSTEM_CONTEXT
+Entry / Exit Management
+for IIT Gandhinagar Campus
+Design follows Elmasri & Navathe (Ch.10)
+end note
+
+' =====================================================
+' MEMBER MANAGEMENT
+' =====================================================
+package "Member Management" #E8F6F3 {
+
+class MEMBERTYPE {
+  - <<PK>> typeID : int
+  - typeName : string {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getTypeID()
+  + getTypeName()
+  + setTypeName()
+}
+
+class MEMBER {
+  - <<PK>> memberID : int
+  - name : string {NOT NULL}
+  - email : string {UNIQUE, NOT NULL}
+  - contactNumber : string {NOT NULL}
+  - image : blob
+  - age : int
+  - department : string
+  - <<FK>> typeID : int {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp {NOT NULL}
+  --
+  + getMemberID()
+  + getName()
+  + getEmail()
+  + validateEmail()
+}
+}
+
+' =====================================================
+' VEHICLE MANAGEMENT
+' =====================================================
+package "Vehicle Management" #EEF4FF {
+
+class VEHICLETYPE {
+  - <<PK>> typeID : int
+  - typeName : string {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getTypeID()
+  + getTypeName()
+  + setTypeName()
+}
+
+class VEHICLE {
+  - <<PK>> vehicleID : int
+  - licensePlate : string {UNIQUE, NOT NULL}
+  - <<FK>> typeID : int {NOT NULL}
+  - <<FK>> ownerID : int
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp {NOT NULL}
+  --
+  + getVehicleID()
+  + getLicensePlate()
+  + validateLicensePlate()
+}
+}
+
+' =====================================================
+' GATE CONTROL
+' =====================================================
+package "Gate Control" #FFF1E6 {
+
+class GATE {
+  - <<PK>> gateID : int
+  - name : string {NOT NULL}
+  - location : string {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getGateID()
+  + getName()
+  + getLocation()
+}
+
+class GATEOCCUPANCY {
+  - <<PK>> <<FK>> gateID : int {NOT NULL}
+  - occupancyCount : int {NOT NULL}
+  - updatedAt : timestamp {NOT NULL}
+  --
+  + getOccupancyCount()
+  + incrementOccupancy()
+  + decrementOccupancy()
+}
+}
+
+' =====================================================
+' USER & ROLE MANAGEMENT
+' =====================================================
+package "Security & Users" #F4ECFF {
+
+class ROLE {
+  - <<PK>> roleID : int
+  - roleName : string {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getRoleID()
+  + getRoleName()
+}
+
+class USER {
+  - <<PK>> userID : int
+  - username : string {UNIQUE, NOT NULL}
+  - passwordHash : string {NOT NULL}
+  - <<FK>> roleID : int {NOT NULL}
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp {NOT NULL}
+  --
+  + getUserID()
+  + getUsername()
+  + authenticate()
+}
+}
+
+' =====================================================
+' VISIT TRACKING
+' =====================================================
+package "Visit Tracking" #FFFBE6 {
+
+class PERSONVISIT {
+  - <<PK>> visitID : int
+  - <<FK>> personID : int {NOT NULL}
+  - <<FK>> entryGateID : int {NOT NULL}
+  - entryTime : timestamp {NOT NULL}
+  - <<FK>> exitGateID : int
+  - exitTime : timestamp
+  - <<FK>> vehicleID : int
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getVisitID()
+  + validateExitTime()
+  + isActive()
+}
+
+class VEHICLEVISIT {
+  - <<PK>> visitID : int
+  - <<FK>> vehicleID : int {NOT NULL}
+  - <<FK>> entryGateID : int {NOT NULL}
+  - entryTime : timestamp {NOT NULL}
+  - <<FK>> exitGateID : int
+  - exitTime : timestamp
+  - createdAt : timestamp {NOT NULL}
+  - updatedAt : timestamp
+  --
+  + getVisitID()
+  + validateExitTime()
+  + isActive()
+}
+}
+
+' =====================================================
+' RELATIONSHIPS – CLEAN & SPACED
+' =====================================================
+
+MEMBERTYPE "1" *-- "0..*" MEMBER : categorizes
+VEHICLETYPE "1" *-- "0..*" VEHICLE : categorizes
+GATE "1" *-- "1" GATEOCCUPANCY : maintains
+
+MEMBER "1" -- "0..*" PERSONVISIT : makes
+MEMBER "0..*" -- "0..1" VEHICLE : owns
+
+VEHICLE "1" -- "0..*" PERSONVISIT : used_in
+VEHICLE "1" -- "0..*" VEHICLEVISIT : logs
+
+GATE "1" -- "0..*" PERSONVISIT : entry / exit
+GATE "1" -- "0..*" VEHICLEVISIT : entry / exit
+
+ROLE "1" -- "0..*" USER : assigned_to
+
+' =====================================================
+' CONSTRAINT NOTES (BEGINNER FRIENDLY)
+' =====================================================
+
+note right of PERSONVISIT
+ExitTime >= EntryTime
+OR ExitTime IS NULL
+end note
+
+note right of VEHICLEVISIT
+ExitTime >= EntryTime
+OR ExitTime IS NULL
+end note
+
+note right of GATEOCCUPANCY
+occupancyCount >= 0
+end note
+
+@enduml

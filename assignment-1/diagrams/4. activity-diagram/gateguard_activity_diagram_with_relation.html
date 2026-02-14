@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GateGuard — Activity Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .diagram-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.07),
+                0 10px 20px rgba(0, 0, 0, 0.1),
+                0 20px 40px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #1a202c;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .section-title {
+            text-align: center;
+            color: #2d3748;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 24px 0 16px;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram-card">
+        <h1>GateGuard — Entry & Exit Activity Diagram</h1>
+        <div class="subtitle">IIT Gandhinagar Campus Management System · UML 2.5</div>
+        
+        <div class="section-title">ENTRY PROCESS FLOW</div>
+        
+        <svg viewBox="0 0 1300 2200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Arrow marker -->
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#2d3748" />
+                </marker>
+                
+                <!-- Drop shadow -->
+                <filter id="shadow">
+                    <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.15"/>
+                </filter>
+            </defs>
+
+            <!-- ========== SWIMLANE BACKGROUNDS ========== -->
+            
+            <!-- Guard Swimlane -->
+            <rect x="0" y="0" width="325" height="2200" fill="#E3F2FD" opacity="0.4"/>
+            <text x="162.5" y="35" font-size="16" font-weight="600" fill="#1565C0" text-anchor="middle">Guard</text>
+            <text x="162.5" y="52" font-size="11" fill="#1976D2" text-anchor="middle">(Human Security Personnel)</text>
+            
+            <!-- GateTerminal Swimlane -->
+            <rect x="325" y="0" width="325" height="2200" fill="#E8F5E9" opacity="0.4"/>
+            <text x="487.5" y="35" font-size="16" font-weight="600" fill="#2E7D32" text-anchor="middle">GateTerminal</text>
+            <text x="487.5" y="52" font-size="11" fill="#388E3C" text-anchor="middle">(UI / Data Entry Interface)</text>
+            
+            <!-- System Services Swimlane -->
+            <rect x="650" y="0" width="325" height="2200" fill="#F3E5F5" opacity="0.4"/>
+            <text x="812.5" y="35" font-size="16" font-weight="600" fill="#6A1B9A" text-anchor="middle">System Services</text>
+            <text x="812.5" y="52" font-size="11" fill="#7B1FA2" text-anchor="middle">(Backend Business Logic)</text>
+            
+            <!-- Database Swimlane -->
+            <rect x="975" y="0" width="325" height="2200" fill="#FFF3E0" opacity="0.4"/>
+            <text x="1137.5" y="35" font-size="16" font-weight="600" fill="#E65100" text-anchor="middle">Database</text>
+            <text x="1137.5" y="52" font-size="11" fill="#F57C00" text-anchor="middle">(PostgreSQL Data Store)</text>
+
+            <!-- Vertical Dividers -->
+            <line x1="325" y1="0" x2="325" y2="2200" stroke="#cbd5e0" stroke-width="1.5"/>
+            <line x1="650" y1="0" x2="650" y2="2200" stroke="#cbd5e0" stroke-width="1.5"/>
+            <line x1="975" y1="0" x2="975" y2="2200" stroke="#cbd5e0" stroke-width="1.5"/>
+
+            <!-- ========== INITIAL STATE ========== -->
+            <circle cx="162.5" cy="100" r="12" fill="#2d3748"/>
+            <text x="190" y="105" font-size="11" fill="#4a5568" font-style="italic">Entry Start</text>
+
+            <!-- ========== A1: Verify Person's ID Card ========== -->
+            <line x1="162.5" y1="112" x2="162.5" y2="140" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="70" y="140" width="185" height="60" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="162" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Verify Person's ID Card</text>
+            <text x="162.5" y="178" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">(Manual Inspection)</text>
+            <text x="162.5" y="193" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Visual check</text>
+            
+            <!-- Note for A1 -->
+            <path d="M 280,150 L280,130 L400,130 L408,138 L408,190 L280,190 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 400,130 L400,138 L408,138" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="344" y="150" font-size="10" fill="#666" text-anchor="middle">Guard visually checks</text>
+            <text x="344" y="164" font-size="10" fill="#666" text-anchor="middle">Student ID / Aadhaar / DL.</text>
+            <text x="344" y="178" font-size="10" fill="#666" text-anchor="middle">Human decision,</text>
+            <text x="344" y="192" font-size="10" fill="#666" text-anchor="middle">OUTSIDE the system.</text>
+
+            <!-- ========== A2: Approve Entry ========== -->
+            <line x1="162.5" y1="200" x2="162.5" y2="230" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="85" y="230" width="155" height="45" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="256" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Approve Entry</text>
+            <text x="162.5" y="270" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Guard's decision</text>
+            
+            <!-- Note for A2 -->
+            <path d="M 260,235 L260,215 L380,215 L388,223 L388,270 L260,270 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 380,215 L380,223 L388,223" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="324" y="232" font-size="10" fill="#666" text-anchor="middle">Guard decides to allow.</text>
+            <text x="324" y="246" font-size="10" fill="#666" text-anchor="middle">System does NOT decide—</text>
+            <text x="324" y="260" font-size="10" fill="#666" text-anchor="middle">it only LOGS action.</text>
+
+            <!-- ========== A3: Enter Member ID into Terminal ========== -->
+            <line x1="162.5" y1="275" x2="162.5" y2="310" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="70" y="310" width="185" height="50" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="330" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Enter Member ID</text>
+            <text x="162.5" y="346" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">into Terminal</text>
+
+            <!-- ========== D1: Decision - Has Vehicle? ========== -->
+            <line x1="162.5" y1="360" x2="162.5" y2="400" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <path d="M 162.5,400 L 212.5,450 L 162.5,500 L 112.5,450 Z" fill="white" stroke="#2d3748" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="448" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Has</text>
+            <text x="162.5" y="464" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Vehicle?</text>
+            
+            <!-- Decision branches -->
+            <line x1="212.5" y1="450" x2="280" y2="450" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="235" y="443" font-size="11" font-weight="600" fill="#d32f2f">[No]</text>
+            
+            <line x1="162.5" y1="500" x2="162.5" y2="540" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="175" y="523" font-size="11" font-weight="600" fill="#388e3c">[Yes]</text>
+
+            <!-- ========== A4: Enter License Plate + Select Vehicle Type ========== -->
+            <rect x="55" y="540" width="215" height="70" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="562" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Enter License Plate</text>
+            <text x="162.5" y="578" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">+ Select Vehicle Type</text>
+            <text x="162.5" y="597" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Dropdown: Car/Bike/Taxi/etc.</text>
+            
+            <!-- Note for A4 -->
+            <path d="M 290,555 L290,535 L425,535 L433,543 L433,600 L290,600 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 425,535 L425,543 L433,543" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="361.5" y="553" font-size="10" fill="#666" text-anchor="middle">Guard types plate</text>
+            <text x="361.5" y="567" font-size="10" fill="#666" text-anchor="middle">and picks from:</text>
+            <text x="361.5" y="581" font-size="10" fill="#666" text-anchor="middle">PrivateCar, Bike,</text>
+            <text x="361.5" y="595" font-size="10" fill="#666" text-anchor="middle">Taxi, Truck, Bus</text>
+
+            <!-- ========== A5: Send plate + type to System ========== -->
+            <line x1="270" y1="575" x2="340" y2="575" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="340" y="545" width="190" height="60" rx="8" fill="white" stroke="#388E3C" stroke-width="2" filter="url(#shadow)"/>
+            <text x="435" y="565" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Send Plate + Type</text>
+            <text x="435" y="581" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">to System</text>
+            <text x="435" y="597" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">API request</text>
+
+            <!-- ========== A6: Find or Create Vehicle ========== -->
+            <line x1="530" y1="575" x2="665" y2="575" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="665" y="545" width="190" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="760" y="568" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Find or Create</text>
+            <text x="760" y="584" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Vehicle</text>
+            <text x="760" y="600" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Business logic</text>
+
+            <!-- ========== A7: SELECT Vehicle by plate ========== -->
+            <line x1="855" y1="575" x2="990" y2="575" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="990" y="545" width="190" height="60" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1085" y="565" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">SELECT Vehicle</text>
+            <text x="1085" y="581" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">by LicensePlate</text>
+            <text x="1085" y="597" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">DB query</text>
+
+            <!-- ========== D2: Decision - Plate exists in DB? ========== -->
+            <line x1="1085" y1="605" x2="1085" y2="650" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <path d="M 1085,650 L 1145,710 L 1085,770 L 1025,710 Z" fill="white" stroke="#2d3748" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1085" y="705" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Plate exists</text>
+            <text x="1085" y="721" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">in DB?</text>
+            
+            <!-- Decision: Yes branch -->
+            <line x1="1025" y1="710" x2="905" y2="710" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="975" y="703" font-size="11" font-weight="600" fill="#388e3c">[Yes]</text>
+            
+            <rect x="760" y="680" width="145" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="832.5" y="703" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Use Existing</text>
+            <text x="832.5" y="719" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">VehicleID</text>
+            <text x="832.5" y="733" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">From DB result</text>
+            
+            <!-- Decision: No branch -->
+            <line x1="1085" y1="770" x2="1085" y2="810" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="1098" y="793" font-size="11" font-weight="600" fill="#d32f2f">[No]</text>
+            
+            <!-- Note for D2 -->
+            <path d="M 1160,660 L1160,640 L1295,640 L1303,648 L1303,710 L1160,710 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 1295,640 L1295,648 L1303,648" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="1231.5" y="658" font-size="10" fill="#666" text-anchor="middle">Unknown plate →</text>
+            <text x="1231.5" y="672" font-size="10" fill="#666" text-anchor="middle">auto-register as</text>
+            <text x="1231.5" y="686" font-size="10" fill="#666" text-anchor="middle">new vehicle</text>
+
+            <!-- ========== A8: INSERT new Vehicle ========== -->
+            <rect x="990" y="810" width="190" height="70" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1085" y="830" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">INSERT new Vehicle</text>
+            <text x="1085" y="846" font-size="11" fill="#1a202c" text-anchor="middle">(plate, type,</text>
+            <text x="1085" y="862" font-size="11" fill="#1a202c" text-anchor="middle">owner=NULL)</text>
+            <text x="1085" y="875" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">DB insert</text>
+            
+            <!-- Note for A8 -->
+            <path d="M 1200,825 L1200,805 L1305,805 L1313,813 L1313,875 L1200,875 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 1305,805 L1305,813 L1313,813" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="1256.5" y="823" font-size="10" fill="#666" text-anchor="middle">OwnerID=NULL</text>
+            <text x="1256.5" y="837" font-size="10" fill="#666" text-anchor="middle">Admin can link</text>
+            <text x="1256.5" y="851" font-size="10" fill="#666" text-anchor="middle">owner later</text>
+
+            <!-- ========== A9: Use new VehicleID ========== -->
+            <line x1="1085" y1="880" x2="1085" y2="920" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="1005" y="920" width="160" height="50" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1085" y="942" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Use New</text>
+            <text x="1085" y="958" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">VehicleID</text>
+            
+            <line x1="1085" y1="970" x2="1085" y2="1010" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+
+            <!-- ========== MERGE NODE (from Use Existing and Use New) ========== -->
+            <path d="M 832.5,740 L 832.5,1010 L 1085,1010" stroke="#2d3748" stroke-width="2"/>
+            <circle cx="832.5" cy="1010" r="6" fill="white" stroke="#2d3748" stroke-width="2"/>
+            <circle cx="1085" cy="1010" r="6" fill="white" stroke="#2d3748" stroke-width="2"/>
+            
+            <!-- MERGE from [No vehicle] path -->
+            <line x1="280" y1="450" x2="280" y2="1010" stroke="#2d3748" stroke-width="2"/>
+            <circle cx="280" cy="1010" r="6" fill="white" stroke="#2d3748" stroke-width="2"/>
+            <line x1="280" y1="1010" x2="812.5" y2="1010" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <path d="M 812.5,1000 L 862.5,1050 L 812.5,1100 L 762.5,1050 Z" fill="white" stroke="#2d3748" stroke-width="2"/>
+            <text x="812.5" y="1055" font-size="11" font-weight="600" fill="#1a202c" text-anchor="middle">MERGE</text>
+
+            <!-- ========== FORK (Parallel Execution) ========== -->
+            <line x1="812.5" y1="1100" x2="812.5" y2="1150" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <!-- Fork bar -->
+            <rect x="400" y="1150" width="825" height="6" fill="#2d3748"/>
+            <text x="812.5" y="1175" font-size="11" font-weight="600" fill="#2d3748" text-anchor="middle">FORK — Parallel Execution</text>
+            
+            <!-- Note for Fork -->
+            <path d="M 450,1185 L450,1165 L580,1165 L588,1173 L588,1220 L450,1220 Z" fill="#FFFDE7" stroke="#F9A825" stroke-width="1"/>
+            <path d="M 580,1165 L580,1173 L588,1173" fill="none" stroke="#F9A825" stroke-width="1"/>
+            <text x="519" y="1183" font-size="10" fill="#666" text-anchor="middle">3 parallel paths</text>
+            <text x="519" y="1197" font-size="10" fill="#666" text-anchor="middle">for performance</text>
+
+            <!-- ========== PARALLEL PATH 1: PersonVisit ========== -->
+            <line x1="487.5" y1="1156" x2="487.5" y2="1240" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="385" y="1240" width="205" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="1260" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Create PersonVisit</text>
+            <text x="487.5" y="1276" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Record</text>
+            <text x="487.5" y="1292" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            
+            <line x1="487.5" y1="1300" x2="487.5" y2="1340" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="385" y="1340" width="205" height="75" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="1360" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">INSERT INTO</text>
+            <text x="487.5" y="1376" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">PersonVisit</text>
+            <text x="487.5" y="1392" font-size="10" fill="#666" text-anchor="middle">(PersonID, EntryGateID,</text>
+            <text x="487.5" y="1406" font-size="10" fill="#666" text-anchor="middle">EntryTime=NOW(), VehicleID)</text>
+            
+            <line x1="487.5" y1="1415" x2="487.5" y2="1730" stroke="#2d3748" stroke-width="2"/>
+
+            <!-- ========== PARALLEL PATH 2: VehicleVisit (conditional) ========== -->
+            <line x1="812.5" y1="1156" x2="812.5" y2="1210" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <path d="M 812.5,1210 L 862.5,1260 L 812.5,1310 L 762.5,1260 Z" fill="white" stroke="#2d3748" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="1258" font-size="11" font-weight="500" fill="#1a202c" text-anchor="middle">Has</text>
+            <text x="812.5" y="1272" font-size="11" font-weight="500" fill="#1a202c" text-anchor="middle">Vehicle?</text>
+            
+            <line x1="862.5" y1="1260" x2="920" y2="1260" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="880" y="1253" font-size="10" font-weight="600" fill="#d32f2f">[No]</text>
+            <line x1="920" y1="1260" x2="920" y2="1730" stroke="#2d3748" stroke-width="2"/>
+            
+            <line x1="812.5" y1="1310" x2="812.5" y2="1340" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="825" y="1328" font-size="10" font-weight="600" fill="#388e3c">[Yes]</text>
+            
+            <rect x="710" y="1340" width="205" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="1360" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Create VehicleVisit</text>
+            <text x="812.5" y="1376" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Record</text>
+            <text x="812.5" y="1392" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            
+            <line x1="812.5" y1="1400" x2="812.5" y2="1440" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="710" y="1440" width="205" height="75" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="1460" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">INSERT INTO</text>
+            <text x="812.5" y="1476" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">VehicleVisit</text>
+            <text x="812.5" y="1492" font-size="10" fill="#666" text-anchor="middle">(VehicleID, EntryGateID,</text>
+            <text x="812.5" y="1506" font-size="10" fill="#666" text-anchor="middle">EntryTime=NOW())</text>
+            
+            <line x1="812.5" y1="1515" x2="812.5" y2="1730" stroke="#2d3748" stroke-width="2"/>
+
+            <!-- ========== PARALLEL PATH 3: Gate Occupancy ========== -->
+            <line x1="1137.5" y1="1156" x2="1137.5" y2="1240" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="1035" y="1240" width="205" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1137.5" y="1260" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Increment Gate</text>
+            <text x="1137.5" y="1276" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Occupancy</text>
+            <text x="1137.5" y="1292" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            
+            <line x1="1137.5" y1="1300" x2="1137.5" y2="1340" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="1035" y="1340" width="205" height="70" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1137.5" y="1360" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">UPDATE</text>
+            <text x="1137.5" y="1376" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">GateOccupancy</text>
+            <text x="1137.5" y="1392" font-size="10" fill="#666" text-anchor="middle">SET count = count + 1</text>
+            <text x="1137.5" y="1405" font-size="10" fill="#666" text-anchor="middle">WHERE GateID = ?</text>
+            
+            <line x1="1137.5" y1="1410" x2="1137.5" y2="1730" stroke="#2d3738" stroke-width="2"/>
+
+            <!-- ========== JOIN (End of Parallel) ========== -->
+            <circle cx="487.5" cy="1730" r="6" fill="#2d3748"/>
+            <circle cx="812.5" cy="1730" r="6" fill="#2d3748"/>
+            <circle cx="920" cy="1730" r="6" fill="#2d3748"/>
+            <circle cx="1137.5" cy="1730" r="6" fill="#2d3748"/>
+            
+            <rect x="400" y="1750" width="825" height="6" fill="#2d3748"/>
+            <text x="812.5" y="1775" font-size="11" font-weight="600" fill="#2d3748" text-anchor="middle">JOIN — Synchronization Point</text>
+
+            <!-- ========== A16: Display Entry Confirmation ========== -->
+            <line x1="487.5" y1="1756" x2="487.5" y2="1810" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="375" y="1810" width="225" height="60" rx="8" fill="white" stroke="#388E3C" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="1830" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Display Entry</text>
+            <text x="487.5" y="1846" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Confirmation</text>
+            <text x="487.5" y="1862" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Success message to guard</text>
+
+            <!-- ========== A17: Allow Person to Enter ========== -->
+            <line x1="375" y1="1840" x2="270" y2="1840" stroke="#2d3738" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="70" y="1810" width="200" height="60" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="170" y="1835" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Allow Person</text>
+            <text x="170" y="1851" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">to Enter</text>
+            <text x="170" y="1865" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Physical gate opens</text>
+
+            <!-- ========== FINAL STATE ========== -->
+            <line x1="170" y1="1870" x2="170" y2="1920" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <circle cx="170" cy="1950" r="15" fill="none" stroke="#2d3748" stroke-width="2"/>
+            <circle cx="170" cy="1950" r="9" fill="#2d3748"/>
+            <text x="200" y="1955" font-size="11" fill="#4a5568" font-style="italic">Entry Complete</text>
+
+        </svg>
+
+        <div class="section-title">EXIT PROCESS FLOW</div>
+        
+        <svg viewBox="0 0 1300 1150" xmlns="http://www.w3.org/2000/svg">
+            <!-- ========== SWIMLANE BACKGROUNDS ========== -->
+            
+            <rect x="0" y="0" width="325" height="1150" fill="#E3F2FD" opacity="0.4"/>
+            <text x="162.5" y="35" font-size="16" font-weight="600" fill="#1565C0" text-anchor="middle">Guard</text>
+            
+            <rect x="325" y="0" width="325" height="1150" fill="#E8F5E9" opacity="0.4"/>
+            <text x="487.5" y="35" font-size="16" font-weight="600" fill="#2E7D32" text-anchor="middle">GateTerminal</text>
+            
+            <rect x="650" y="0" width="325" height="1150" fill="#F3E5F5" opacity="0.4"/>
+            <text x="812.5" y="35" font-size="16" font-weight="600" fill="#6A1B9A" text-anchor="middle">System Services</text>
+            
+            <rect x="975" y="0" width="325" height="1150" fill="#FFF3E0" opacity="0.4"/>
+            <text x="1137.5" y="35" font-size="16" font-weight="600" fill="#E65100" text-anchor="middle">Database</text>
+
+            <line x1="325" y1="0" x2="325" y2="1150" stroke="#cbd5e0" stroke-width="1.5"/>
+            <line x1="650" y1="0" x2="650" y2="1150" stroke="#cbd5e0" stroke-width="1.5"/>
+            <line x1="975" y1="0" x2="975" y2="1150" stroke="#cbd5e0" stroke-width="1.5"/>
+
+            <!-- ========== INITIAL STATE ========== -->
+            <circle cx="162.5" cy="90" r="12" fill="#2d3748"/>
+            <text x="190" y="95" font-size="11" fill="#4a5568" font-style="italic">Exit Start</text>
+
+            <!-- ========== B1: Enter Member ID for Exit ========== -->
+            <line x1="162.5" y1="102" x2="162.5" y2="140" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="70" y="140" width="185" height="55" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="162.5" y="163" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Enter Member ID</text>
+            <text x="162.5" y="179" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">for Exit</text>
+            <text x="162.5" y="192" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Guard input</text>
+
+            <!-- ========== B2: Send exit request to System ========== -->
+            <line x1="255" y1="167.5" x2="340" y2="167.5" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="340" y="137" width="190" height="61" rx="8" fill="white" stroke="#388E3C" stroke-width="2" filter="url(#shadow)"/>
+            <text x="435" y="160" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Send Exit Request</text>
+            <text x="435" y="176" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">to System</text>
+            <text x="435" y="191" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">API call</text>
+
+            <!-- ========== B3: Find Active PersonVisit ========== -->
+            <line x1="530" y1="167.5" x2="665" y2="167.5" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="665" y="137" width="190" height="61" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="760" y="160" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Find Active</text>
+            <text x="760" y="176" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">PersonVisit</text>
+            <text x="760" y="191" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Business logic</text>
+
+            <!-- ========== B4: SELECT PersonVisit WHERE ExitTime IS NULL ========== -->
+            <line x1="855" y1="167.5" x2="990" y2="167.5" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="990" y="130" width="190" height="75" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1085" y="150" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">SELECT PersonVisit</text>
+            <text x="1085" y="166" font-size="11" fill="#1a202c" text-anchor="middle">WHERE PersonID = ?</text>
+            <text x="1085" y="182" font-size="11" fill="#1a202c" text-anchor="middle">AND ExitTime IS NULL</text>
+            <text x="1085" y="197" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Find active visit</text>
+
+            <!-- ========== FORK for Exit Updates ========== -->
+            <line x1="1085" y1="205" x2="1085" y2="260" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <line x1="1085" y1="260" x2="812.5" y2="260" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="400" y="280" width="825" height="6" fill="#2d3748"/>
+            <text x="812.5" y="305" font-size="11" font-weight="600" fill="#2d3748" text-anchor="middle">FORK — Parallel Exit Updates</text>
+
+            <!-- ========== PARALLEL PATH 1: Update PersonVisit ========== -->
+            <line x1="487.5" y1="286" x2="487.5" y2="340" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="385" y="340" width="205" height="65" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="360" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Update PersonVisit</text>
+            <text x="487.5" y="376" font-size="11" fill="#1a202c" text-anchor="middle">with Exit Data</text>
+            <text x="487.5" y="392" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            <text x="487.5" y="403" font-size="9" fill="#666" text-anchor="middle">ExitGateID, ExitTime</text>
+            
+            <line x1="487.5" y1="405" x2="487.5" y2="445" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="385" y="445" width="205" height="75" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="465" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">UPDATE PersonVisit</text>
+            <text x="487.5" y="481" font-size="10" fill="#666" text-anchor="middle">SET ExitGateID = ?,</text>
+            <text x="487.5" y="495" font-size="10" fill="#666" text-anchor="middle">ExitTime = NOW()</text>
+            <text x="487.5" y="509" font-size="10" fill="#666" text-anchor="middle">WHERE VisitID = ?</text>
+            
+            <line x1="487.5" y1="520" x2="487.5" y2="830" stroke="#2d3748" stroke-width="2"/>
+
+            <!-- ========== PARALLEL PATH 2: Update VehicleVisit (conditional) ========== -->
+            <line x1="812.5" y1="286" x2="812.5" y2="330" stroke="#2d3738" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <path d="M 812.5,330 L 862.5,380 L 812.5,430 L 762.5,380 Z" fill="white" stroke="#2d3738" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="378" font-size="11" font-weight="500" fill="#1a202c" text-anchor="middle">VehicleID</text>
+            <text x="812.5" y="392" font-size="11" font-weight="500" fill="#1a202c" text-anchor="middle">IS NOT NULL?</text>
+            
+            <line x1="862.5" y1="380" x2="920" y2="380" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="880" y="373" font-size="10" font-weight="600" fill="#d32f2f">[No]</text>
+            <line x1="920" y1="380" x2="920" y2="830" stroke="#2d3748" stroke-width="2"/>
+            
+            <line x1="812.5" y1="430" x2="812.5" y2="470" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            <text x="825" y="453" font-size="10" font-weight="600" fill="#388e3c">[Yes]</text>
+            
+            <rect x="710" y="470" width="205" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="490" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Update VehicleVisit</text>
+            <text x="812.5" y="506" font-size="11" fill="#1a202c" text-anchor="middle">with Exit Data</text>
+            <text x="812.5" y="522" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            
+            <line x1="812.5" y1="530" x2="812.5" y2="570" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="710" y="570" width="205" height="75" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="812.5" y="590" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">UPDATE VehicleVisit</text>
+            <text x="812.5" y="606" font-size="10" fill="#666" text-anchor="middle">SET ExitGateID = ?,</text>
+            <text x="812.5" y="620" font-size="10" fill="#666" text-anchor="middle">ExitTime = NOW()</text>
+            <text x="812.5" y="634" font-size="10" fill="#666" text-anchor="middle">WHERE VehicleID = ?</text>
+            
+            <line x1="812.5" y1="645" x2="812.5" y2="830" stroke="#2d3748" stroke-width="2"/>
+
+            <!-- ========== PARALLEL PATH 3: Decrement Gate Occupancy ========== -->
+            <line x1="1137.5" y1="286" x2="1137.5" y2="370" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="1035" y="370" width="205" height="60" rx="8" fill="white" stroke="#7B1FA2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1137.5" y="390" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Decrement Gate</text>
+            <text x="1137.5" y="406" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Occupancy</text>
+            <text x="1137.5" y="422" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Service layer</text>
+            
+            <line x1="1137.5" y1="430" x2="1137.5" y2="470" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="1035" y="470" width="205" height="70" rx="8" fill="white" stroke="#F57C00" stroke-width="2" filter="url(#shadow)"/>
+            <text x="1137.5" y="490" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">UPDATE</text>
+            <text x="1137.5" y="506" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">GateOccupancy</text>
+            <text x="1137.5" y="522" font-size="10" fill="#666" text-anchor="middle">SET count = count - 1</text>
+            <text x="1137.5" y="535" font-size="10" fill="#666" text-anchor="middle">WHERE GateID = ?</text>
+            
+            <line x1="1137.5" y1="540" x2="1137.5" y2="830" stroke="#2d3748" stroke-width="2"/>
+
+            <!-- ========== JOIN ========== -->
+            <circle cx="487.5" cy="830" r="6" fill="#2d3748"/>
+            <circle cx="812.5" cy="830" r="6" fill="#2d3748"/>
+            <circle cx="920" cy="830" r="6" fill="#2d3748"/>
+            <circle cx="1137.5" cy="830" r="6" fill="#2d3748"/>
+            
+            <rect x="400" y="850" width="825" height="6" fill="#2d3748"/>
+            <text x="812.5" y="875" font-size="11" font-weight="600" fill="#2d3748" text-anchor="middle">JOIN — All Updates Complete</text>
+
+            <!-- ========== B5: Display Exit Confirmation ========== -->
+            <line x1="487.5" y1="856" x2="487.5" y2="910" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="375" y="910" width="225" height="60" rx="8" fill="white" stroke="#388E3C" stroke-width="2" filter="url(#shadow)"/>
+            <text x="487.5" y="930" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Display Exit</text>
+            <text x="487.5" y="946" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Confirmation</text>
+            <text x="487.5" y="962" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Success message</text>
+
+            <!-- ========== B6: Allow Person to Exit ========== -->
+            <line x1="375" y1="940" x2="270" y2="940" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <rect x="70" y="910" width="200" height="60" rx="8" fill="white" stroke="#1976D2" stroke-width="2" filter="url(#shadow)"/>
+            <text x="170" y="935" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">Allow Person</text>
+            <text x="170" y="951" font-size="12" font-weight="500" fill="#1a202c" text-anchor="middle">to Exit</text>
+            <text x="170" y="965" font-size="10" fill="#4a5568" text-anchor="middle" font-style="italic">Gate opens</text>
+
+            <!-- ========== FINAL STATE ========== -->
+            <line x1="170" y1="970" x2="170" y2="1020" stroke="#2d3748" stroke-width="2" marker-end="url(#arrow)"/>
+            
+            <circle cx="170" cy="1050" r="15" fill="none" stroke="#2d3748" stroke-width="2"/>
+            <circle cx="170" cy="1050" r="9" fill="#2d3748"/>
+            <text x="200" y="1055" font-size="11" fill="#4a5568" font-style="italic">Exit Complete</text>
+
+        </svg>
+    </div>
+</body>
+</html>

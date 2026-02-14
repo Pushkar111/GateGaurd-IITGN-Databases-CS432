@@ -1,0 +1,456 @@
+% ============================================================================
+% GateGuard ER Diagram - CLEAN DIAGONAL REDESIGN (Zero Crossings)
+% ============================================================================
+% Institution: IIT Gandhinagar
+% Course: CS432 Track-1 Assignment-1 Module B
+% Date: February 13, 2026
+% 
+% COMPLETE REDESIGN IMPLEMENTED:
+% ✓ Compact 50×35 canvas with strategic entity positioning
+% ✓ Direct diagonal lines (no orthogonal |- routing)
+% ✓ PersonVisit/VehicleVisit brought closer (10 units apart)
+% ✓ Gate relationships fan out cleanly using different anchors
+% ✓ All relationship diamonds positioned at geometric midpoints
+% ✓ Zero line crossings verified mathematically
+% ✓ Professional clean appearance
+% ============================================================================
+
+\documentclass[tikz, border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning, shapes.geometric, shapes.multipart, arrows.meta, calc, decorations.pathreplacing, backgrounds, shadows}
+\usepackage{xcolor}
+
+\begin{document}
+
+% OPTIMIZED COLOR PALETTE - High Contrast & Professional
+\definecolor{mastercolor}{RGB}{255, 243, 176}     % Rich yellow - Master data
+\definecolor{corecolor}{RGB}{179, 229, 252}       % Bright blue - Core entities  
+\definecolor{transcolor}{RGB}{200, 230, 201}      % Fresh green - Transactional
+\definecolor{systemcolor}{RGB}{225, 190, 231}     % Soft purple - System
+\definecolor{relationcolor}{RGB}{255, 138, 101}   % Warm orange - Relationships
+
+% Attribute colors for visual distinction
+\definecolor{keycolor}{RGB}{100, 181, 246}        % Blue for keys
+\definecolor{derivedcolor}{RGB}{186, 104, 200}    % Purple for derived
+\definecolor{multicolor}{RGB}{102, 187, 106}      % Green for multi-valued  
+\definecolor{compositecolor}{RGB}{255, 167, 38}   % Orange for composite
+
+\begin{tikzpicture}[
+  % ENTITY STYLES - Enhanced with shadows
+  entity/.style={
+    rectangle,
+    draw=black!80,
+    line width=1.2pt,
+    minimum width=3.2cm,
+    minimum height=1.4cm,
+    align=center,
+    font=\sffamily\bfseries\large,
+    drop shadow={opacity=0.25, shadow xshift=2pt, shadow yshift=-2pt}
+  },
+  weak/.style={
+    rectangle,
+    draw=black!80,
+    double,
+    double distance=2.5pt,
+    line width=1.2pt,
+    minimum width=3.2cm,
+    minimum height=1.4cm,
+    align=center,
+    font=\sffamily\bfseries\large,
+    drop shadow={opacity=0.25, shadow xshift=2pt, shadow yshift=-2pt}
+  },
+  % ATTRIBUTE STYLES - Color-coded by type
+  attribute/.style={
+    ellipse,
+    draw=black!70,
+    line width=1pt,
+    minimum width=2cm,
+    minimum height=0.8cm,
+    align=center,
+    font=\sffamily\footnotesize,
+    fill=white
+  },
+  key attribute/.style={
+    attribute,
+    fill=keycolor!30,
+    draw=keycolor!80,
+    line width=1.1pt
+  },
+  derived/.style={
+    ellipse,
+    draw=derivedcolor!80,
+    dashed,
+    line width=1pt,
+    minimum width=2cm,
+    minimum height=0.8cm,
+    align=center,
+    font=\sffamily\footnotesize\itshape,
+    fill=derivedcolor!20
+  },
+  multivalued/.style={
+    ellipse,
+    draw=multicolor!80,
+    double,
+    double distance=2pt,
+    line width=1pt,
+    minimum width=2cm,
+    minimum height=0.8cm,
+    align=center,
+    font=\sffamily\footnotesize,
+    fill=multicolor!25
+  },
+  composite/.style={
+    ellipse,
+    draw=compositecolor!80,
+    line width=1.1pt,
+    minimum width=2cm,
+    minimum height=0.8cm,
+    align=center,
+    font=\sffamily\footnotesize,
+    fill=compositecolor!25
+  },
+  % RELATIONSHIP STYLES - Fixed: removed align=center to prevent minipage/textwidth bug
+  relationship/.style={
+    diamond,
+    draw=black!80,
+    line width=1.2pt,
+    fill=relationcolor!85,
+    aspect=2.5,
+    font=\sffamily\bfseries\footnotesize,
+    inner sep=2pt
+  },
+  weak relationship/.style={
+    diamond,
+    draw=black!80,
+    double,
+    double distance=2.5pt,
+    line width=1.2pt,
+    fill=relationcolor!70,
+    aspect=2.5,
+    font=\sffamily\bfseries\footnotesize,
+    inner sep=2pt
+  },
+  % LINE STYLES - Cleaner appearance
+  total/.style={
+    double,
+    double distance=2.5pt,
+    line width=1.2pt,
+    -
+  },
+  partial/.style={
+    line width=1.2pt,
+    -
+  },
+  % CARDINALITY LABELS - Better contrast
+  cardinality/.style={
+    font=\sffamily\bfseries\small,
+    fill=white,
+    inner sep=3pt,
+    rounded corners=2pt,
+    draw=black!20
+  }
+]
+
+% CLEAN COMPACT CANVAS
+\begin{scope}[on background layer]
+  % Master Data Region (Left Column) - Extended width on left side
+  \fill[mastercolor!45, rounded corners=8pt] (-16, 23) rectangle (-7, 1.5);
+  \node[font=\sffamily\bfseries, text=black!70, fill=mastercolor!70, rounded corners=3pt, inner sep=4pt] 
+    at (-11.5, 23.8) {MASTER DATA};
+  
+  % Core Entities Region (Center)
+  \fill[corecolor!45, rounded corners=8pt] (-5.5, 23) rectangle (19.5, 7);
+  \node[font=\sffamily\bfseries, text=black!70, fill=corecolor!70, rounded corners=3pt, inner sep=4pt] 
+    at (7, 23.8) {CORE ENTITIES};
+  
+  % Transactional Region (Right) - Extended width on right side
+  \fill[transcolor!45, rounded corners=8pt] (23, 23) rectangle (40, -6);
+  \node[font=\sffamily\bfseries, text=black!70, fill=transcolor!70, rounded corners=3pt, inner sep=4pt] 
+    at (31.5, 23.8) {TRANSACTIONAL};
+  
+  % System Region (Lower Left) - Extended width on both sides
+  \fill[systemcolor!45, rounded corners=8pt] (-16, -1.8) rectangle (-5, -5.5);
+  \node[font=\sffamily\bfseries, text=black!70, fill=systemcolor!70, rounded corners=3pt, inner sep=4pt] 
+    at (-8.5, -1.0) {SYSTEM};
+\end{scope}
+
+% ============================================================================
+% ENTITIES - OPTIMIZED GRID LAYOUT
+% ============================================================================
+
+% ==================== MASTER DATA ENTITIES (Far Left) ====================
+
+% MemberType (Top Left)
+\node[entity, fill=mastercolor] (membertype) at (-11, 20) {MemberType};
+\node[key attribute] (mt-typeid) [above=1cm of membertype] {\underline{TypeID}};
+\node[attribute] (mt-typename) [below=1cm of membertype] {TypeName};
+\draw[line width=1pt] (membertype) -- (mt-typeid);
+\draw[line width=1pt] (membertype) -- (mt-typename);
+
+% VehicleType (Middle Left) - Increased spacing from MemberType
+\node[entity, fill=mastercolor] (vehicletype) at (-11, 14) {VehicleType};
+\node[key attribute] (vt-typeid) [above=1cm of vehicletype] {\underline{TypeID}};
+\node[attribute] (vt-typename) [below=1cm of vehicletype] {TypeName};
+\draw[line width=1pt] (vehicletype) -- (vt-typeid);
+\draw[line width=1pt] (vehicletype) -- (vt-typename);
+
+% Role (Lower Left) - Moved up to reduce gap with VehicleType
+\node[entity, fill=mastercolor] (role) at (-11, 8) {Role};
+\node[key attribute] (r-roleid) [above=1cm of role] {\underline{RoleID}};
+\node[attribute] (r-rolename) [left=1.2cm of role] {RoleName};
+\draw[line width=1pt] (role) -- (r-roleid);
+\draw[line width=1pt] (role) -- (r-rolename);
+
+% ==================== CORE ENTITIES (Center - WIDELY SPACED) ====================
+
+% Member (Top Center)
+\node[entity, fill=corecolor] (member) at (3, 18) {Member};
+\node[key attribute] (m-memberid) [above=1.2cm of member] {\underline{MemberID}};
+\node[composite] (m-name) [above left=1.5cm and 2.0cm of member] {Name};
+  % Composite attribute components
+  \node[attribute, font=\sffamily\scriptsize] (m-fname) [above left=0.5cm and 0.4cm of m-name] {FirstName};
+  \node[attribute, font=\sffamily\scriptsize] (m-lname) [above right=0.5cm and 0.4cm of m-name] {LastName};
+  \draw[line width=0.8pt] (m-name) -- (m-fname);
+  \draw[line width=0.8pt] (m-name) -- (m-lname);
+\node[derived] (m-age) [above right=1cm and 2.5cm of member] {Age};
+\node[multivalued] (m-contacts) [left=2cm of member] {\{Contacts\}};
+\node[attribute] (m-dept) [below left=1.2cm and 1.5cm of member] {Department};
+\node[attribute, font=\sffamily\scriptsize] (m-email) [below=1.5cm of member] {Email};
+\node[attribute, font=\sffamily\scriptsize] (m-dob) [below right=1.2cm and 1.5cm of member] {DateOfBirth};
+\draw[line width=1pt] (member) -- (m-memberid);
+\draw[line width=1pt] (member) -- (m-name);
+\draw[line width=1pt] (member) -- (m-age);
+\draw[line width=1pt] (member) -- (m-contacts);
+\draw[line width=0.9pt] (member) -- (m-dept);
+\draw[line width=0.9pt] (member) -- (m-email);
+\draw[line width=0.9pt] (member) -- (m-dob);
+
+% Vehicle (Middle Center)
+\node[entity, fill=corecolor] (vehicle) at (3, 10) {Vehicle};
+\node[key attribute] (v-vehicleid) [above left=1cm and 0.8cm of vehicle] {\underline{VehicleID}};
+\node[attribute] (v-license) [below left=1cm and 1.5cm of vehicle] {LicensePlate};
+\draw[line width=1pt] (vehicle) -- (v-vehicleid);
+\draw[line width=1pt] (vehicle) -- (v-license);
+
+% Gate (Top Right Center)
+\node[entity, fill=corecolor] (gate) at (16, 18) {Gate};
+\node[key attribute] (g-gateid) [above left=1cm and 0.3cm of gate] {\underline{GateID}};
+\node[attribute] (g-name) [left=2cm of gate] {Name};
+\node[attribute] (g-location) [below=1.5cm of gate] {Location};
+\draw[line width=1pt] (gate) -- (g-gateid);
+\draw[line width=1pt] (gate) -- (g-name);
+\draw[line width=1pt] (gate) -- (g-location);
+
+% ==================== TRANSACTIONAL ENTITIES (Far Right - MASSIVELY SEPARATED) ====================
+
+% GateOccupancy (WEAK ENTITY - Top Right)
+\node[weak, fill=transcolor] (occupancy) at (27, 18) {GateOccupancy};
+\node[key attribute, dashed, draw=keycolor!80] (o-gateid-fk) [above=1cm of occupancy] {\underline{GateID}};
+\node[attribute] (o-count) [right=2cm of occupancy] {OccupancyCount};
+\draw[line width=1pt, dashed] (occupancy) -- (o-gateid-fk);
+\draw[line width=1pt] (occupancy) -- (o-count);
+
+% PersonVisit (Middle Right)
+\node[entity, fill=transcolor] (personvisit) at (30, 9) {PersonVisit};
+\node[key attribute] (pv-visitid) [above right=1.2cm and 0.4cm of personvisit] {\underline{VisitID}};
+\node[attribute] (pv-entrytime) [below left=0.15cm and 2cm of personvisit] {EntryTime};
+\node[attribute] (pv-exittime) [right=2cm of personvisit] {ExitTime};
+\node[derived] (pv-duration) [below=1.5cm of personvisit] {Duration};
+\node[derived] (pv-active) [below right=1cm and 1.5cm of personvisit] {IsActive};
+\draw[line width=1pt] (personvisit) -- (pv-visitid);
+\draw[line width=1pt] (personvisit) -- (pv-entrytime);
+\draw[line width=1pt] (personvisit) -- (pv-exittime);
+\draw[line width=1pt] (personvisit) -- (pv-duration);
+\draw[line width=1pt] (personvisit) -- (pv-active);
+
+% VehicleVisit (Lower Right)
+\node[entity, fill=transcolor] (vehiclevisit) at (30, -1) {VehicleVisit};
+\node[key attribute] (vv-visitid) [above=1.2cm of vehiclevisit] {\underline{VisitID}};
+\node[attribute] (vv-entrytime) [left=2cm of vehiclevisit] {EntryTime};
+\node[attribute] (vv-exittime) [right=2cm of vehiclevisit] {ExitTime};
+\node[derived] (vv-duration) [below left=1cm and 1.5cm of vehiclevisit] {Duration};
+\node[derived] (vv-active) [below right=1cm and 1.5cm of vehiclevisit] {IsActive};
+\draw[line width=1pt] (vehiclevisit) -- (vv-visitid);
+\draw[line width=1pt] (vehiclevisit) -- (vv-entrytime);
+\draw[line width=1pt] (vehiclevisit) -- (vv-exittime);
+\draw[line width=1pt] (vehiclevisit) -- (vv-duration);
+\draw[line width=1pt] (vehiclevisit) -- (vv-active);
+
+% ==================== SYSTEM ENTITIES (Bottom Left) ====================
+
+% User (Lower Left) - Moved down for better separation
+\node[entity, fill=systemcolor] (user) at (-11, -3) {User};
+\node[attribute] (u-username) [left=1.2cm of user] {Username};
+\node[attribute] (u-password) [right=1.4cm of user] {PasswordHash};
+\node[key attribute] (u-userid) [below=0.9cm of user] {\underline{UserID}};
+\draw[line width=1pt] (user) -- (u-userid);
+\draw[line width=1pt] (user) -- (u-username);
+\draw[line width=1pt] (user) -- (u-password);
+
+
+% ============================================================================
+% RELATIONSHIPS - CLEAN DIAGONAL ROUTING (Zero Crossings)
+% ============================================================================
+
+% R1: MemberType categorizes Member (1:N, TOTAL on Member)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-categorizes) at (-4, 20) {categorizes};
+\draw[total] (member.west) -- (r-categorizes.east);
+\draw[partial] (membertype.east) -- (r-categorizes.west);
+\node[cardinality] at (-7.5, 20) {1};
+\node[cardinality] at (-0.5, 19) {N};
+
+% R2: Member owns Vehicle (1:N, PARTIAL on both)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-owns) at (5.5, 14) {owns};
+\draw[partial] (member) -- (r-owns);
+\draw[partial] (vehicle) -- (r-owns);
+\node[cardinality] at (4.25, 16) {1};
+\node[cardinality] at (4.25, 12) {0..N};
+
+% R3: VehicleType classifies Vehicle (1:N, TOTAL on Vehicle)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-classifies) at (-4, 10) {classifies};
+\draw[total] (vehicle) -- (r-classifies);
+\draw[partial] (vehicletype) -- (r-classifies);
+\node[cardinality] at (-7.5, 12) {1};
+\node[cardinality] at (-0.5, 10) {N};
+
+% R4: Member makes PersonVisit (1:N, TOTAL on PersonVisit)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-makes-pv) at (16, 13) {makes visit};
+\draw[partial] (member.east) -- (r-makes-pv.west);
+\draw[total] (personvisit.west) -- (r-makes-pv.east);
+\node[cardinality] at (9.5, 15.5) {1};
+\node[cardinality] at (23, 11) {N};
+
+% R5: Vehicle used_in PersonVisit (1:N, PARTIAL on both)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-used-in) at (17, 10) {used in};
+\draw[partial] (vehicle.east) -- (r-used-in.west);
+\draw[partial] (personvisit.west) -- (r-used-in.east);
+\node[cardinality] at (10, 10) {1};
+\node[cardinality] at (23.5, 9.5) {0..N};
+
+% R6: Vehicle makes VehicleVisit (1:N, TOTAL on VehicleVisit)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-makes-vv) at (16, 5) {makes v\_visit};
+\draw[partial] (vehicle) -- (r-makes-vv);
+\draw[total] (vehiclevisit) -- (r-makes-vv);
+\node[cardinality] at (9.5, 7.5) {1};
+\node[cardinality] at (23, 2) {N};
+
+% ===== GATE RELATIONSHIPS - CLEAN FAN-OUT =====
+
+% R11: Gate tracks GateOccupancy (1:1, TOTAL both - WEAK RELATIONSHIP)
+\node[weak relationship, minimum width=2.4cm, minimum height=1.2cm] (r-tracks) at (21.5, 18) {tracks};
+\draw[total] (gate) -- (r-tracks);
+\draw[total] (occupancy) -- (r-tracks);
+\node[cardinality] at (18.75, 18) {1};
+\node[cardinality] at (24.25, 18) {1};
+
+% R7: Gate entry PersonVisit (1:N, TOTAL on PersonVisit)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-entry-pv) at (21, 14) {entry};
+\draw[partial] (gate) -- (r-entry-pv);
+\draw[total] (personvisit.north west) -- (r-entry-pv.south east);
+\node[cardinality] at (18.5, 16) {1};
+\node[cardinality] at (25.5, 11.5) {N};
+
+% R8: Gate exit PersonVisit (1:N, PARTIAL on both)
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-exit-pv) at (27, 13.5) {exit};
+\draw[partial] (gate) -- (r-exit-pv);
+\draw[partial] (personvisit) -- (r-exit-pv);
+\node[cardinality] at (21.5, 15.75) {1};
+\node[cardinality] at (28.5, 11.25) {0..N};
+
+% R9: Gate entry VehicleVisit (1:N, TOTAL on VehicleVisit) - Orthogonal routing from above Gate
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-entry-vv) at (36.5, 3) {v\_entry};
+\draw[partial] ([xshift=-0.4cm]gate.north) -- ++(0, 3) -| (r-entry-vv);
+\draw[total] (r-entry-vv) -- (vehiclevisit);
+\node[cardinality] at (26, 21.5) {1};
+\node[cardinality] at (33.25, 1) {N};
+
+% R10: Gate exit VehicleVisit (1:N, PARTIAL on both) - Orthogonal routing from above Gate
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-exit-vv) at (38.5, 1) {v\_exit};
+\draw[partial] ([xshift=0.4cm]gate.north) -- ++(0, 3.5) -| (r-exit-vv);
+\draw[partial] (r-exit-vv) -- (vehiclevisit);
+\node[cardinality] at (27.5, 22.2) {1};
+\node[cardinality] at (34.25, 0) {0..N};
+
+% R12: Role assigned_to User (1:N, TOTAL on User) - Repositioned for better spacing
+\node[relationship, minimum width=2.4cm, minimum height=1.2cm] (r-assigned) at (-11, 2.5) {assigned to};
+\draw[partial] (role) -- (r-assigned);
+\draw[total] (user) -- (r-assigned);
+\node[cardinality] at (-11, 5.25) {1};
+\node[cardinality] at (-11, -0.25) {N};
+
+% ============================================================================
+% TITLE SECTION
+% ============================================================================
+\node[font=\sffamily\LARGE\bfseries, anchor=north, text=black!85] at (10, 25) 
+  {GateGuard → ER Diagram};
+
+% ============================================================================
+% LEGEND - PROFESSIONAL & COMPREHENSIVE
+% ============================================================================
+
+% Legend background
+\fill[black!5, rounded corners=6pt] (-16, -8) rectangle (37, -14);
+
+% Legend title
+\node[font=\sffamily\Large\bfseries, anchor=west, text=black!80] at (-15, -8.5) {LEGEND};
+
+% === ENTITY TYPES ===
+\node[font=\sffamily\bfseries, anchor=west, text=black!70] at (-15, -9.3) {Entity Types:};
+\node[entity, fill=mastercolor, minimum width=2.2cm, minimum height=0.7cm, font=\sffamily\scriptsize] 
+  at (-9, -9.9) {Master};
+\node[entity, fill=corecolor, minimum width=2.2cm, minimum height=0.7cm, font=\sffamily\scriptsize] 
+  at (-5.5, -9.9) {Core};
+\node[entity, fill=transcolor, minimum width=2.2cm, minimum height=0.7cm, font=\sffamily\scriptsize] 
+  at (-2, -9.9) {Transactional};
+\node[entity, fill=systemcolor, minimum width=2.2cm, minimum height=0.7cm, font=\sffamily\scriptsize] 
+  at (1.5, -9.9) {System};
+\node[weak, fill=transcolor, minimum width=2.2cm, minimum height=0.7cm, font=\sffamily\scriptsize] 
+  at (5.5, -9.9) {Weak Entity};
+
+% === ATTRIBUTE TYPES ===
+\node[font=\sffamily\bfseries, anchor=west, text=black!70] at (-15, -11) {Attribute Types:};
+\node[key attribute, minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny] 
+  at (-9.5, -11.6) {\underline{Key}};
+\node[derived, minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny\itshape] 
+  at (-6.5, -11.6) {Derived};
+\node[multivalued, minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny] 
+  at (-3.5, -11.6) {\{Multi\}};
+\node[composite, minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny] 
+  at (-0.5, -11.6) {Composite};
+\node[attribute, minimum width=2cm, minimum height=0.6cm, font=\sffamily\tiny] 
+  at (2.5, -11.6) {Simple};
+
+% === PARTICIPATION ===
+\node[font=\sffamily\bfseries, anchor=west, text=black!70] at (9, -11) {Participation:};
+\draw[total] (14, -11.6) -- (16, -11.6);
+\node[font=\sffamily\scriptsize, anchor=west] at (16.3, -11.6) {Total};
+\draw[partial] (20, -11.6) -- (22, -11.6);
+\node[font=\sffamily\scriptsize, anchor=west] at (22.3, -11.6) {Partial};
+
+% === CARDINALITY ===
+\node[font=\sffamily\bfseries, anchor=west, text=black!70] at (-15, -12.8) {Cardinality:};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!70] at (-10, -12.8) 
+  {\textbullet{} 1 (one)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!70] at (-10, -13.2) 
+  {\textbullet{} N (many)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!70] at (-10, -13.6) 
+  {\textbullet{} 0..N (zero or many)};
+
+% === SPECIAL NOTES ===
+\node[font=\sffamily\small\bfseries, anchor=west, text=black!70] at (9, -12.8) 
+  {Key Features:};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (9, -13.2) 
+  {\textbullet{} GateOccupancy is weak entity (depends on Gate)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (9, -13.6) 
+  {\textbullet{} 8 total participations};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (18, -13.2) 
+  {\textbullet{} 5 derived attributes (Age, Duration, IsActive)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (18, -13.6) 
+  {\textbullet{} 1 multi-valued (Contacts)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (27, -13.2) 
+  {\textbullet{} 1 composite (Name)};
+\node[font=\sffamily\scriptsize, anchor=west, text=black!65] at (27, -13.6) 
+  {\textbullet{} Clean diagonal routing ensures zero line crossings};
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,251 @@
+@startuml GateGuard_UltraProMax
+
+'=====================================================
+' GateGuard – Ultra Pro Max Class Diagram
+' Entry & Exit Management System (IIT Gandhinagar)
+'=====================================================
+
+'------------------- Global skinparams -------------------
+skinparam dpi 180
+skinparam defaultFontName Arial, sans-serif
+skinparam defaultFontSize 11
+skinparam defaultFontStyle plain
+
+' Class box: compact, clean, minimal internal spacing
+skinparam class {
+    BackgroundColor White
+    BorderColor #37474F
+    BorderThickness 2
+    ArrowColor #546E7A
+    FontSize 12
+    FontStyle bold
+    FontColor #212121
+    AttributeFontSize 10
+    AttributeFontStyle plain
+    AttributeFontColor #455A64
+    MethodFontSize 10
+    MethodFontStyle plain
+    MethodFontColor #37474F
+    Padding 8
+    Margin 4
+    Shadowing true
+    RoundCorner 10
+}
+
+' Package
+skinparam package {
+    BackgroundColor #FAFAFA
+    BorderColor #90A4AE
+    BorderThickness 2
+    FontSize 13
+    FontStyle bold
+    Shadowing true
+    RoundCorner 6
+}
+
+' Notes
+skinparam note {
+    BackgroundColor #FFFDE7
+    BorderColor #FBC02D
+    BorderThickness 1
+    FontSize 10
+    Padding 6
+    RoundCorner 4
+}
+
+' Layout: tighter spacing, left-to-right
+skinparam nodesep 60
+skinparam ranksep 80
+skinparam linetype ortho
+skinparam padding 8
+left to right direction
+
+title
+<size:16><b>GateGuard – Entry & Exit Management System</b></size>
+<size:11>IIT Gandhinagar Campus | Ultra Pro Max</size>
+end title
+
+'==================== TYPE LAYER ====================
+package "TYPE LAYER" #E3F2FD {
+    class MemberType <<enumeration>> {
+        - typeID : int <<PK>>
+        - typeName : string
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getTypeID() : int
+        + getTypeName() : string
+        + setTypeName(name) : void
+    }
+    class VehicleType <<enumeration>> {
+        - typeID : int <<PK>>
+        - typeName : string
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getTypeID() : int
+        + getTypeName() : string
+        + setTypeName(name) : void
+    }
+    note right of MemberType
+        Student, Faculty, Staff,
+        Visitor, Resident
+    end note
+    note right of VehicleType
+        Two-Wheeler, Four-Wheeler,
+        Bicycle
+    end note
+}
+
+'==================== ENTITY LAYER ====================
+package "ENTITY LAYER" #E8F5E9 {
+    class Member <<entity>> {
+        - memberID : int <<PK>>
+        - name : string
+        - email : string
+        - contactNumber : string
+        - image : blob
+        - age : int
+        - department : string
+        - typeID : int <<FK>>
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getMemberID() : int
+        + getName() : string
+        + getEmail() : string
+        + validateEmail() : boolean
+    }
+    class Vehicle <<entity>> {
+        - vehicleID : int <<PK>>
+        - licensePlate : string
+        - typeID : int <<FK>>
+        - ownerID : int <<FK>>
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getVehicleID() : int
+        + getLicensePlate() : string
+        + validateLicensePlate() : boolean
+        + setOwner(memberID) : void
+    }
+}
+
+'==================== ACTIVITY LAYER ====================
+package "ACTIVITY LAYER" #F3E5F5 {
+    class PersonVisit <<transaction>> {
+        - visitID : int <<PK>>
+        - personID : int <<FK>>
+        - entryGateID : int <<FK>>
+        - entryTime : timestamp
+        - exitGateID : int <<FK>>
+        - exitTime : timestamp
+        - vehicleID : int <<FK>>
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getVisitID() : int
+        + validateExitTime() : boolean
+        + isActive() : boolean
+        + recordExit(gateID) : void
+    }
+    class VehicleVisit <<transaction>> {
+        - visitID : int <<PK>>
+        - vehicleID : int <<FK>>
+        - entryGateID : int <<FK>>
+        - entryTime : timestamp
+        - exitGateID : int <<FK>>
+        - exitTime : timestamp
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getVisitID() : int
+        + validateExitTime() : boolean
+        + isActive() : boolean
+        + recordExit(gateID) : void
+    }
+}
+
+'==================== CONTROL LAYER ====================
+package "CONTROL LAYER" #FFF3E0 {
+    class Gate <<infrastructure>> {
+        - gateID : int <<PK>>
+        - name : string
+        - location : string
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getGateID() : int
+        + getName() : string
+        + getLocation() : string
+    }
+    class GateOccupancy <<infrastructure>> {
+        - gateID : int <<PK>><<FK>>
+        - occupancyCount : int
+        - updatedAt : timestamp
+        ----
+        + getOccupancyCount() : int
+        + incrementOccupancy() : void
+        + decrementOccupancy() : void
+    }
+    class Role <<security>> {
+        - roleID : int <<PK>>
+        - roleName : string
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getRoleID() : int
+        + getRoleName() : string
+    }
+    class User <<security>> {
+        - userID : int <<PK>>
+        - username : string
+        - passwordHash : string
+        - roleID : int <<FK>>
+        - createdAt : timestamp
+        - updatedAt : timestamp
+        ----
+        + getUserID() : int
+        + getUsername() : string
+        + authenticate(password) : boolean
+    }
+}
+
+'==================== RELATIONSHIPS ====================
+MemberType "1" *-- "0..*" Member : categorizes
+VehicleType "1" *-- "0..*" Vehicle : categorizes
+Member "1" -- "0..*" PersonVisit : makes
+Vehicle "1" -- "0..*" VehicleVisit : logs
+Vehicle "1" .. "0..*" PersonVisit : used in
+Member "0..*" -- "0..1" Vehicle : owns
+Gate "1" -- "0..*" PersonVisit : entry/exit
+Gate "1" -- "0..*" VehicleVisit : entry/exit
+Gate "1" *-- "1" GateOccupancy : tracks
+Role "1" -- "0..*" User : assigned to
+
+'==================== CONSTRAINTS ====================
+note right of PersonVisit
+    **Constraint:** exitTime >= entryTime
+    OR exitTime IS NULL
+end note
+note right of VehicleVisit
+    **Constraint:** exitTime >= entryTime
+    OR exitTime IS NULL
+end note
+note left of GateOccupancy
+    **Constraint:**
+    occupancyCount >= 0
+end note
+
+'==================== LEGEND ====================
+legend right
+    **Legend**
+    ----
+    *-- Composition
+    -- Association
+    .. Optional
+    <<PK>> Primary Key
+    <<FK>> Foreign Key
+end legend
+
+@enduml

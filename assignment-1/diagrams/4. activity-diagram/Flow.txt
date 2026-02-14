@@ -1,0 +1,41 @@
+========== Entry Flow (17 actions) ========== 
+
+1. Initial State ✓
+2. Verify ID Card (Guard) ✓
+3. Approve Entry (Guard) ✓
+4. Enter Member ID (Guard→Terminal) ✓
+5. Decision: Has Vehicle? ✓
+    [Yes] → Enter Plate + Type ✓
+    [No] → Bypass to MERGE (OPTIMIZED ROUTE) ✓
+6. Send to System ✓
+7. Find/Create Vehicle ✓
+8. SELECT Vehicle ✓
+9. Decision: Plate exists? ✓
+    [Yes] → Use Existing VehicleID ✓
+    [No] → INSERT new + Use New VehicleID ✓
+10. MERGE (all 3 paths) ✓
+11. FORK (3 parallel paths) ✓
+    Path 1: INSERT PersonVisit ✓
+    Path 2: INSERT VehicleVisit (conditional) ✓
+    Path 3: UPDATE GateOccupancy +1 ✓
+12. JOIN synchronization ✓
+13. Display Confirmation ✓
+14. Allow Entry ✓
+15. Final State ✓
+
+
+========== Exit Flow (10 actions) ========== 
+
+1. Initial State ✓
+2. Enter Member ID for Exit ✓
+3. Send Exit Request ✓
+4. Find Active PersonVisit ✓
+5. SELECT PersonVisit WHERE ExitTime IS NULL ✓
+6. FORK (3 parallel paths) ✓
+    Path 1: UPDATE PersonVisit (ExitTime, ExitGateID) ✓
+    Path 2: UPDATE VehicleVisit (conditional) ✓
+    Path 3: UPDATE GateOccupancy -1 ✓
+7. JOIN synchronization ✓
+8. Display Exit Confirmation ✓
+9. Allow Exit ✓
+10. Final State ✓

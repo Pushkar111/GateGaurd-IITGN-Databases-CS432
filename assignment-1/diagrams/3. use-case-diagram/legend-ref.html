@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GateGuard Use Case Diagram</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .diagram-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 1660px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+        
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .legend {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 13px;
+            color: #555;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid currentColor;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagram-container">
+        <h1>GateGuard System — Use Case Diagram</h1>
+        <svg viewBox="0 0 1600 1050" xmlns="http://www.w3.org/2000/svg">
+            <!-- Definitions -->
+            <defs>
+                <!-- Arrow markers -->
+                <marker id="arrowBlack" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                </marker>
+                
+                <!-- Generalization arrow (hollow triangle) -->
+                <marker id="generalization" markerWidth="12" markerHeight="12" refX="0" refY="6" orient="auto">
+                    <path d="M0,6 L12,0 L12,12 Z" fill="white" stroke="#333" stroke-width="1.5" />
+                </marker>
+
+                <!-- Drop shadow filter -->
+                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+                </filter>
+            </defs>
+            
+            <!-- ========== BACKGROUND GROUPS ========== -->
+            
+            <!-- Group A: Gate Operations (Blue) - Left Column Top -->
+            <rect x="280" y="30" width="360" height="260" rx="12" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" opacity="0.4"/>
+            <text x="460" y="55" font-size="16" font-weight="600" fill="#1976D2" text-anchor="middle">Gate Operations</text>
+            
+            <!-- Group B: Search & Retrieve (Green) - Left Column Middle -->
+            <rect x="280" y="320" width="360" height="180" rx="12" fill="#E8F5E9" stroke="#388E3C" stroke-width="2" opacity="0.4"/>
+            <text x="460" y="345" font-size="16" font-weight="600" fill="#388E3C" text-anchor="middle">Search &amp; Retrieve</text>
+            
+            <!-- Group C: Administrative Functions (Purple) - Left Column Bottom -->
+            <rect x="280" y="530" width="360" height="220" rx="12" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" opacity="0.4"/>
+            <text x="460" y="555" font-size="16" font-weight="600" fill="#7B1FA2" text-anchor="middle">Administrative Functions</text>
+            
+            <!-- Group D: Reports & Analytics (Yellow) - Right Column Top -->
+            <rect x="880" y="30" width="360" height="220" rx="12" fill="#FFFDE7" stroke="#F9A825" stroke-width="2" opacity="0.4"/>
+            <text x="1060" y="55" font-size="16" font-weight="600" fill="#F9A825" text-anchor="middle">Reports &amp; Analytics</text>
+            
+            <!-- Group E: System Automation (Orange) - Right Column Middle -->
+            <rect x="880" y="280" width="360" height="200" rx="12" fill="#FFF3E0" stroke="#F57C00" stroke-width="2" opacity="0.4"/>
+            <text x="1060" y="305" font-size="16" font-weight="600" fill="#F57C00" text-anchor="middle">System Automation</text>
+            
+            <!-- ========== ACTORS ========== -->
+            
+            <!-- Guard Actor (Left Side) -->
+            <g id="actorGuard">
+                <!-- Stick figure -->
+                <circle cx="80" cy="250" r="18" fill="none" stroke="#1976D2" stroke-width="2.5"/>
+                <line x1="80" y1="268" x2="80" y2="310" stroke="#1976D2" stroke-width="2.5"/>
+                <line x1="80" y1="280" x2="55" y2="295" stroke="#1976D2" stroke-width="2.5"/>
+                <line x1="80" y1="280" x2="105" y2="295" stroke="#1976D2" stroke-width="2.5"/>
+                <line x1="80" y1="310" x2="60" y2="340" stroke="#1976D2" stroke-width="2.5"/>
+                <line x1="80" y1="310" x2="100" y2="340" stroke="#1976D2" stroke-width="2.5"/>
+                <text x="80" y="365" font-size="15" font-weight="600" fill="#1976D2" text-anchor="middle">Guard</text>
+            </g>
+            
+            <!-- Admin Actor (Left Side, Below Guard) -->
+            <g id="actorAdmin">
+                <!-- Stick figure -->
+                <circle cx="80" cy="510" r="18" fill="none" stroke="#7B1FA2" stroke-width="2.5"/>
+                <line x1="80" y1="528" x2="80" y2="570" stroke="#7B1FA2" stroke-width="2.5"/>
+                <line x1="80" y1="540" x2="55" y2="555" stroke="#7B1FA2" stroke-width="2.5"/>
+                <line x1="80" y1="540" x2="105" y2="555" stroke="#7B1FA2" stroke-width="2.5"/>
+                <line x1="80" y1="570" x2="60" y2="600" stroke="#7B1FA2" stroke-width="2.5"/>
+                <line x1="80" y1="570" x2="100" y2="600" stroke="#7B1FA2" stroke-width="2.5"/>
+                <text x="80" y="625" font-size="15" font-weight="600" fill="#7B1FA2" text-anchor="middle">Admin</text>
+            </g>
+            
+            <!-- Generalization: Admin IS-A Guard -->
+            <path d="M 80,492 L 80,378" stroke="#333" stroke-width="2" fill="none" marker-end="url(#generalization)"/>
+            <text x="95" y="435" font-size="12" fill="#555" font-style="italic">extends</text>
+            
+            <!-- System Actor (Right Side) -->
+            <g id="actorSystem">
+                <!-- Stick figure -->
+                <circle cx="1520" cy="350" r="18" fill="none" stroke="#F57C00" stroke-width="2.5"/>
+                <line x1="1520" y1="368" x2="1520" y2="410" stroke="#F57C00" stroke-width="2.5"/>
+                <line x1="1520" y1="380" x2="1495" y2="395" stroke="#F57C00" stroke-width="2.5"/>
+                <line x1="1520" y1="380" x2="1545" y2="395" stroke="#F57C00" stroke-width="2.5"/>
+                <line x1="1520" y1="410" x2="1500" y2="440" stroke="#F57C00" stroke-width="2.5"/>
+                <line x1="1520" y1="410" x2="1540" y2="440" stroke="#F57C00" stroke-width="2.5"/>
+                <text x="1520" y="465" font-size="15" font-weight="600" fill="#F57C00" text-anchor="middle">System</text>
+            </g>
+            
+            <!-- ========== USE CASES - GROUP A: GATE OPERATIONS ========== -->
+            
+            <!-- UC1: Process Entry Request -->
+            <ellipse cx="370" cy="110" rx="70" ry="35" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="108" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Process Entry</text>
+            <text x="370" y="122" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Request</text>
+            
+            <!-- UC2: Process Exit Request -->
+            <ellipse cx="370" cy="180" rx="70" ry="35" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="178" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Process Exit</text>
+            <text x="370" y="192" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Request</text>
+            
+            <!-- UC3: Confirm Identity -->
+            <ellipse cx="510" cy="110" rx="70" ry="35" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="510" y="115" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Confirm Identity</text>
+            
+            <!-- UC4: Record Visit Details -->
+            <ellipse cx="510" cy="180" rx="70" ry="35" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="510" y="178" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Record Visit</text>
+            <text x="510" y="192" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Details</text>
+            
+            <!-- UC17: Update Gate Occupancy -->
+            <ellipse cx="440" cy="250" rx="75" ry="28" fill="white" stroke="#1976D2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="440" y="255" font-size="12" font-weight="500" fill="#1976D2" text-anchor="middle">Update Gate Occupancy</text>
+            
+            <!-- ========== USE CASES - GROUP B: SEARCH & RETRIEVE ========== -->
+            
+            <!-- UC5: Search by License Plate -->
+            <ellipse cx="370" cy="390" rx="70" ry="35" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="388" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">Search by</text>
+            <text x="370" y="402" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">License Plate</text>
+            
+            <!-- UC6: Search by Name/ID -->
+            <ellipse cx="370" cy="460" rx="70" ry="35" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="458" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">Search by</text>
+            <text x="370" y="472" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">Name/ID</text>
+            
+            <!-- UC7: View Visit Details -->
+            <ellipse cx="520" cy="425" rx="70" ry="35" fill="white" stroke="#388E3C" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="520" y="423" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">View Visit</text>
+            <text x="520" y="437" font-size="12" font-weight="500" fill="#388E3C" text-anchor="middle">Details</text>
+            
+            <!-- ========== USE CASES - GROUP C: ADMINISTRATIVE FUNCTIONS ========== -->
+            
+            <!-- UC8: Add New Member -->
+            <ellipse cx="370" cy="600" rx="70" ry="30" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="605" font-size="12" font-weight="500" fill="#7B1FA2" text-anchor="middle">Add New Member</text>
+            
+            <!-- UC9: Update Member Info -->
+            <ellipse cx="500" cy="600" rx="70" ry="30" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="500" y="605" font-size="12" font-weight="500" fill="#7B1FA2" text-anchor="middle">Update Member Info</text>
+            
+            <!-- UC10: Add New Vehicle -->
+            <ellipse cx="370" cy="670" rx="70" ry="30" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="370" y="675" font-size="12" font-weight="500" fill="#7B1FA2" text-anchor="middle">Add New Vehicle</text>
+            
+            <!-- UC11: Update Vehicle Info -->
+            <ellipse cx="500" cy="670" rx="70" ry="30" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="500" y="675" font-size="12" font-weight="500" fill="#7B1FA2" text-anchor="middle">Update Vehicle Info</text>
+            
+            <!-- UC12: Manage Guard Accounts -->
+            <ellipse cx="435" cy="720" rx="75" ry="22" fill="white" stroke="#7B1FA2" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="435" y="725" font-size="12" font-weight="500" fill="#7B1FA2" text-anchor="middle">Manage Guard Accounts</text>
+            
+            <!-- ========== USE CASES - GROUP D: REPORTS & ANALYTICS ========== -->
+            
+            <!-- UC13: Generate Individual Reports -->
+            <ellipse cx="970" cy="100" rx="70" ry="35" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="970" y="98" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Generate Individual</text>
+            <text x="970" y="112" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Reports</text>
+            
+            <!-- UC14: Generate Frequent Visitor Reports -->
+            <ellipse cx="970" cy="170" rx="70" ry="35" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="970" y="168" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Generate Frequent</text>
+            <text x="970" y="182" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Visitor Reports</text>
+            
+            <!-- UC15: Generate Violators List -->
+            <ellipse cx="1140" cy="135" rx="70" ry="35" fill="white" stroke="#F9A825" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="1140" y="133" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Generate</text>
+            <text x="1140" y="147" font-size="12" font-weight="500" fill="#F9A825" text-anchor="middle">Violators List</text>
+            
+            <!-- ========== USE CASES - GROUP E: SYSTEM AUTOMATION ========== -->
+            
+            <!-- UC16: Auto-Reconcile Visits -->
+            <ellipse cx="1010" cy="350" rx="75" ry="30" fill="white" stroke="#F57C00" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="1010" y="355" font-size="12" font-weight="500" fill="#F57C00" text-anchor="middle">Auto-Reconcile Visits</text>
+            
+            <!-- UC18: Alert on Anomalies -->
+            <ellipse cx="1010" cy="420" rx="70" ry="30" fill="white" stroke="#F57C00" stroke-width="2.5" filter="url(#shadow)"/>
+            <text x="1010" y="425" font-size="12" font-weight="500" fill="#F57C00" text-anchor="middle">Alert on Anomalies</text>
+            
+            <!-- ========== CONNECTIONS: GUARD → USE CASES ========== -->
+            
+            <!-- Guard → UC1 (Entry) -->
+            <line x1="105" y1="270" x2="300" y2="110" stroke="#1976D2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Guard → UC2 (Exit) -->
+            <line x1="105" y1="285" x2="300" y2="180" stroke="#1976D2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Guard → UC5 (Search by LP) -->
+            <line x1="105" y1="320" x2="300" y2="390" stroke="#388E3C" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Guard → UC6 (Search by Name) -->
+            <line x1="105" y1="330" x2="300" y2="460" stroke="#388E3C" stroke-width="2" opacity="0.6"/>
+            
+            <!-- ========== CONNECTIONS: ADMIN → USE CASES ========== -->
+            
+            <!-- Admin → UC8 (Add Member) -->
+            <line x1="105" y1="570" x2="300" y2="600" stroke="#7B1FA2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Admin → UC9 (Update Member) -->
+            <line x1="105" y1="575" x2="430" y2="600" stroke="#7B1FA2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Admin → UC10 (Add Vehicle) -->
+            <line x1="105" y1="580" x2="300" y2="670" stroke="#7B1FA2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Admin → UC11 (Update Vehicle) -->
+            <line x1="105" y1="585" x2="430" y2="670" stroke="#7B1FA2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Admin → UC12 (Manage Guards) -->
+            <line x1="105" y1="595" x2="360" y2="720" stroke="#7B1FA2" stroke-width="2" opacity="0.6"/>
+            
+            <!-- Admin → UC13 (Individual Reports) - crosses middle with clean path -->
+            <polyline points="105,530 680,530 680,100 900,100" stroke="#F9A825" stroke-width="2" opacity="0.5" fill="none"/>
+            
+            <!-- Admin → UC14 (Frequent Visitor Reports) - crosses middle -->
+            <polyline points="105,535 690,535 690,170 900,170" stroke="#F9A825" stroke-width="2" opacity="0.5" fill="none"/>
+            
+            <!-- Admin → UC15 (Violators List) - crosses middle -->
+            <polyline points="105,540 700,540 700,135 1070,135" stroke="#F9A825" stroke-width="2" opacity="0.5" fill="none"/>
+            
+            <!-- ========== CONNECTIONS: SYSTEM → USE CASES ========== -->
+            
+            <!-- System → UC16 (Auto-Reconcile) -->
+            <line x1="1495" y1="360" x2="1085" y2="350" stroke="#F57C00" stroke-width="2" opacity="0.6"/>
+            
+            <!-- System → UC18 (Alert) -->
+            <line x1="1495" y1="380" x2="1080" y2="420" stroke="#F57C00" stroke-width="2" opacity="0.6"/>
+            
+            <!-- System → UC13 (Individual Reports) -->
+            <line x1="1500" y1="332" x2="1040" y2="100" stroke="#F9A825" stroke-width="2" opacity="0.5"/>
+            
+            <!-- System → UC14 (Frequent Visitor Reports) -->
+            <line x1="1505" y1="340" x2="1040" y2="170" stroke="#F9A825" stroke-width="2" opacity="0.5"/>
+            
+            <!-- ========== <<INCLUDE>> RELATIONSHIPS ========== -->
+            
+            <!-- UC1 (Entry) includes UC3 (Confirm Identity) -->
+            <line x1="440" y1="110" x2="440" y2="110" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+            <text x="455" y="105" font-size="11" fill="#555" font-style="italic">«include»</text>
+            
+            <!-- UC2 (Exit) includes UC4 (Record Visit) -->
+            <line x1="440" y1="180" x2="440" y2="180" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+            <text x="455" y="175" font-size="11" fill="#555" font-style="italic">«include»</text>
+            
+            <!-- UC1 (Entry) includes UC4 (Record Visit) -->
+            <polyline points="390,135 390,200 440,200" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="400" y="168" font-size="11" fill="#555" font-style="italic">«include»</text>
+            
+            <!-- UC5 (Search LP) includes UC7 (View Details) -->
+            <polyline points="440,390 480,390 480,425 450,425" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="455" y="405" font-size="11" fill="#555" font-style="italic">«include»</text>
+            
+            <!-- UC6 (Search Name) includes UC7 (View Details) -->
+            <line x1="440" y1="460" x2="450" y2="437" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+            <text x="425" y="450" font-size="11" fill="#555" font-style="italic">«include»</text>
+            
+            <!-- ========== <<EXTEND>> RELATIONSHIPS ========== -->
+            
+            <!-- UC17 (Occupancy) extends UC1 (Entry) -->
+            <polyline points="440,222 440,145" stroke="#888" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="450" y="185" font-size="11" fill="#888" font-style="italic">«extend»</text>
+            
+            <!-- UC17 (Occupancy) extends UC2 (Exit) -->
+            <polyline points="465,225 480,210 505,195" stroke="#888" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="465" y="210" font-size="11" fill="#888" font-style="italic">«extend»</text>
+            
+            <!-- UC17 (Occupancy) extends UC3 (Confirm) -->
+            <polyline points="480,235 540,145" stroke="#888" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="500" y="195" font-size="11" fill="#888" font-style="italic">«extend»</text>
+            
+            <!-- UC17 (Occupancy) extends UC4 (Record) -->
+            <polyline points="495,240 530,215" stroke="#888" stroke-width="1.8" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowBlack)"/>
+            <text x="505" y="228" font-size="11" fill="#888" font-style="italic">«extend»</text>
+            
+            <!-- ========== LEGEND ========== -->
+            <g id="legend" transform="translate(50, 950)">
+                <text x="0" y="0" font-size="14" font-weight="600" fill="#333">Legend:</text>
+                
+                <!-- Actor connections -->
+                <line x1="10" y1="25" x2="50" y2="25" stroke="#1976D2" stroke-width="2"/>
+                <text x="60" y="30" font-size="12" fill="#555">Actor Association</text>
+                
+                <!-- Include -->
+                <line x1="10" y1="45" x2="50" y2="45" stroke="#555" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+                <text x="60" y="50" font-size="12" fill="#555">«include» dependency</text>
+                
+                <!-- Extend -->
+                <line x1="10" y1="65" x2="50" y2="65" stroke="#888" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrowBlack)"/>
+                <text x="60" y="70" font-size="12" fill="#555">«extend» dependency</text>
+                
+                <!-- Generalization -->
+                <line x1="10" y1="85" x2="50" y2="85" stroke="#333" stroke-width="2" marker-end="url(#generalization)"/>
+                <text x="60" y="90" font-size="12" fill="#555">Generalization (IS-A)</text>
+            </g>
+            
+            <!-- Title Box -->
+            <rect x="600" y="900" width="400" height="60" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1.5"/>
+            <text x="800" y="925" font-size="14" font-weight="600" fill="#333" text-anchor="middle">GateGuard System</text>
+            <text x="800" y="945" font-size="12" fill="#666" text-anchor="middle">UML Use Case Diagram (UML 2.5)</text>
+            
+        </svg>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box" style="background: #E3F2FD; border-color: #1976D2;"></div>
+                <span>Gate Operations</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #E8F5E9; border-color: #388E3C;"></div>
+                <span>Search & Retrieve</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #F3E5F5; border-color: #7B1FA2;"></div>
+                <span>Administrative</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #FFFDE7; border-color: #F9A825;"></div>
+                <span>Reports & Analytics</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box" style="background: #FFF3E0; border-color: #F57C00;"></div>
+                <span>System Automation</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
