@@ -1,0 +1,10 @@
+# Ignore markdown files except README.md
+*.md
+!README.md
+
+# Ignore LaTeX source files
+*.tex
+
+# Ignore PlantUML / WSD diagram source files
+*.wsd
+*.puml
