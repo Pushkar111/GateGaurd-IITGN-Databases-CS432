@@ -1,7 +1,6 @@
 -- =============================================================================
 -- GateGuard Entry Gate Management System - Database Schema
 -- =============================================================================
--- Source: cursor-ai-agent/3_Database_Tables_and_Schema.md
 -- Database: PostgreSQL
 -- Normalization: 3NF
 -- =============================================================================
