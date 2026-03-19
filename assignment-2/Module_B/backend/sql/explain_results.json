@@ -1,0 +1,106 @@
+{
+  "memberSearch": {
+    "label": "Member search by name ILIKE",
+    "before": {
+      "planningTime": 1.395,
+      "executionTime": 0.203,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.505,
+      "executionTime": 0.173,
+      "scanType": "Seq Scan"
+    }
+  },
+  "activePersonVisits": {
+    "label": "Active person visits (ExitTime IS NULL)",
+    "before": {
+      "planningTime": 0.47,
+      "executionTime": 0.18,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.443,
+      "executionTime": 0.141,
+      "scanType": "Seq Scan"
+    }
+  },
+  "personVisitsByTime": {
+    "label": "Person visits sorted by EntryTime DESC",
+    "before": {
+      "planningTime": 0.119,
+      "executionTime": 0.217,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.101,
+      "executionTime": 0.14,
+      "scanType": "Index Scan"
+    }
+  },
+  "dashboardOccupancy": {
+    "label": "Dashboard gate occupancy JOIN",
+    "before": {
+      "planningTime": 0.18,
+      "executionTime": 0.031,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.06,
+      "executionTime": 0.024,
+      "scanType": "Seq Scan"
+    }
+  },
+  "loginByUsername": {
+    "label": "Login by username exact match",
+    "before": {
+      "planningTime": 0.275,
+      "executionTime": 0.033,
+      "scanType": "Index Scan"
+    },
+    "after": {
+      "planningTime": 0.232,
+      "executionTime": 0.023,
+      "scanType": "Seq Scan"
+    }
+  },
+  "auditLogFilter": {
+    "label": "Audit logs filtered by userId + action",
+    "before": {
+      "planningTime": 0.145,
+      "executionTime": 0.018,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.687,
+      "executionTime": 0.022,
+      "scanType": "Seq Scan"
+    }
+  },
+  "activeVehicleVisits": {
+    "label": "Active vehicle visits (ExitTime IS NULL)",
+    "before": {
+      "planningTime": 0.342,
+      "executionTime": 0.12,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.422,
+      "executionTime": 0.111,
+      "scanType": "Seq Scan"
+    }
+  },
+  "vehicleByPlate": {
+    "label": "Vehicle by registration number ILIKE",
+    "before": {
+      "planningTime": 0.361,
+      "executionTime": 0.149,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.115,
+      "executionTime": 0.115,
+      "scanType": "Seq Scan"
+    }
+  }
+}
