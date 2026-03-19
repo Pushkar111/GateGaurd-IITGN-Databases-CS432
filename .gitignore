@@ -8,3 +8,19 @@
 # Ignore PlantUML / WSD diagram source files
 *.wsd
 *.puml
+
+# Ignore node_modules of frontend and backend
+node_modules
+
+# Ignore dist folder of frontend
+dist
+
+# Ignore .env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore runtime logs for Module B backend
+assignment-2/Module_B/backend/logs/*.log
