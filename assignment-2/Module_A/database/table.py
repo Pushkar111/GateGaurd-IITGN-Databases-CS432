@@ -129,7 +129,7 @@ class Table:
         )
 
     def describe(self):
-        """Print a summary of the table."""
+        """Print a summary of the table...."""
         print(f"\n{'='*50}")
         print(f"  Table : {self.name}")
         print(f"  Columns: {', '.join(self.columns)}")
