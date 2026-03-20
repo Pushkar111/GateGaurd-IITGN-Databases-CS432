@@ -28,7 +28,7 @@ const DEMO_USERS = [
 ];
 
 async function main() {
-  console.log('\n🌱  GateGuard seed-users.js');
+  console.log('\nGateGuard seed-users.js');
   console.log('──────────────────────────────\n');
 
   // 1 — Ensure roles exist
@@ -40,13 +40,13 @@ async function main() {
       `INSERT INTO role (rolename) VALUES ($1) ON CONFLICT (rolename) DO NOTHING`,
       [u.roleName]
     );
-    process.stdout.write(`  ✓ Role "${u.roleName}" ready\n`);
+    process.stdout.write(`  OK Role "${u.roleName}" ready\n`);
   }
 
   // 2 — Hash password
   console.log('\nStep 2: Hashing demo password (12 rounds)…');
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, 12);
-  console.log('  ✓ Hash generated');
+  console.log('  OK Hash generated');
 
   // 3 — Insert users
   // Table: "User" (quoted → mixed-case). Columns: userid, username, passwordhash, roleid
@@ -60,7 +60,7 @@ async function main() {
       [u.roleName]
     );
     if (roleRows.length === 0) {
-      console.warn(`  ⚠  Role "${u.roleName}" not found — skipping "${u.username}"`);
+      console.warn(`  WARN  Role "${u.roleName}" not found — skipping "${u.username}"`);
       continue;
     }
     const roleId = roleRows[0].roleid;
@@ -74,7 +74,7 @@ async function main() {
     );
 
     if (rows.length > 0) {
-      console.log(`  ✓  Created  ${u.username.padEnd(14)} [${u.roleName}]`);
+      console.log(`  OK  Created  ${u.username.padEnd(14)} [${u.roleName}]`);
       created++;
     } else {
       console.log(`  –  Skipped  ${u.username.padEnd(14)} [${u.roleName}]  (already exists)`);
@@ -82,7 +82,7 @@ async function main() {
     }
   }
 
-  console.log(`\n✅  Done — ${created} created, ${skipped} skipped.`);
+  console.log(`\nDone — ${created} created, ${skipped} skipped.`);
   console.log('\nDemo credentials:');
   console.log('  Username: superadmin | admin | guard');
   console.log(`  Password: ${DEMO_PASSWORD}\n`);
@@ -91,7 +91,7 @@ async function main() {
 main()
   .then(() => pool.end())
   .catch((err) => {
-    console.error('\n❌  Seed failed:', err.message);
+    console.error('\nFAIL  Seed failed:', err.message);
     pool.end();
     process.exit(1);
   });

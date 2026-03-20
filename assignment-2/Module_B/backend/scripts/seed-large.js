@@ -16,7 +16,7 @@ const pool = new Pool({
 });
 
 async function main() {
-  console.log('\n🚀  Loading Large Seed Data...');
+  console.log('\nLoading Large Seed Data...');
   const sqlPath = path.join(__dirname, '..', 'sql', 'seed_large.sql');
   
   if (!fs.existsSync(sqlPath)) {
@@ -27,10 +27,10 @@ async function main() {
   
   const result = await pool.query(sql);
   
-  console.log('✅  Large seed successfully executed.');
+  console.log('OK  Large seed successfully executed.');
 
   // Print row counts
-  console.log('\n📊  Current Database Row Counts:');
+  console.log('\nCurrent Database Row Counts:');
   const counts = await pool.query(`
     SELECT 'member' AS tbl, COUNT(*) FROM member
     UNION ALL SELECT 'vehicle', COUNT(*) FROM vehicle
@@ -49,7 +49,7 @@ async function main() {
 main()
   .then(() => pool.end())
   .catch((err) => {
-    console.error('\n❌  seed-large failed:', err.message);
+    console.error('\nFAIL  seed-large failed:', err.message);
     pool.end();
     process.exit(1);
   });

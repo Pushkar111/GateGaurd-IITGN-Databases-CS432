@@ -145,7 +145,7 @@ async function dropCustomIndexes() {
 async function recreateIndexes() {
   const indexSqlPath = path.join(__dirname, '..', 'sql', 'indexes.sql');
   if (!fs.existsSync(indexSqlPath)) {
-    console.warn('  ⚠  sql/indexes.sql not found — skipping index recreation');
+    console.warn('  WARN  sql/indexes.sql not found — skipping index recreation');
     return;
   }
   const sql = fs.readFileSync(indexSqlPath, 'utf8');
@@ -176,7 +176,7 @@ function printTable(results) {
 
 // ── Main ──────────────────────────────────────────────────────────────
 async function main() {
-  console.log('\n📊  GateGuard EXPLAIN ANALYZE Benchmark');
+  console.log('\nGateGuard EXPLAIN ANALYZE Benchmark');
   console.log('────────────────────────────────────────\n');
 
   const results = {};
@@ -202,7 +202,7 @@ async function main() {
   // Round 2 — Re-create indexes, run queries again
   console.log('\nPhase 2: Re-creating indexes…');
   await recreateIndexes();
-  console.log('  ✓ Indexes restored\n');
+  console.log('  OK Indexes restored\n');
 
   console.log('Phase 2: Running queries WITH indexes…');
   for (const b of BENCHMARKS) {
@@ -231,13 +231,13 @@ async function main() {
     };
   }
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2));
-  console.log(`✅  Results saved to sql/explain_results.json\n`);
+  console.log(`OK  Results saved to sql/explain_results.json\n`);
 }
 
 main()
   .then(() => pool.end())
   .catch((err) => {
-    console.error('\n❌  run-explain failed:', err.message);
+    console.error('\nFAIL  run-explain failed:', err.message);
     pool.end();
     process.exit(1);
   });

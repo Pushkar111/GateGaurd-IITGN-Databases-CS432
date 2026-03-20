@@ -46,30 +46,30 @@ const SQL_FILES = [
 
 async function runSqlFile(label, filePath) {
   if (!fs.existsSync(filePath)) {
-    console.log(`  ${RED}✗${RESET}  ${label} — FILE NOT FOUND: ${filePath}`);
+    console.log(`  ${RED}FAIL${RESET}  ${label} — FILE NOT FOUND: ${filePath}`);
     return false;
   }
   const sql = fs.readFileSync(filePath, 'utf8');
   try {
     await pool.query(sql);
-    console.log(`  ${GREEN}✓${RESET}  ${label}`);
+    console.log(`  ${GREEN}OK${RESET}  ${label}`);
     return true;
   } catch (err) {
-    console.log(`  ${RED}✗${RESET}  ${label} — ${err.message}`);
+    console.log(`  ${RED}FAIL${RESET}  ${label} — ${err.message}`);
     return false;
   }
 }
 
 async function main() {
-  console.log(`\n${BOLD}🗄️  GateGuard db-setup.js${RESET}`);
+  console.log(`\n${BOLD}GateGuard db-setup.js${RESET}`);
   console.log('────────────────────────────────\n');
 
   // Test connection first
   try {
     await pool.query('SELECT 1');
-    console.log(`${GREEN}✓${RESET}  Connected to PostgreSQL (${process.env.DB_NAME})\n`);
+    console.log(`${GREEN}OK${RESET}  Connected to PostgreSQL (${process.env.DB_NAME})\n`);
   } catch (err) {
-    console.error(`${RED}✗${RESET}  Cannot connect: ${err.message}`);
+    console.error(`${RED}FAIL${RESET}  Cannot connect: ${err.message}`);
     await pool.end();
     process.exit(1);
   }
@@ -81,10 +81,10 @@ async function main() {
   }
 
   if (allOk) {
-    console.log(`\n${GREEN}${BOLD}✅  Schema applied successfully.${RESET}`);
+    console.log(`\n${GREEN}${BOLD}Schema applied successfully.${RESET}`);
     console.log('   Next: node scripts/seed-users.js\n');
   } else {
-    console.log(`\n${RED}${BOLD}❌  Some steps failed — see above.${RESET}\n`);
+    console.log(`\n${RED}${BOLD}Some steps failed — see above.${RESET}\n`);
   }
 
   await pool.end();

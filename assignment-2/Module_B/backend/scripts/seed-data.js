@@ -15,7 +15,7 @@ const pool = new Pool({
 });
 
 async function main() {
-  console.log('\n🌱  Seeding reference data…\n');
+  console.log('\nSeeding reference data...\n');
 
   // MemberType — constraint: ('Resident', 'Student', 'Visitor')
   const memberTypes = ['Resident', 'Student', 'Visitor'];
@@ -24,7 +24,7 @@ async function main() {
       `INSERT INTO membertype (typename) VALUES ($1) ON CONFLICT (typename) DO NOTHING`,
       [t]
     );
-    console.log(`  ✓ MemberType: ${t}`);
+    console.log(`  OK MemberType: ${t}`);
   }
 
   // VehicleType — constraint: ('PrivateCar', 'Taxi', 'Bike', 'Truck', 'Bus')
@@ -34,7 +34,7 @@ async function main() {
       `INSERT INTO vehicletype (typename) VALUES ($1) ON CONFLICT (typename) DO NOTHING`,
       [t]
     );
-    console.log(`  ✓ VehicleType: ${t}`);
+    console.log(`  OK VehicleType: ${t}`);
   }
 
   // Gates
@@ -59,19 +59,19 @@ async function main() {
          ON CONFLICT (gateid) DO NOTHING`,
         [gateId]
       );
-      console.log(`  ✓ Gate: ${g.name} (ID ${gateId}) + occupancy row`);
+      console.log(`  OK Gate: ${g.name} (ID ${gateId}) + occupancy row`);
     } else {
       console.log(`  – Gate: ${g.name} (already exists)`);
     }
   }
 
-  console.log('\n✅  Reference data seeded.\n');
+  console.log('\nReference data seeded.\n');
 }
 
 main()
   .then(() => pool.end())
   .catch((err) => {
-    console.error('\n❌  seed-data failed:', err.message);
+    console.error('\nFAIL  seed-data failed:', err.message);
     pool.end();
     process.exit(1);
   });

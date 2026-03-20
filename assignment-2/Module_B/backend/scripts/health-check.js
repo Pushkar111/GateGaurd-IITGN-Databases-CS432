@@ -21,9 +21,9 @@ const YELLOW = '\x1b[33m';
 const RESET  = '\x1b[0m';
 const BOLD   = '\x1b[1m';
 
-function pass(label) { console.log(`  ${GREEN}✓${RESET}  ${label}`); }
-function fail(label, detail = '') { console.log(`  ${RED}✗${RESET}  ${label}${detail ? `  — ${RED}${detail}${RESET}` : ''}`); }
-function warn(label) { console.log(`  ${YELLOW}⚠${RESET}  ${label}`); }
+function pass(label) { console.log(`  ${GREEN}OK${RESET}  ${label}`); }
+function fail(label, detail = '') { console.log(`  ${RED}FAIL${RESET}  ${label}${detail ? `  — ${RED}${detail}${RESET}` : ''}`); }
+function warn(label) { console.log(`  ${YELLOW}WARN${RESET}  ${label}`); }
 
 const REQUIRED_TABLES = [
   'gate', 'gateoccupancy', 'member', 'membertype',
@@ -34,7 +34,7 @@ const REQUIRED_TABLES = [
 const INDEXED_TABLES = ['Member', 'PersonVisit', 'VehicleVisit', 'User', 'Vehicle'];
 
 async function main() {
-  console.log(`\n${BOLD}🔍  GateGuard Health Check${RESET}`);
+  console.log(`\n${BOLD}GateGuard Health Check${RESET}`);
   console.log('──────────────────────────────\n');
   let allGreen = true;
 
@@ -113,9 +113,9 @@ async function main() {
 
   // ── Summary ───────────────────────────────────────────────────────
   if (allGreen) {
-    console.log(`${GREEN}${BOLD}✅  All checks passed — system is healthy.${RESET}\n`);
+    console.log(`${GREEN}${BOLD}All checks passed — system is healthy.${RESET}\n`);
   } else {
-    console.log(`${RED}${BOLD}❌  Some checks failed — review output above.${RESET}\n`);
+    console.log(`${RED}${BOLD}Some checks failed — review output above.${RESET}\n`);
   }
 
   await pool.end();
