@@ -57,8 +57,12 @@ async function findUserByEmail(emailAddr) {
 async function getMemberId(username) {
   try {
     const { rows } = await query(
-      `SELECT "MemberID" FROM "Member" WHERE "Email" = $1 LIMIT 1`,
-      [username]
+      `SELECT memberid AS "MemberID"
+         FROM member
+        WHERE LOWER(email) = LOWER($1)
+           OR LOWER(split_part(email, '@', 1)) = LOWER($2)
+        LIMIT 1`,
+      [username, username]
     );
     return rows.length > 0 ? rows[0].MemberID : null;
   } catch { return null; }
