@@ -1,5 +1,9 @@
 # GateGuard: Entry Gate Management and Security System
 
+<p align="center">
+  <img src="Final_IITGN_Logo_symmetric.png" alt="IITGN Symmetric Logo" width="260" />
+</p>
+
 A production style campus gate operations platform built for IIT Gandhinagar coursework.
 
 GateGuard combines identity, access control, visit tracking, occupancy monitoring, auditability, and performance instrumentation in one coherent system. The project is designed to feel operationally real, not just academically correct.
@@ -16,6 +20,13 @@ Course context:
 - IIT Gandhinagar
 - Semester II, 2025-26
 - Assignment 2, Module B
+
+## Deliverables Index
+
+- Module A report notebook: [assignment-2/Module_A/report.ipynb](assignment-2/Module_A/report.ipynb)
+- Module B optimization report: [assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf](assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf)
+- Module A demo video link: pending finalization (will be added here)
+- Module B demo video link: pending finalization (will be added here)
 
 ---
 
