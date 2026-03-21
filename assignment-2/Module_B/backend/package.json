@@ -12,7 +12,8 @@
     "seed-data": "node scripts/seed-data.js",
     "seed-large": "node scripts/seed-large.js",
     "health": "node scripts/health-check.js",
-    "explain": "node scripts/run-explain.js"
+    "explain": "node scripts/run-explain.js",
+    "test:guard": "node scripts/test-direct-write-guard.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
