@@ -163,4 +163,12 @@ async function getTypes() {
   return rows;
 }
 
-module.exports = { findAll, findById, create, update, delete: deleteSingle, count, getTypes };
+async function findIdByEmail(email) {
+  const { rows } = await query(
+    `SELECT memberid AS "MemberID" FROM member WHERE LOWER(email) = LOWER($1) LIMIT 1`,
+    [email]
+  );
+  return rows[0]?.MemberID || null;
+}
+
+module.exports = { findAll, findById, create, update, delete: deleteSingle, count, getTypes, findIdByEmail };
