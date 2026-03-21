@@ -15,6 +15,7 @@ const pool = new Pool({
   database: process.env.DB_NAME     || 'gateguard',
   user:     process.env.DB_USER     || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
+  application_name: 'GateGuardExplain',
 });
 
 // ── 8 benchmark queries ───────────────────────────────────────────────
@@ -28,7 +29,7 @@ const BENCHMARKS = [
            WHERE m.name ILIKE $1
            ORDER BY m.name
            LIMIT 20`,
-    params: ['%Member_1%'],
+    params: ['member_%'],
   },
   {
     name: 'activePersonVisits',
@@ -96,9 +97,11 @@ const BENCHMARKS = [
            JOIN vehicletype vt ON vt.typeid = v.typeid
            WHERE v.licenseplate ILIKE $1
            LIMIT 20`,
-    params: ['%GJ05%'],
+    params: ['gj%'],
   },
 ];
+
+const RUNS_PER_QUERY = 5;
 
 // ── Parse EXPLAIN ANALYZE output ──────────────────────────────────────
 function parseExplain(rows) {
@@ -120,6 +123,74 @@ async function runExplain(sql, params) {
   const explainSql = `EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT) ${sql}`;
   const { rows } = await pool.query(explainSql, params);
   return parseExplain(rows);
+}
+
+function averageMs(values) {
+  const valid = values.filter((v) => typeof v === 'number');
+  if (!valid.length) return null;
+  return valid.reduce((a, b) => a + b, 0) / valid.length;
+}
+
+function dominantScan(scans) {
+  if (!scans.length) return 'Unknown';
+  const counts = scans.reduce((acc, s) => {
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+async function runExplainStable(sql, params, runs = RUNS_PER_QUERY) {
+  const results = [];
+
+  // warm-up run (discarded from averages)
+  await runExplain(sql, params);
+
+  for (let i = 0; i < runs; i++) {
+    results.push(await runExplain(sql, params));
+  }
+
+  return {
+    planningTime: averageMs(results.map((r) => r.planningTime)),
+    executionTime: averageMs(results.map((r) => r.executionTime)),
+    scanType: dominantScan(results.map((r) => r.scanType)),
+    sampleRuns: results.map((r) => ({ planningTime: r.planningTime, executionTime: r.executionTime, scanType: r.scanType })),
+    fullPlan: results[results.length - 1]?.fullPlan || null,
+  };
+}
+
+async function resolveRepresentativeParams() {
+  try {
+    const { rows: userRows } = await pool.query(`SELECT username FROM "User" ORDER BY userid ASC LIMIT 1`);
+    if (userRows[0]?.username) {
+      const q = BENCHMARKS.find((b) => b.name === 'loginByUsername');
+      if (q) q.params = [userRows[0].username];
+    }
+
+    const { rows: memberRows } = await pool.query(`SELECT name FROM member WHERE name IS NOT NULL ORDER BY memberid ASC LIMIT 1`);
+    if (memberRows[0]?.name) {
+      const prefix = memberRows[0].name.toLowerCase().slice(0, 6);
+      const q = BENCHMARKS.find((b) => b.name === 'memberSearch');
+      if (q) q.params = [`${prefix}%`];
+    }
+
+    const { rows: vehicleRows } = await pool.query(`SELECT licenseplate FROM vehicle WHERE licenseplate IS NOT NULL ORDER BY vehicleid ASC LIMIT 1`);
+    if (vehicleRows[0]?.licenseplate) {
+      const prefix = vehicleRows[0].licenseplate.toLowerCase().slice(0, 4);
+      const q = BENCHMARKS.find((b) => b.name === 'vehicleByPlate');
+      if (q) q.params = [`${prefix}%`];
+    }
+
+    const { rows: auditRows } = await pool.query(
+      `SELECT userid, action FROM auditlog WHERE userid IS NOT NULL ORDER BY createdat DESC LIMIT 1`
+    );
+    if (auditRows[0]) {
+      const q = BENCHMARKS.find((b) => b.name === 'auditLogFilter');
+      if (q) q.params = [auditRows[0].userid, auditRows[0].action];
+    }
+  } catch (err) {
+    console.warn(`  WARN  Could not resolve representative params automatically: ${err.message}`);
+  }
 }
 
 // ── Drop all non-PK indexes (benchmark without indexes) ───────────────
@@ -157,7 +228,13 @@ function printTable(results) {
   const COL = [38, 14, 14, 18, 18];
   const header = ['Query', 'Before (ms)', 'After (ms)', 'Before scan', 'After scan'];
   const sep = COL.map((w) => '─'.repeat(w)).join('─┬─');
-  const row = (cells) => cells.map((c, i) => String(c).padEnd(COL[i])).join(' │ ');
+  const sanitize = (value) => String(value ?? '').replace(/[\r\n\t]+/g, ' ');
+  const fit = (value, width) => {
+    const s = sanitize(value);
+    if (s.length <= width) return s.padEnd(width);
+    return `${s.slice(0, Math.max(0, width - 1))}…`;
+  };
+  const row = (cells) => cells.map((c, i) => fit(c, COL[i])).join(' │ ');
 
   console.log('\n' + sep);
   console.log(row(header));
@@ -178,8 +255,11 @@ function printTable(results) {
 async function main() {
   console.log('\nGateGuard EXPLAIN ANALYZE Benchmark');
   console.log('────────────────────────────────────────\n');
+  console.log(`Using ${RUNS_PER_QUERY} measured runs per query (after warm-up).\n`);
 
   const results = {};
+
+  await resolveRepresentativeParams();
 
   // Round 1 — Drop indexes, run queries
   console.log('Phase 1: Dropping custom indexes…');
@@ -190,9 +270,9 @@ async function main() {
   for (const b of BENCHMARKS) {
     process.stdout.write(`  → ${b.label}… `);
     try {
-      const res = await runExplain(b.sql, b.params);
-      results[b.name] = { label: b.label, before: res };
-      console.log(`${res.executionTime !== null ? res.executionTime.toFixed(3) + ' ms' : 'n/a'}  [${res.scanType}]`);
+      const stable = await runExplainStable(b.sql, b.params);
+      results[b.name] = { label: b.label, before: stable };
+      console.log(`${stable.executionTime !== null ? stable.executionTime.toFixed(3) + ' ms' : 'n/a'}  [${stable.scanType}]`);
     } catch (err) {
       results[b.name] = { label: b.label, before: { executionTime: null, scanType: 'ERROR: ' + err.message } };
       console.log(`ERROR: ${err.message}`);
@@ -208,9 +288,9 @@ async function main() {
   for (const b of BENCHMARKS) {
     process.stdout.write(`  → ${b.label}… `);
     try {
-      const res = await runExplain(b.sql, b.params);
-      results[b.name].after = res;
-      console.log(`${res.executionTime !== null ? res.executionTime.toFixed(3) + ' ms' : 'n/a'}  [${res.scanType}]`);
+      const stable = await runExplainStable(b.sql, b.params);
+      results[b.name].after = stable;
+      console.log(`${stable.executionTime !== null ? stable.executionTime.toFixed(3) + ' ms' : 'n/a'}  [${stable.scanType}]`);
     } catch (err) {
       results[b.name].after = { executionTime: null, scanType: 'ERROR: ' + err.message };
       console.log(`ERROR: ${err.message}`);
@@ -228,6 +308,14 @@ async function main() {
       label:  r.label,
       before: { planningTime: r.before.planningTime, executionTime: r.before.executionTime, scanType: r.before.scanType },
       after:  { planningTime: r.after?.planningTime, executionTime: r.after?.executionTime, scanType: r.after?.scanType },
+      sampleRuns: {
+        before: r.before.sampleRuns || [],
+        after: r.after?.sampleRuns || [],
+      },
+      plans: {
+        before: r.before.fullPlan || null,
+        after: r.after?.fullPlan || null,
+      },
     };
   }
   fs.writeFileSync(outPath, JSON.stringify(out, null, 2));
