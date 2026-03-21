@@ -11,6 +11,7 @@ const pool = new Pool({
   database: env.DB_NAME,
   user:     env.DB_USER,
   password: env.DB_PASSWORD,
+  application_name: 'GateGuardAPI',
   max:      env.DB_MAX,          // max 20 connections in the pool
   idleTimeoutMillis:    30000,   // close idle clients after 30s
   connectionTimeoutMillis: 5000, // fail fast if we can't connect
