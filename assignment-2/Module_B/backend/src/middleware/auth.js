@@ -29,6 +29,7 @@ async function authenticate(req, res, next) {
       userId:   decoded.userId,
       username: decoded.username,
       role:     decoded.role,
+      memberId: decoded.memberId ?? null,
     };
 
     // 3. MustChangePassword Guard Check (re-fetch user state for freshness)
