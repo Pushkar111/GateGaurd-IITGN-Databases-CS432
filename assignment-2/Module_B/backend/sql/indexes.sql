@@ -1,30 +1,33 @@
 -- =============================================
 -- GateGuard Performance Optimization Indexes
 -- Run AFTER schema.sql and seed.sql
--- Use EXPLAIN ANALYZE to compare before/after
 -- =============================================
 
--- Member indexes
-CREATE INDEX IF NOT EXISTS idx_member_name  ON member(name);
-CREATE INDEX IF NOT EXISTS idx_member_email ON member(email);
+-- Member search indexes (case-insensitive prefix searches)
+CREATE INDEX IF NOT EXISTS idx_member_name_lower  ON member ((LOWER(name)));
+CREATE INDEX IF NOT EXISTS idx_member_email_lower ON member ((LOWER(email)));
 
--- Vehicle indexes
-CREATE INDEX IF NOT EXISTS idx_vehicle_plate ON vehicle(licenseplate);
+-- Vehicle search index (case-insensitive license plate prefix)
+CREATE INDEX IF NOT EXISTS idx_vehicle_plate_lower ON vehicle ((LOWER(licenseplate)));
 
--- Person visit indexes (partial index for active visits — only rows where ExitTime IS NULL)
-CREATE INDEX IF NOT EXISTS idx_person_visit_active     ON personvisit(exittime) WHERE exittime IS NULL;
+-- Active visit + recency patterns
+CREATE INDEX IF NOT EXISTS idx_person_visit_active_entry
+	ON personvisit(entrytime DESC)
+	WHERE exittime IS NULL;
+
+CREATE INDEX IF NOT EXISTS idx_vehicle_visit_active_entry
+	ON vehiclevisit(entrytime DESC)
+	WHERE exittime IS NULL;
+
+-- Recency history for visit listing endpoints
 CREATE INDEX IF NOT EXISTS idx_person_visit_entry_time ON personvisit(entrytime DESC);
-
--- Vehicle visit indexes
-CREATE INDEX IF NOT EXISTS idx_vehicle_visit_active     ON vehiclevisit(exittime) WHERE exittime IS NULL;
 CREATE INDEX IF NOT EXISTS idx_vehicle_visit_entry_time ON vehiclevisit(entrytime DESC);
 
--- Audit log indexes (already in audit_table.sql, here for reference)
-CREATE INDEX IF NOT EXISTS idx_audit_user        ON auditlog(userid);
-CREATE INDEX IF NOT EXISTS idx_audit_action      ON auditlog(action);
-CREATE INDEX IF NOT EXISTS idx_audit_table       ON auditlog(tablename);
-CREATE INDEX IF NOT EXISTS idx_audit_created     ON auditlog(createdat DESC);
-CREATE INDEX IF NOT EXISTS idx_audit_user_action ON auditlog(userid, action);
+-- Audit filtering patterns used in /api/audit
+CREATE INDEX IF NOT EXISTS idx_audit_user_action_created
+	ON auditlog(userid, action, createdat DESC);
 
--- User lookup index
+CREATE INDEX IF NOT EXISTS idx_audit_created ON auditlog(createdat DESC);
+
+-- Login lookup (exact match)
 CREATE INDEX IF NOT EXISTS idx_user_username ON "User"(username);
