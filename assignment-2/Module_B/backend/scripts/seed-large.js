@@ -13,6 +13,7 @@ const pool = new Pool({
   database: process.env.DB_NAME     || 'gateguard',
   user:     process.env.DB_USER     || 'postgres',
   password: process.env.DB_PASSWORD || 'root',
+  application_name: 'GateGuardSeeder',
 });
 
 async function main() {
