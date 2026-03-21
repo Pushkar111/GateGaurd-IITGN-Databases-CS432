@@ -2,8 +2,9 @@
 // Run with: node scripts/db-setup.js  (from backend directory)
 // Applies the full schema in order:
 //   1. assignment-1/database/schema.sql  (10 core tables)
-//   2. backend/sql/audit_table.sql       (AuditLog table)
-//   3. backend/sql/indexes.sql           (performance indexes)
+//   2. backend/sql/auth_tables.sql       (auth-related columns/tables)
+//   3. backend/sql/audit_table.sql       (AuditLog table)
+//   4. backend/sql/indexes.sql           (performance indexes)
 // Safe to re-run: schema.sql drops and recreates, audit + indexes use IF NOT EXISTS.
 
 'use strict';
@@ -18,6 +19,7 @@ const pool = new Pool({
   database: process.env.DB_NAME     || 'gateguard',
   user:     process.env.DB_USER     || 'postgres',
   password: process.env.DB_PASSWORD || 'root',
+  application_name: 'GateGuardSetup',
 });
 
 const GREEN = '\x1b[32m';
@@ -35,14 +37,33 @@ const SQL_FILES = [
     file:  path.join(REPO_ROOT, 'assignment-1', 'database', 'schema.sql'),
   },
   {
+    label: 'Auth tables/columns',
+    file:  path.join(BACKEND_ROOT, 'sql', 'auth_tables.sql'),
+  },
+  {
     label: 'AuditLog table',
     file:  path.join(BACKEND_ROOT, 'sql', 'audit_table.sql'),
+  },
+  {
+    label: 'Direct DB write guard',
+    file:  path.join(BACKEND_ROOT, 'sql', 'direct_write_guard.sql'),
   },
   {
     label: 'Performance indexes',
     file:  path.join(BACKEND_ROOT, 'sql', 'indexes.sql'),
   },
 ];
+
+const PRE_CLEAN_SQL = `
+DROP TABLE IF EXISTS usercreationrequest CASCADE;
+DROP TABLE IF EXISTS passwordresettoken CASCADE;
+DROP TABLE IF EXISTS refreshtoken CASCADE;
+DROP TABLE IF EXISTS loginhistory CASCADE;
+DROP TABLE IF EXISTS tokenblacklist CASCADE;
+DROP TABLE IF EXISTS DirectDbWriteAlert CASCADE;
+DROP TABLE IF EXISTS AuditLog CASCADE;
+DROP FUNCTION IF EXISTS flag_direct_db_write() CASCADE;
+`;
 
 async function runSqlFile(label, filePath) {
   if (!fs.existsSync(filePath)) {
@@ -56,6 +77,17 @@ async function runSqlFile(label, filePath) {
     return true;
   } catch (err) {
     console.log(`  ${RED}FAIL${RESET}  ${label} — ${err.message}`);
+    return false;
+  }
+}
+
+async function preCleanAuxiliaryObjects() {
+  try {
+    await pool.query(PRE_CLEAN_SQL);
+    console.log(`  ${GREEN}OK${RESET}  Pre-clean auxiliary objects`);
+    return true;
+  } catch (err) {
+    console.log(`  ${RED}FAIL${RESET}  Pre-clean auxiliary objects — ${err.message}`);
     return false;
   }
 }
@@ -75,6 +107,10 @@ async function main() {
   }
 
   let allOk = true;
+
+  const preCleanOk = await preCleanAuxiliaryObjects();
+  if (!preCleanOk) allOk = false;
+
   for (const { label, file } of SQL_FILES) {
     const ok = await runSqlFile(label, file);
     if (!ok) allOk = false;
