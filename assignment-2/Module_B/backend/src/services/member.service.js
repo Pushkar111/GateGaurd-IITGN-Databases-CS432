@@ -4,7 +4,53 @@ const memberTypeModel = require('../models/memberType.model');
 const AppError        = require('../utils/AppError');
 const { parsePagination, buildPagination } = require('../utils/helpers');
 
-async function getAll(queryParams = {}) {
+function isPrivileged(actor) {
+  const role = String(actor?.role || '').toLowerCase();
+  return role === 'admin' || role === 'superadmin';
+}
+
+async function resolveLinkedMemberId(actor) {
+  if (!actor) return null;
+  if (actor.memberId !== null && actor.memberId !== undefined) {
+    const numeric = Number(actor.memberId);
+    return Number.isNaN(numeric) ? null : numeric;
+  }
+
+  // fallback: attempt a deterministic email mapping from username
+  if (actor.username) {
+    const mapped = await memberModel.findIdByEmail(`${actor.username}@iitgn.ac.in`);
+    if (mapped) return Number(mapped);
+  }
+
+  return null;
+}
+
+async function assertCanReadMember(actor, targetMemberId) {
+  if (!actor) throw new AppError('Authentication required.', 401);
+  if (isPrivileged(actor)) return;
+
+  const linkedMemberId = await resolveLinkedMemberId(actor);
+  if (!linkedMemberId) {
+    throw new AppError('No linked member profile found for this account.', 403);
+  }
+
+  if (Number(targetMemberId) !== Number(linkedMemberId)) {
+    throw new AppError('You can only access your own member profile.', 403);
+  }
+}
+
+async function getAll(actor, queryParams = {}) {
+  // Guards are restricted to their linked member profile only.
+  if (!isPrivileged(actor)) {
+    const linkedMemberId = await resolveLinkedMemberId(actor);
+    if (!linkedMemberId) {
+      throw new AppError('No linked member profile found for this account.', 403);
+    }
+    const member = await memberModel.findById(linkedMemberId);
+    const members = member ? [member] : [];
+    return { members, pagination: buildPagination(members.length, 1, 1) };
+  }
+
   const { page, limit, offset } = parsePagination(queryParams);
   const filters = {
     search:  queryParams.search  || '',
@@ -20,7 +66,8 @@ async function getAll(queryParams = {}) {
   return { members, pagination: buildPagination(total, page, limit) };
 }
 
-async function getById(id) {
+async function getById(id, actor) {
+  await assertCanReadMember(actor, id);
   const member = await memberModel.findById(Number(id));
   if (!member) throw new AppError(`Member with ID ${id} not found.`, 404);
   return member;
@@ -58,4 +105,8 @@ async function deleteMember(id) {
   return { deleted: true, memberId: Number(id) };
 }
 
-module.exports = { getAll, getById, create, update, delete: deleteMember };
+async function getTypes() {
+  return memberModel.getTypes();
+}
+
+module.exports = { getAll, getById, getTypes, create, update, delete: deleteMember };
