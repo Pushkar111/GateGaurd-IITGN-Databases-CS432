@@ -25,8 +25,8 @@ Course context:
 
 - Module A report notebook: [assignment-2/Module_A/report.ipynb](assignment-2/Module_A/report.ipynb)
 - Module B optimization report: [assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf](assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf)
-- Module A demo video link: pending finalization (will be added here)
-- Module B demo video link: pending finalization (will be added here)
+- Module A demo video link: [Video Link](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing)
+- Module B demo video link: [Video Link](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing)
 
 ---
 
@@ -513,8 +513,8 @@ What can be improved next:
 
 ## 16) Submission Links
 
-- Module A demo: add your link
-- Module B demo: add your link
+- Module A demo: [Video Link](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing)
+- Module B demo: [Video Link](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing)
 
 Recommended demo flow:
 - Environment setup and startup
