@@ -10,8 +10,11 @@ import { useAuth } from '@/context/AuthContext';
 // ── Loading fallback for lazy pages ──────────────────────────────────
 function PageLoader() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    <div className="flex min-h-screen items-center justify-center bg-[#090d12]">
+      <div className="relative flex items-center justify-center">
+        <div className="absolute h-16 w-16 rounded-full bg-cyan-400/10 blur-xl" />
+        <div className="h-9 w-9 animate-spin rounded-full border-2 border-cyan-300/80 border-t-transparent" />
+      </div>
     </div>
   );
 }
