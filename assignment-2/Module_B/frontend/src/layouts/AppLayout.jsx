@@ -17,6 +17,7 @@ import { buildAppNavigation } from '@/lib/navigationConfig';
 import { pageVariants, bellShake } from '@/lib/motion';
 import CommandPalette from '@/components/layout/CommandPalette';
 import ActionCenter from '@/components/action-center/ActionCenter';
+import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import * as dashboardApi from '@/api/dashboard.api';
 
 // ── Tooltip-wrapped icon button ───────────────────────────────────────
@@ -79,6 +80,8 @@ export default function AppLayout() {
 
   const [cmdOpen,         setCmdOpen]         = useState(false);
   const [actionCenterOpen, setActionCenterOpen] = useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [logoutLoading,    setLogoutLoading]    = useState(false);
   const [bellAnimating,   setBellAnimating]   = useState(false);
   const [activeCount,     setActiveCount]     = useState({ person: 0, vehicle: 0 });
 
@@ -150,6 +153,15 @@ export default function AppLayout() {
     setBellAnimating(true);
     setTimeout(() => setBellAnimating(false), 600);
   }, []);
+
+  const handleRequestLogout = useCallback(() => {
+    setLogoutDialogOpen(true);
+  }, []);
+
+  const handleConfirmLogout = useCallback(async () => {
+    setLogoutLoading(true);
+    await logout();
+  }, [logout]);
 
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
@@ -235,7 +247,7 @@ export default function AppLayout() {
 
           {/* Logout */}
           <button
-            onClick={logout}
+            onClick={handleRequestLogout}
             className="icon-rail-btn ml-1 hover:text-red-400 hover:bg-red-400/10"
             title="Log out"
           >
@@ -314,6 +326,16 @@ export default function AppLayout() {
         open={actionCenterOpen}
         onOpenChange={setActionCenterOpen}
         onActionCompleted={refreshActiveCounts}
+      />
+
+      <ConfirmDialog
+        open={logoutDialogOpen}
+        onOpenChange={setLogoutDialogOpen}
+        title="Log out from GateGuard?"
+        description="You will be signed out from this device and redirected to the login page."
+        onConfirm={handleConfirmLogout}
+        loading={logoutLoading}
+        variant="warning"
       />
     </div>
   );
