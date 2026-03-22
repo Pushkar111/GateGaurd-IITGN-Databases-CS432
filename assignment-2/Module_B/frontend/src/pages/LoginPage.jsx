@@ -364,7 +364,7 @@ export default function LoginPage() {
                 </form>
 
                 <p className="text-center text-xs text-zinc-500 pt-6 mt-6 border-t border-zinc-800/80">
-                  Demo: <span className="font-mono text-zinc-300">superadmin</span> / <span className="font-mono text-zinc-300">Admin@123</span>
+                  Demo: <span className="font-mono text-zinc-300">superadmin</span> / <span className="font-mono text-zinc-300">admin123</span>
                 </p>
               </>
             )}
