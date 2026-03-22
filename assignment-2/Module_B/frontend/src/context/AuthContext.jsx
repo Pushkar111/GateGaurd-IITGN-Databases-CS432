@@ -76,13 +76,9 @@ export function AuthProvider({ children }) {
 
   // ── Logout ───────────────────────────────────────────────────────────
   const logout = useCallback(async () => {
-    try {
-      const currentRefresh = localStorage.getItem(STORAGE_REFRESH_KEY);
-      await authApi.logout({ refreshToken: currentRefresh });
-    } catch {
-      // ignore logout errors on backend
-    }
-    
+    const currentRefresh = localStorage.getItem(STORAGE_REFRESH_KEY);
+
+    // Optimistic logout: clear client auth state first for immediate route transition.
     localStorage.removeItem(STORAGE_ACCESS_KEY);
     localStorage.removeItem(STORAGE_REFRESH_KEY);
     localStorage.removeItem(STORAGE_USER_KEY);
@@ -91,8 +87,13 @@ export function AuthProvider({ children }) {
     setToken(null);
     setRefreshToken(null);
     setIsAuthenticated(false);
-    // navigate to login — use window.location to guarantee clean slate
-    window.location.href = '/login';
+
+    // Best-effort backend invalidation without blocking UI navigation.
+    if (currentRefresh) {
+      authApi.logout({ refreshToken: currentRefresh }).catch(() => {
+        // ignore logout errors on backend
+      });
+    }
   }, []);
 
   const markPasswordUpdated = useCallback(() => {
