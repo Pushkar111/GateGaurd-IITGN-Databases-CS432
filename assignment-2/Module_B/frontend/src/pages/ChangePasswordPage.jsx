@@ -9,6 +9,7 @@ import { Key, Loader2, Eye, EyeOff, X, Check, ShieldCheck } from 'lucide-react';
 import * as authApi from '@/api/auth.api';
 import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
 
 // ── Floating label auth-input wrapper ─────────────────────────────────
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
@@ -142,14 +143,18 @@ export default function ChangePasswordPage() {
   // Auth card — amber variant: override the ::before pseudo-element color via inline style trick
   // We use a wrapper div with amber conic gradient to simulate the amber rotating border
   return (
-    <div className="min-h-screen relative overflow-hidden auth-grid-bg"
-         style={{ background:'hsl(228 50% 3%)' }}>
+    <HeroHighlight containerClassName="bg-[#0d0d1a] dark:bg-[#0d0d1a]">
+      <div className="relative z-10 flex min-h-screen w-full flex-col items-center justify-center p-4">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mb-6 text-center text-sm text-neutral-300 md:text-base"
+        >
+          Enforce first-login security with{" "}
+          <Highlight className="text-black dark:text-white">mandatory password reset</Highlight>
+        </motion.p>
 
-      {/* Background orbs */}
-      <div style={{ position:'absolute', top:'-10%', left:'-5%', width:500, height:500, borderRadius:'50%', background:'radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%)', filter:'blur(60px)', pointerEvents:'none' }}/>
-      <div style={{ position:'absolute', bottom:'-5%', right:'-5%', width:400, height:400, borderRadius:'50%', background:'radial-gradient(circle, rgba(251,191,36,0.07) 0%, transparent 70%)', filter:'blur(60px)', pointerEvents:'none' }}/>
-
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
         <motion.div
           initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
           transition={{ duration:0.4 }}
@@ -263,6 +268,6 @@ export default function ChangePasswordPage() {
           </AnimatePresence>
         </motion.div>
       </div>
-    </div>
+    </HeroHighlight>
   );
 }
