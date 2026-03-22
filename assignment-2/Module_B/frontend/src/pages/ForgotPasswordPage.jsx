@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import * as authApi from '@/api/auth.api';
 import { toast } from 'sonner';
+import { HeroHighlight } from '@/components/ui/hero-highlight';
 
 // ── Floating label auth-input wrapper ─────────────────────────────────
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
@@ -26,11 +27,11 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
           value={value}
           onChange={onChange}
           autoFocus={autoFocus}
-          className="auth-input peer"
+          className="auth-input auth-input-floating peer"
           placeholder=" "
           style={showToggle ? { paddingRight: 44 } : {}}
         />
-        <label className="absolute left-11 top-1/2 -translate-y-1/2 text-[15px] text-white/30 pointer-events-none transition-all duration-200 peer-focus:text-xs peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-indigo-400 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:-translate-y-0">
+        <label className="absolute left-11 top-1/2 -translate-y-1/2 text-[15px] text-zinc-400 pointer-events-none transition-all duration-200 peer-focus:top-1.5 peer-focus:-translate-y-0 peer-focus:text-[11px] peer-focus:text-zinc-200 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:-translate-y-0 peer-[:not(:placeholder-shown)]:text-[11px]">
           {label}
         </label>
         {showToggle !== undefined && (
@@ -410,23 +411,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden auth-grid-bg"
-         style={{ background: 'hsl(228 50% 3%)' }}>
-
-      {/* Background orbs */}
-      <div style={{ position:'absolute', top:'-10%', left:'-5%',  width:500, height:500, borderRadius:'50%', background:'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)', filter:'blur(60px)', pointerEvents:'none' }}/>
-      <div style={{ position:'absolute', bottom:'-5%',right:'-5%', width:400, height:400, borderRadius:'50%', background:'radial-gradient(circle, rgba(167,139,250,0.08) 0%, transparent 70%)', filter:'blur(60px)', pointerEvents:'none' }}/>
-      <div style={{ position:'absolute', top:'40%',  left:'40%',   width:300, height:300, borderRadius:'50%', background:'radial-gradient(circle, rgba(244,114,182,0.06) 0%, transparent 70%)', filter:'blur(40px)', pointerEvents:'none' }}/>
-
-      {/* Card */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+    <HeroHighlight containerClassName="dark bg-[#0d0d1a]">
+      <div className="simple-auth-page">
+        <div className="w-full simple-auth-grid">
         <AnimatePresence mode="wait">
           {isSuccess ? (
             <motion.div
               key="success"
               initial={{ opacity:0, scale:0.95 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0 }}
               transition={{ duration:0.35 }}
-              className="auth-card w-full max-w-sm p-8 text-center"
+              className="auth-card mx-auto w-full max-w-sm p-8 text-center"
             >
               <SuccessCheckmark/>
               <h2 className="gradient-text text-2xl font-bold mb-2" style={{ background:'linear-gradient(135deg,#10b981,#34d399)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
@@ -444,7 +438,7 @@ export default function ForgotPasswordPage() {
             <motion.div
               key="card"
               initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
-              className="auth-card w-full max-w-sm p-8"
+              className="auth-card mx-auto w-full max-w-sm p-8"
             >
               <StepIndicator step={step} />
 
@@ -453,8 +447,8 @@ export default function ForgotPasswordPage() {
                 {step === 1 && (
                   <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedMailIcon/>
-                    <h1 className="gradient-text text-2xl font-bold text-center mb-1">Forgot password?</h1>
-                    <p className="text-center text-sm mb-6" style={{ color:'rgba(255,255,255,0.45)' }}>
+                    <h1 className="text-zinc-100 text-2xl font-bold text-center mb-1">Forgot password?</h1>
+                    <p className="text-center text-sm mb-6" style={{ color:'rgba(228,228,231,0.7)' }}>
                       Enter your registered email address
                     </p>
                     <form onSubmit={handleSendOtp}>
@@ -487,7 +481,7 @@ export default function ForgotPasswordPage() {
                       </button>
                     </form>
                     <div className="text-center mt-4">
-                      <Link to="/login" className="text-sm" style={{ color:'rgba(255,255,255,0.35)', textDecoration:'none' }}>
+                      <Link to="/login" className="text-sm" style={{ color:'rgba(228,228,231,0.65)', textDecoration:'none' }}>
                         ← Back to login
                       </Link>
                     </div>
@@ -498,8 +492,8 @@ export default function ForgotPasswordPage() {
                 {step === 2 && (
                   <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedEnvelopeOpen/>
-                    <h1 className="text-xl font-bold text-center mb-1" style={{ color:'#f1f5f9' }}>Check your email</h1>
-                    <p className="text-center text-sm mb-2" style={{ color:'rgba(255,255,255,0.45)' }}>
+                    <h1 className="text-xl font-bold text-center mb-1" style={{ color:'#f4f4f5' }}>Check your email</h1>
+                    <p className="text-center text-sm mb-2" style={{ color:'rgba(228,228,231,0.7)' }}>
                       We sent a code to
                     </p>
                     <div className="text-center mb-6">
@@ -587,8 +581,8 @@ export default function ForgotPasswordPage() {
                 {step === 3 && (
                   <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedShieldIcon isSuccess={canReset}/>
-                    <h1 className="text-xl font-bold text-center mb-1" style={{ color:'#f1f5f9' }}>Set new password</h1>
-                    <p className="text-center text-sm mb-6" style={{ color:'rgba(255,255,255,0.45)' }}>
+                    <h1 className="text-xl font-bold text-center mb-1" style={{ color:'#f4f4f5' }}>Set new password</h1>
+                    <p className="text-center text-sm mb-6" style={{ color:'rgba(228,228,231,0.7)' }}>
                       Choose a strong password for your account
                     </p>
                     <form onSubmit={handleReset} className="text-left">
@@ -644,7 +638,8 @@ export default function ForgotPasswordPage() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </HeroHighlight>
   );
 }
