@@ -14,6 +14,62 @@ import { useAuth } from '@/context/AuthContext';
 import { scaleIn } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { HeroHighlight } from '@/components/ui/hero-highlight';
+
+function launchUltraConfetti() {
+  const duration = 1400;
+  const animationEnd = Date.now() + duration;
+  const defaults = {
+    startVelocity: 34,
+    spread: 68,
+    ticks: 92,
+    zIndex: 3000,
+    colors: ['#00AEEF', '#22D3EE', '#F59E0B', '#10B981', '#FF0033', '#E5E7EB'],
+    scalar: 1.05,
+  };
+
+  // Opening side cannons.
+  confetti({ ...defaults, particleCount: 70, origin: { x: 0.08, y: 0.62 }, angle: 58 });
+  confetti({ ...defaults, particleCount: 70, origin: { x: 0.92, y: 0.62 }, angle: 122 });
+
+  const interval = setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      return;
+    }
+
+    const particleCount = Math.max(12, Math.floor((timeLeft / duration) * 42));
+
+    confetti({
+      ...defaults,
+      particleCount,
+      spread: 96,
+      startVelocity: 26,
+      drift: (Math.random() - 0.5) * 0.8,
+      origin: { x: 0.5, y: 0.2 },
+      gravity: 0.95,
+    });
+
+    confetti({
+      ...defaults,
+      particleCount: Math.max(8, Math.floor(particleCount / 2)),
+      spread: 42,
+      startVelocity: 44,
+      origin: { x: Math.random() * 0.3 + 0.35, y: Math.random() * 0.25 + 0.05 },
+      gravity: 1.08,
+    });
+  }, 180);
+}
+
+function warmPostLoginChunks() {
+  // Reduce lazy-route fallback flashes during navigation from login.
+  Promise.allSettled([
+    import('@/layouts/AppLayout'),
+    import('@/pages/DashboardPage'),
+    import('@/pages/ChangePasswordPage'),
+  ]);
+}
 
 // ── Zod schema ─────────────────────────────────────────────────────────
 const schema = z.object({
@@ -54,11 +110,11 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
           value={value}
           onChange={onChange}
           autoFocus={autoFocus}
-          className="auth-input peer"
+          className="auth-input auth-input-floating peer"
           placeholder=" "
           style={showToggle ? { paddingRight: 44 } : {}}
         />
-        <label className="absolute left-11 top-1/2 -translate-y-1/2 text-[15px] text-white/30 pointer-events-none transition-all duration-200 peer-focus:text-xs peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-indigo-400 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:-translate-y-0">
+        <label className="absolute left-11 top-1/2 -translate-y-1/2 text-[15px] text-zinc-400 pointer-events-none transition-all duration-200 peer-focus:top-1.5 peer-focus:-translate-y-0 peer-focus:text-[11px] peer-focus:text-zinc-200 peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:-translate-y-0 peer-[:not(:placeholder-shown)]:text-[11px]">
           {label}
         </label>
         {showToggle !== undefined && (
@@ -74,32 +130,6 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
           </motion.p>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-// ── Shared Background (Grid + Orbs) ───────────────────────────────────
-export function AuthBackground() {
-  return (
-    <div className="fixed inset-0 pointer-events-none z-[-2] overflow-hidden bg-[#0d0d1a]">
-      {/* Mesh body animation is in globals.css under body */}
-      
-      {/* Grid overlay */}
-      <div className="absolute inset-0 opacity-40 mix-blend-overlay" style={{
-        backgroundImage: 'linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px)',
-        backgroundSize: '40px 40px'
-      }} />
-
-      {/* 3 Floating Orbs */}
-      <motion.div animate={{ y: [0, -30, 0], x: [0, 20, 0] }} transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-[-100px] left-[-100px] w-[700px] h-[700px] rounded-full bg-indigo-500 opacity-[0.06] blur-[100px]" />
-      <motion.div animate={{ y: [0, 40, 0], x: [0, -20, 0] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        className="absolute bottom-[-100px] right-[-100px] w-[500px] h-[500px] rounded-full bg-purple-500 opacity-[0.05] blur-[120px]" />
-      <motion.div animate={{ y: [0, -20, 0], x: [0, -40, 0] }} transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
-        className="absolute top-[30%] right-[10%] w-[300px] h-[300px] rounded-full bg-pink-500 opacity-[0.04] blur-[80px]" />
-        
-      {/* Noise filter */}
-      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }} />
     </div>
   );
 }
@@ -169,7 +199,8 @@ export default function LoginPage() {
     try {
       const userData = await login(data.username, data.password);
 
-      confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 }, colors: ['#6366f1', '#a78bfa', '#f59e0b', '#10b981'], scalar: 1.2 });
+      warmPostLoginChunks();
+      launchUltraConfetti();
 
       setTimeout(() => {
         if (userData?.mustChangePassword || userData?.mustchangepassword) {
@@ -178,7 +209,7 @@ export default function LoginPage() {
         } else {
           navigate('/dashboard', { replace: true });
         }
-      }, 700);
+      }, 140);
 
     } catch (err) {
       const status = err?.response?.status;
@@ -198,16 +229,16 @@ export default function LoginPage() {
   const isLocked = !!lockedUntil;
 
   return (
-    <>
-      <AuthBackground />
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-8 z-10 relative">
+    <HeroHighlight containerClassName="dark bg-[#0d0d1a]">
+      <div className="simple-auth-page">
+        <div className="w-full simple-auth-grid">
         <motion.div
           animate={isLocked ? { x: [0, -8, 8, -8, 8, 0] } : {}}
           transition={{ duration: 0.4 }}
-          className="relative w-full max-w-[440px]"
+          className="relative"
         >
           {/* Card */}
-          <div className={cn('auth-card transition-all duration-500', isLocked && 'border-red-500/40 shadow-[0_0_40px_rgba(239,68,68,0.1)]')}>
+          <div className={cn('auth-card p-8 md:p-10 transition-all duration-500', isLocked && 'border-red-500/40 shadow-[0_0_40px_rgba(239,68,68,0.1)]')}>
             
             {/* ── Logo ───────────────────────────────────────────────── */}
             <div className="flex flex-col items-center gap-3 text-center mb-8">
@@ -217,25 +248,26 @@ export default function LoginPage() {
                   <Lock size={32} className="text-red-500" />
                 </motion.div>
               ) : (
-                <div className="relative w-16 h-16 flex items-center justify-center">
-                  <svg width="48" height="48" viewBox="0 0 48 48" className="text-indigo-500 relative z-10">
-                    <motion.path
-                      d="M24 4L4 12V22C4 32.7 12.6 42.1 24 44C35.4 42.1 44 32.7 44 22V12L24 4Z"
-                      fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ duration: 1.2, ease: "easeOut" }}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 bg-indigo-500/20 rounded-2xl blur-xl animate-pulse-glow" />
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.45, ease: 'easeOut' }}
+                  className="relative"
+                >
+                  <img
+                    src="/Final_IITGN_Logo_symmetric.png"
+                    alt="IITGN GateGuard logo"
+                    className="h-[92px] w-[92px] object-contain drop-shadow-[0_10px_24px_rgba(0,174,239,0.24)]"
+                    draggable="false"
+                  />
+                </motion.div>
               )}
 
               <div>
-                <h1 className={cn('text-3xl font-bold tracking-tight', isLocked ? 'bg-gradient-to-r from-red-500 to-red-400 bg-clip-text text-transparent' : 'gradient-text')}>
+                <h1 className={cn('text-3xl font-bold tracking-tight text-zinc-100', isLocked ? 'text-red-400' : '')}>
                   {isLocked ? 'Account Locked' : 'GateGuard'}
                 </h1>
-                <p className="text-white/30 text-xs font-medium mt-1 tracking-widest uppercase">
+                <p className="text-zinc-500 text-xs font-medium mt-1 tracking-widest uppercase">
                   IIT Gandhinagar Security System
                 </p>
               </div>
@@ -324,25 +356,26 @@ export default function LoginPage() {
                   </button>
 
                   <div className="text-center mt-4">
-                    <a href="/forgot-password" className="text-sm text-indigo-400/80 hover:text-indigo-400 transition-colors relative group inline-block">
+                    <a href="/forgot-password" className="text-sm text-zinc-300 hover:text-zinc-100 transition-colors relative group inline-block">
                       Forgot password?
-                      <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-indigo-400 transition-all duration-300 group-hover:w-full"></span>
+                      <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-zinc-300 transition-all duration-300 group-hover:w-full"></span>
                     </a>
                   </div>
                 </form>
 
-                <p className="text-center text-xs text-white/20 pt-6 mt-6 border-t border-white/[0.06]">
-                  Demo: <span className="font-mono text-white/35">superadmin</span> / <span className="font-mono text-white/35">Admin@123</span>
+                <p className="text-center text-xs text-zinc-500 pt-6 mt-6 border-t border-zinc-800/80">
+                  Demo: <span className="font-mono text-zinc-300">superadmin</span> / <span className="font-mono text-zinc-300">Admin@123</span>
                 </p>
               </>
             )}
 
-            <p className="text-center text-[10px] text-white/20 mt-4 leading-relaxed absolute bottom-4 left-0 right-0">
+            <p className="text-center text-[10px] text-zinc-500 mt-5 leading-relaxed">
               Powered by IIT Gandhinagar · CS432 Databases
             </p>
           </div>
         </motion.div>
+        </div>
       </div>
-    </>
+    </HeroHighlight>
   );
 }
