@@ -1,0 +1,590 @@
+[2026-03-18T21:21:09.076+05:30] [ERROR] POST /api/auth/login — 500 — error: relation "Role" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findByUsername (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\user.model.js:22:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\auth.service.js:21:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\auth.controller.js:16:20)
+[2026-03-18T21:24:45.404+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:24:45.412+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:24:54.897+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:24:54.910+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:25:16.158+05:30] [ERROR] GET /api/vehicles?page=1&limit=12 — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:16:29)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:9:20)
+[2026-03-18T21:25:16.171+05:30] [ERROR] GET /api/vehicles?page=1&limit=12 — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:16:29)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:9:20)
+[2026-03-18T21:25:22.127+05:30] [ERROR] GET /api/roles — 500 — error: relation "Role" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\role.model.js:10:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\role.controller.js:11:19)
+[2026-03-18T21:25:22.134+05:30] [ERROR] GET /api/roles — 500 — error: relation "Role" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\role.model.js:10:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\role.controller.js:11:19)
+[2026-03-18T21:25:31.495+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:25:31.502+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:12.557+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:12.615+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:33.786+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:26:33.788+05:30] [ERROR] GET /api/person-visits?page=1&limit=20 — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\personVisit.model.js:34:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\personVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\personVisit.controller.js:9:20)
+[2026-03-18T21:26:33.796+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:26:33.798+05:30] [ERROR] GET /api/person-visits?page=1&limit=20 — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\personVisit.model.js:34:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\personVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\personVisit.controller.js:9:20)
+[2026-03-18T21:26:42.623+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:42.631+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:51.293+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:51.300+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:26:55.753+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:32:44.039+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:32:44.073+05:30] [ERROR] GET /api/vehicles — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:16:29)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:9:20)
+[2026-03-18T21:32:44.077+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:32:44.083+05:30] [ERROR] GET /api/person-visits — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\personVisit.model.js:34:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\personVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\personVisit.controller.js:9:20)
+[2026-03-18T21:32:44.132+05:30] [ERROR] GET /api/vehicle-visits — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicleVisit.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicleVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicleVisit.controller.js:9:20)
+[2026-03-18T21:32:44.174+05:30] [ERROR] GET /api/roles — 500 — error: relation "Role" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\role.model.js:10:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\role.controller.js:11:19)
+[2026-03-18T21:33:02.162+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:33:02.178+05:30] [ERROR] GET /api/vehicles — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:16:29)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:9:20)
+[2026-03-18T21:33:02.183+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:33:02.188+05:30] [ERROR] GET /api/person-visits — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\personVisit.model.js:34:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\personVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\personVisit.controller.js:9:20)
+[2026-03-18T21:33:02.241+05:30] [ERROR] GET /api/vehicle-visits — 500 — error: column v.registrationnumber does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicleVisit.model.js:33:20)
+    at async Promise.all (index 0)
+    at async Object.getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicleVisit.service.js:16:27)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicleVisit.controller.js:9:20)
+[2026-03-18T21:33:02.289+05:30] [ERROR] GET /api/roles — 500 — error: relation "Role" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\role.model.js:10:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\role.controller.js:11:19)
+[2026-03-18T21:41:11.580+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:41:11.606+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:45:32.145+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:45:32.174+05:30] [ERROR] GET /api/gates — 500 — error: column g.status does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gate.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gate.controller.js:8:42)
+[2026-03-18T21:46:17.852+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T21:46:17.869+05:30] [ERROR] POST /api/members — 500 — error: duplicate key value violates unique constraint "member_email_key"
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.create (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\member.model.js:103:20)
+    at async Object.create (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\member.service.js:33:19)
+    at async create (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\member.controller.js:23:20)
+[2026-03-18T21:47:52.886+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: column pv.memberid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T22:15:00.508+05:30] [ERROR] GET /api/dashboard/stats — 500 — error: relation "member" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Promise.all (index 0)
+    at async Object.getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:8:77)
+    at async getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:7:19)
+[2026-03-18T22:15:05.429+05:30] [ERROR] GET /api/dashboard/stats — 500 — error: relation "member" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Promise.all (index 0)
+    at async Object.getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:8:77)
+    at async getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:7:19)
+[2026-03-18T22:15:05.465+05:30] [ERROR] GET /api/dashboard/visit-trend — 500 — error: relation "personvisit" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Promise.all (index 0)
+    at async Object.getVisitTrend (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:33:39)
+    at async getVisitTrend (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:21:19)
+[2026-03-18T22:15:05.479+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: relation "personvisit" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T22:15:05.500+05:30] [ERROR] GET /api/dashboard/stats — 500 — error: relation "member" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Promise.all (index 0)
+    at async Object.getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:8:77)
+    at async getStats (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:7:19)
+[2026-03-18T22:15:05.529+05:30] [ERROR] GET /api/dashboard/visit-trend — 500 — error: relation "personvisit" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Promise.all (index 0)
+    at async Object.getVisitTrend (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:33:39)
+    at async getVisitTrend (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:21:19)
+[2026-03-18T22:15:05.537+05:30] [ERROR] GET /api/dashboard/recent-activity — 500 — error: relation "personvisit" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\dashboard.model.js:72:20)
+    at async getRecentActivity (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\dashboard.controller.js:14:22)
+[2026-03-18T22:35:02.307+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T22:35:02.316+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T22:35:04.781+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T22:35:04.790+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T22:50:42.356+05:30] [ERROR] GET /api/members/types — 500 — error: invalid input syntax for type integer: "NaN"
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\member.model.js:64:20)
+    at async Object.getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\member.service.js:24:18)
+    at async getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\member.controller.js:16:20)
+[2026-03-18T22:50:42.482+05:30] [ERROR] GET /api/vehicles/types — 500 — error: invalid input syntax for type integer: "NaN"
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:56:20)
+    at async Object.getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:24:19)
+    at async getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:16:21)
+[2026-03-18T22:57:38.812+05:30] [ERROR] GET /api/vehicles/types — 500 — error: invalid input syntax for type integer: "NaN"
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\vehicle.model.js:56:20)
+    at async Object.getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\vehicle.service.js:24:19)
+    at async getById (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\vehicle.controller.js:16:21)
+[2026-03-18T23:05:38.128+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:05:38.137+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:05:38.180+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:05:38.226+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:06:55.100+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:06:55.113+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:06:55.264+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:06:55.272+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:03.552+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:03.559+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:03.719+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:03.726+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:06.465+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:06.473+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:14.193+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:14.199+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:14.378+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:08:14.425+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:13:10.169+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:13:10.177+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:20:57.812+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:20:57.819+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:20:57.946+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:20:57.990+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:32:40.691+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:32:40.700+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:32:40.843+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:32:40.896+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:37:54.534+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:37:54.542+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:37:54.711+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:37:54.721+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:50:52.867+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:50:52.892+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:50:53.001+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-18T23:50:53.090+05:30] [ERROR] GET /api/gate-occupancy — 500 — error: column go.occupancyid does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async Object.findAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\gateOccupancy.model.js:5:20)
+    at async getAll (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\gateOccupancy.controller.js:8:46)
+[2026-03-19T03:31:09.496+05:30] [ERROR] POST /api/auth/forgot-password — 500 — error: column u.email does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:35:18)
+    at async findUserByEmail (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\auth.service.js:46:20)
+    at async Object.forgotPassword (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\auth.service.js:258:16)
+    at async forgotPassword (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\auth.controller.js:85:20)
+[2026-03-21T15:41:40.695+05:30] [ERROR] POST /api/auth/refresh — 500 — error: relation "refreshtoken" does not exist
+    at C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\config\db.js:36:18)
+    at async Object.getRefreshToken (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\auth.model.js:16:20)
+    at async Object.refreshAccessToken (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\auth.service.js:182:23)
+    at async refresh (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\auth.controller.js:36:20)
