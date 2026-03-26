@@ -1,0 +1,586 @@
+{
+  "memberSearch": {
+    "label": "Member search by name ILIKE",
+    "before": {
+      "planningTime": 0.09820000000000001,
+      "executionTime": 7.7418,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.1046,
+      "executionTime": 7.791199999999999,
+      "scanType": "Seq Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.091,
+          "executionTime": 7.526,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.102,
+          "executionTime": 7.717,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.117,
+          "executionTime": 7.836,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.098,
+          "executionTime": 7.705,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.083,
+          "executionTime": 7.925,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.098,
+          "executionTime": 7.619,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.118,
+          "executionTime": 8.206,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.114,
+          "executionTime": 7.801,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.071,
+          "executionTime": 7.688,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.122,
+          "executionTime": 7.642,
+          "scanType": "Seq Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Limit  (cost=86.51..86.51 rows=1 width=856) (actual time=7.909..7.911 rows=20 loops=1)\n  Buffers: shared hit=10072\n  ->  Sort  (cost=86.51..86.51 rows=1 width=856) (actual time=7.909..7.909 rows=20 loops=1)\n        Sort Key: m.name\n        Sort Method: top-N heapsort  Memory: 26kB\n        Buffers: shared hit=10072\n        ->  Nested Loop  (cost=0.15..86.50 rows=1 width=856) (actual time=0.013..6.191 rows=5000 loops=1)\n              Buffers: shared hit=10072\n              ->  Seq Scan on member m  (cost=0.00..78.30 rows=1 width=742) (actual time=0.009..2.784 rows=5000 loops=1)\n                    Filter: ((name)::text ~~* 'member%'::text)\n                    Buffers: shared hit=72\n              ->  Index Scan using membertype_pkey on membertype mt  (cost=0.15..8.17 rows=1 width=122) (actual time=0.000..0.000 rows=1 loops=5000)\n                    Index Cond: (typeid = m.typeid)\n                    Buffers: shared hit=10000\nPlanning Time: 0.083 ms\nExecution Time: 7.925 ms",
+      "after": "Limit  (cost=150.87..150.88 rows=2 width=856) (actual time=7.628..7.629 rows=20 loops=1)\n  Buffers: shared hit=10072\n  ->  Sort  (cost=150.87..150.88 rows=2 width=856) (actual time=7.627..7.628 rows=20 loops=1)\n        Sort Key: m.name\n        Sort Method: top-N heapsort  Memory: 26kB\n        Buffers: shared hit=10072\n        ->  Nested Loop  (cost=0.15..150.86 rows=2 width=856) (actual time=0.015..5.981 rows=5000 loops=1)\n              Buffers: shared hit=10072\n              ->  Seq Scan on member m  (cost=0.00..134.50 rows=2 width=742) (actual time=0.009..2.674 rows=5000 loops=1)\n                    Filter: ((name)::text ~~* 'member%'::text)\n                    Buffers: shared hit=72\n              ->  Index Scan using membertype_pkey on membertype mt  (cost=0.15..8.17 rows=1 width=122) (actual time=0.000..0.000 rows=1 loops=5000)\n                    Index Cond: (typeid = m.typeid)\n                    Buffers: shared hit=10000\nPlanning Time: 0.122 ms\nExecution Time: 7.642 ms"
+    }
+  },
+  "activePersonVisits": {
+    "label": "Active person visits (ExitTime IS NULL)",
+    "before": {
+      "planningTime": 0.11259999999999999,
+      "executionTime": 8.097999999999999,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.18080000000000002,
+      "executionTime": 5.998600000000001,
+      "scanType": "Bitmap Heap Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.096,
+          "executionTime": 7.938,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.097,
+          "executionTime": 7.645,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.115,
+          "executionTime": 8.623,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.123,
+          "executionTime": 8.094,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.132,
+          "executionTime": 8.19,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.13,
+          "executionTime": 5.576,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.109,
+          "executionTime": 5.559,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.171,
+          "executionTime": 5.591,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.328,
+          "executionTime": 6.92,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.166,
+          "executionTime": 6.347,
+          "scanType": "Bitmap Heap Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Sort  (cost=1231.80..1232.51 rows=284 width=448) (actual time=7.352..7.909 rows=7423 loops=1)\n  Sort Key: pv.entrytime DESC\n  Sort Method: quicksort  Memory: 598kB\n  Buffers: shared hit=629\n  ->  Hash Join  (cost=95.59..1220.22 rows=284 width=448) (actual time=0.752..6.070 rows=7423 loops=1)\n        Hash Cond: (pv.entrygateid = eg.gateid)\n        Buffers: shared hit=629\n        ->  Hash Join  (cost=83.34..1207.22 rows=284 width=234) (actual time=0.738..5.219 rows=7423 loops=1)\n              Hash Cond: (pv.personid = m.memberid)\n              Buffers: shared hit=628\n              ->  Seq Scan on personvisit pv  (cost=0.00..1123.12 rows=284 width=20) (actual time=0.006..3.361 rows=7423 loops=1)\n                    Filter: (exittime IS NULL)\n                    Rows Removed by Filter: 42577\n                    Buffers: shared hit=556\n              ->  Hash  (cost=77.04..77.04 rows=504 width=222) (actual time=0.730..0.730 rows=5000 loops=1)\n                    Buckets: 8192 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 299kB\n                    Buffers: shared hit=72\n                    ->  Seq Scan on member m  (cost=0.00..77.04 rows=504 width=222) (actual time=0.004..0.336 rows=5000 loops=1)\n                          Buffers: shared hit=72\n        ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.010..0.010 rows=4 loops=1)\n              Buckets: 1024  Batches: 1  Memory Usage: 9kB\n              Buffers: shared hit=1\n              ->  Seq Scan on gate eg  (cost=0.00..11.00 rows=100 width=222) (actual time=0.007..0.008 rows=4 loops=1)\n                    Buffers: shared hit=1\nPlanning Time: 0.132 ms\nExecution Time: 8.190 ms",
+      "after": "Sort  (cost=662.69..663.32 rows=250 width=448) (actual time=5.611..6.045 rows=7423 loops=1)\n  Sort Key: pv.entrytime DESC\n  Sort Method: quicksort  Memory: 598kB\n  Buffers: shared hit=637\n  ->  Hash Join  (cost=202.34..652.73 rows=250 width=448) (actual time=1.003..4.372 rows=7423 loops=1)\n        Hash Cond: (pv.entrygateid = eg.gateid)\n        Buffers: shared hit=637\n        ->  Hash Join  (cost=190.09..639.82 rows=250 width=234) (actual time=0.983..3.536 rows=7423 loops=1)\n              Hash Cond: (pv.personid = m.memberid)\n              Buffers: shared hit=636\n              ->  Bitmap Heap Scan on personvisit pv  (cost=5.59..454.66 rows=250 width=20) (actual time=0.232..1.495 rows=7423 loops=1)\n                    Recheck Cond: (exittime IS NULL)\n                    Heap Blocks: exact=556\n                    Buffers: shared hit=564\n                    ->  Bitmap Index Scan on idx_person_visit_active_entry  (cost=0.00..5.53 rows=250 width=0) (actual time=0.186..0.186 rows=7423 loops=1)\n                          Buffers: shared hit=8\n              ->  Hash  (cost=122.00..122.00 rows=5000 width=222) (actual time=0.729..0.730 rows=5000 loops=1)\n                    Buckets: 8192  Batches: 1  Memory Usage: 299kB\n                    Buffers: shared hit=72\n                    ->  Seq Scan on member m  (cost=0.00..122.00 rows=5000 width=222) (actual time=0.006..0.361 rows=5000 loops=1)\n                          Buffers: shared hit=72\n        ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.014..0.014 rows=4 loops=1)\n              Buckets: 1024  Batches: 1  Memory Usage: 9kB\n              Buffers: shared hit=1\n              ->  Seq Scan on gate eg  (cost=0.00..11.00 rows=100 width=222) (actual time=0.010..0.010 rows=4 loops=1)\n                    Buffers: shared hit=1\nPlanning Time: 0.166 ms\nExecution Time: 6.347 ms"
+    }
+  },
+  "personVisitsByTime": {
+    "label": "Person visits sorted by EntryTime DESC",
+    "before": {
+      "planningTime": 0.10799999999999998,
+      "executionTime": 15.198399999999998,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.08560000000000001,
+      "executionTime": 0.1008,
+      "scanType": "Index Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.102,
+          "executionTime": 15.329,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.17,
+          "executionTime": 15.456,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.099,
+          "executionTime": 15.06,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.096,
+          "executionTime": 15.345,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.073,
+          "executionTime": 14.802,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.103,
+          "executionTime": 0.122,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.092,
+          "executionTime": 0.091,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.072,
+          "executionTime": 0.101,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.072,
+          "executionTime": 0.084,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.089,
+          "executionTime": 0.106,
+          "scanType": "Index Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Limit  (cost=3240.52..3240.64 rows=50 width=238) (actual time=14.759..14.763 rows=50 loops=1)\n  Buffers: shared hit=628\n  ->  Sort  (cost=3240.52..3382.30 rows=56712 width=238) (actual time=14.759..14.761 rows=50 loops=1)\n        Sort Key: pv.entrytime DESC\n        Sort Method: top-N heapsort  Memory: 30kB\n        Buffers: shared hit=628\n        ->  Hash Join  (cost=83.34..1356.59 rows=56712 width=238) (actual time=0.685..10.453 rows=50000 loops=1)\n              Hash Cond: (pv.personid = m.memberid)\n              Buffers: shared hit=628\n              ->  Seq Scan on personvisit pv  (cost=0.00..1123.12 rows=56712 width=24) (actual time=0.006..2.615 rows=50000 loops=1)\n                    Buffers: shared hit=556\n              ->  Hash  (cost=77.04..77.04 rows=504 width=222) (actual time=0.674..0.675 rows=5000 loops=1)\n                    Buckets: 8192 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 299kB\n                    Buffers: shared hit=72\n                    ->  Seq Scan on member m  (cost=0.00..77.04 rows=504 width=222) (actual time=0.003..0.317 rows=5000 loops=1)\n                          Buffers: shared hit=72\nPlanning Time: 0.073 ms\nExecution Time: 14.802 ms",
+      "after": "Limit  (cost=0.57..19.08 rows=50 width=238) (actual time=0.011..0.092 rows=50 loops=1)\n  Buffers: shared hit=191\n  ->  Nested Loop  (cost=0.57..18506.04 rows=50000 width=238) (actual time=0.011..0.089 rows=50 loops=1)\n        Buffers: shared hit=191\n        ->  Index Scan using idx_person_visit_entry_time on personvisit pv  (cost=0.29..3154.29 rows=50000 width=24) (actual time=0.006..0.020 rows=50 loops=1)\n              Buffers: shared hit=41\n        ->  Index Scan using member_pkey on member m  (cost=0.28..0.31 rows=1 width=222) (actual time=0.001..0.001 rows=1 loops=50)\n              Index Cond: (memberid = pv.personid)\n              Buffers: shared hit=150\nPlanning Time: 0.089 ms\nExecution Time: 0.106 ms"
+    }
+  },
+  "dashboardOccupancy": {
+    "label": "Dashboard gate occupancy JOIN",
+    "before": {
+      "planningTime": 0.040400000000000005,
+      "executionTime": 0.0156,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.0516,
+      "executionTime": 0.022,
+      "scanType": "Seq Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.049,
+          "executionTime": 0.017,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.042,
+          "executionTime": 0.016,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.037,
+          "executionTime": 0.015,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.037,
+          "executionTime": 0.015,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.037,
+          "executionTime": 0.015,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.057,
+          "executionTime": 0.022,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.053,
+          "executionTime": 0.021,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.055,
+          "executionTime": 0.022,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.05,
+          "executionTime": 0.028,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.043,
+          "executionTime": 0.017,
+          "scanType": "Seq Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Hash Join  (cost=12.25..45.62 rows=1850 width=226) (actual time=0.009..0.010 rows=4 loops=1)\n  Hash Cond: (go.gateid = g.gateid)\n  Buffers: shared hit=2\n  ->  Seq Scan on gateoccupancy go  (cost=0.00..28.50 rows=1850 width=8) (actual time=0.003..0.003 rows=4 loops=1)\n        Buffers: shared hit=1\n  ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.004..0.004 rows=4 loops=1)\n        Buckets: 1024  Batches: 1  Memory Usage: 9kB\n        Buffers: shared hit=1\n        ->  Seq Scan on gate g  (cost=0.00..11.00 rows=100 width=222) (actual time=0.002..0.002 rows=4 loops=1)\n              Buffers: shared hit=1\nPlanning Time: 0.037 ms\nExecution Time: 0.015 ms",
+      "after": "Hash Join  (cost=12.25..45.62 rows=1850 width=226) (actual time=0.010..0.011 rows=4 loops=1)\n  Hash Cond: (go.gateid = g.gateid)\n  Buffers: shared hit=2\n  ->  Seq Scan on gateoccupancy go  (cost=0.00..28.50 rows=1850 width=8) (actual time=0.004..0.004 rows=4 loops=1)\n        Buffers: shared hit=1\n  ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.004..0.004 rows=4 loops=1)\n        Buckets: 1024  Batches: 1  Memory Usage: 9kB\n        Buffers: shared hit=1\n        ->  Seq Scan on gate g  (cost=0.00..11.00 rows=100 width=222) (actual time=0.002..0.003 rows=4 loops=1)\n              Buffers: shared hit=1\nPlanning Time: 0.043 ms\nExecution Time: 0.017 ms"
+    }
+  },
+  "loginByUsername": {
+    "label": "Login by username exact match",
+    "before": {
+      "planningTime": 0.0492,
+      "executionTime": 0.013999999999999999,
+      "scanType": "Index Scan"
+    },
+    "after": {
+      "planningTime": 0.0556,
+      "executionTime": 0.016800000000000002,
+      "scanType": "Seq Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.058,
+          "executionTime": 0.017,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.047,
+          "executionTime": 0.014,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.05,
+          "executionTime": 0.013,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.046,
+          "executionTime": 0.013,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.045,
+          "executionTime": 0.013,
+          "scanType": "Index Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.071,
+          "executionTime": 0.018,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.06,
+          "executionTime": 0.016,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.05,
+          "executionTime": 0.015,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.049,
+          "executionTime": 0.015,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.048,
+          "executionTime": 0.02,
+          "scanType": "Seq Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Nested Loop  (cost=0.29..16.36 rows=1 width=756) (actual time=0.006..0.007 rows=1 loops=1)\n  Buffers: shared hit=4\n  ->  Index Scan using \"User_username_key\" on \"User\" u  (cost=0.14..8.16 rows=1 width=642) (actual time=0.005..0.005 rows=1 loops=1)\n        Index Cond: ((username)::text = 'superadmin'::text)\n        Buffers: shared hit=2\n  ->  Index Scan using role_pkey on role r  (cost=0.15..8.17 rows=1 width=122) (actual time=0.001..0.001 rows=1 loops=1)\n        Index Cond: (roleid = u.roleid)\n        Buffers: shared hit=2\nPlanning Time: 0.045 ms\nExecution Time: 0.013 ms",
+      "after": "Nested Loop  (cost=0.15..9.24 rows=1 width=756) (actual time=0.008..0.008 rows=1 loops=1)\n  Buffers: shared hit=3\n  ->  Seq Scan on \"User\" u  (cost=0.00..1.04 rows=1 width=642) (actual time=0.005..0.005 rows=1 loops=1)\n        Filter: ((username)::text = 'superadmin'::text)\n        Rows Removed by Filter: 2\n        Buffers: shared hit=1\n  ->  Index Scan using role_pkey on role r  (cost=0.15..8.17 rows=1 width=122) (actual time=0.003..0.003 rows=1 loops=1)\n        Index Cond: (roleid = u.roleid)\n        Buffers: shared hit=2\nPlanning Time: 0.048 ms\nExecution Time: 0.020 ms"
+    }
+  },
+  "auditLogFilter": {
+    "label": "Audit logs filtered by userId + action",
+    "before": {
+      "planningTime": 0.028599999999999997,
+      "executionTime": 0.009600000000000001,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.0448,
+      "executionTime": 0.009600000000000001,
+      "scanType": "Index Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.038,
+          "executionTime": 0.011,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.031,
+          "executionTime": 0.01,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.025,
+          "executionTime": 0.009,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.025,
+          "executionTime": 0.009,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.024,
+          "executionTime": 0.009,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.056,
+          "executionTime": 0.01,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.042,
+          "executionTime": 0.008,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.039,
+          "executionTime": 0.008,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.049,
+          "executionTime": 0.014,
+          "scanType": "Index Scan"
+        },
+        {
+          "planningTime": 0.038,
+          "executionTime": 0.008,
+          "scanType": "Index Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Limit  (cost=10.91..10.92 rows=1 width=1162) (actual time=0.003..0.004 rows=0 loops=1)\n  ->  Sort  (cost=10.91..10.92 rows=1 width=1162) (actual time=0.003..0.003 rows=0 loops=1)\n        Sort Key: createdat DESC\n        Sort Method: quicksort  Memory: 25kB\n        ->  Seq Scan on auditlog  (cost=0.00..10.90 rows=1 width=1162) (actual time=0.002..0.002 rows=0 loops=1)\n              Filter: ((userid = 1) AND ((action)::text = 'UPDATE'::text))\nPlanning:\n  Buffers: shared hit=1\nPlanning Time: 0.024 ms\nExecution Time: 0.009 ms",
+      "after": "Limit  (cost=0.14..8.16 rows=1 width=1162) (actual time=0.002..0.002 rows=0 loops=1)\n  Buffers: shared hit=2\n  ->  Index Scan using idx_audit_user_action_created on auditlog  (cost=0.14..8.16 rows=1 width=1162) (actual time=0.002..0.002 rows=0 loops=1)\n        Index Cond: ((userid = 1) AND ((action)::text = 'UPDATE'::text))\n        Buffers: shared hit=2\nPlanning:\n  Buffers: shared hit=3\nPlanning Time: 0.038 ms\nExecution Time: 0.008 ms"
+    }
+  },
+  "activeVehicleVisits": {
+    "label": "Active vehicle visits (ExitTime IS NULL)",
+    "before": {
+      "planningTime": 0.12840000000000001,
+      "executionTime": 6.0098,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.1432,
+      "executionTime": 4.988,
+      "scanType": "Bitmap Heap Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.115,
+          "executionTime": 6.006,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.179,
+          "executionTime": 6.047,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.135,
+          "executionTime": 5.926,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.11,
+          "executionTime": 5.905,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.103,
+          "executionTime": 6.165,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.144,
+          "executionTime": 5.12,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.142,
+          "executionTime": 4.73,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.142,
+          "executionTime": 5.043,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.15,
+          "executionTime": 5.148,
+          "scanType": "Bitmap Heap Scan"
+        },
+        {
+          "planningTime": 0.138,
+          "executionTime": 4.899,
+          "scanType": "Bitmap Heap Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Sort  (cost=901.35..901.75 rows=162 width=288) (actual time=5.721..5.934 rows=4384 loops=1)\n  Sort Key: vv.entrytime DESC\n  Sort Method: quicksort  Memory: 432kB\n  Buffers: shared hit=402\n  ->  Hash Join  (cost=269.40..895.40 rows=162 width=288) (actual time=1.774..4.944 rows=4384 loops=1)\n        Hash Cond: (vv.entrygateid = eg.gateid)\n        Buffers: shared hit=402\n        ->  Hash Join  (cost=257.15..882.72 rows=162 width=74) (actual time=1.762..4.439 rows=4384 loops=1)\n              Hash Cond: (vv.vehicleid = v.vehicleid)\n              Buffers: shared hit=401\n              ->  Seq Scan on vehiclevisit vv  (cost=0.00..625.14 rows=162 width=20) (actual time=0.004..1.754 rows=4384 loops=1)\n                    Filter: (exittime IS NULL)\n                    Rows Removed by Filter: 25616\n                    Buffers: shared hit=302\n              ->  Hash  (cost=169.29..169.29 rows=7029 width=62) (actual time=1.739..1.739 rows=11799 loops=1)\n                    Buckets: 16384 (originally 8192)  Batches: 1 (originally 1)  Memory Usage: 682kB\n                    Buffers: shared hit=99\n                    ->  Seq Scan on vehicle v  (cost=0.00..169.29 rows=7029 width=62) (actual time=0.003..0.753 rows=11799 loops=1)\n                          Buffers: shared hit=99\n        ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.007..0.007 rows=4 loops=1)\n              Buckets: 1024  Batches: 1  Memory Usage: 9kB\n              Buffers: shared hit=1\n              ->  Seq Scan on gate eg  (cost=0.00..11.00 rows=100 width=222) (actual time=0.005..0.006 rows=4 loops=1)\n                    Buffers: shared hit=1\nPlanning Time: 0.103 ms\nExecution Time: 6.165 ms",
+      "after": "Sort  (cost=643.75..644.12 rows=150 width=288) (actual time=4.513..4.638 rows=4384 loops=1)\n  Sort Key: vv.entrytime DESC\n  Sort Method: quicksort  Memory: 432kB\n  Buffers: shared hit=407\n  ->  Hash Join  (cost=381.80..638.32 rows=150 width=288) (actual time=1.902..3.710 rows=4384 loops=1)\n        Hash Cond: (vv.entrygateid = eg.gateid)\n        Buffers: shared hit=407\n        ->  Hash Join  (cost=369.55..625.67 rows=150 width=74) (actual time=1.874..3.203 rows=4384 loops=1)\n              Hash Cond: (vv.vehicleid = v.vehicleid)\n              Buffers: shared hit=406\n              ->  Bitmap Heap Scan on vehiclevisit vv  (cost=5.07..260.80 rows=150 width=20) (actual time=0.145..0.707 rows=4384 loops=1)\n                    Recheck Cond: (exittime IS NULL)\n                    Heap Blocks: exact=301\n                    Buffers: shared hit=307\n                    ->  Bitmap Index Scan on idx_vehicle_visit_active_entry  (cost=0.00..5.03 rows=150 width=0) (actual time=0.118..0.118 rows=4384 loops=1)\n                          Buffers: shared hit=6\n              ->  Hash  (cost=216.99..216.99 rows=11799 width=62) (actual time=1.698..1.699 rows=11799 loops=1)\n                    Buckets: 16384  Batches: 1  Memory Usage: 682kB\n                    Buffers: shared hit=99\n                    ->  Seq Scan on vehicle v  (cost=0.00..216.99 rows=11799 width=62) (actual time=0.005..0.755 rows=11799 loops=1)\n                          Buffers: shared hit=99\n        ->  Hash  (cost=11.00..11.00 rows=100 width=222) (actual time=0.016..0.017 rows=4 loops=1)\n              Buckets: 1024  Batches: 1  Memory Usage: 9kB\n              Buffers: shared hit=1\n              ->  Seq Scan on gate eg  (cost=0.00..11.00 rows=100 width=222) (actual time=0.011..0.012 rows=4 loops=1)\n                    Buffers: shared hit=1\nPlanning Time: 0.138 ms\nExecution Time: 4.899 ms"
+    }
+  },
+  "vehicleByPlate": {
+    "label": "Vehicle by registration number ILIKE",
+    "before": {
+      "planningTime": 0.0694,
+      "executionTime": 4.6836,
+      "scanType": "Seq Scan"
+    },
+    "after": {
+      "planningTime": 0.11340000000000001,
+      "executionTime": 4.7002,
+      "scanType": "Seq Scan"
+    },
+    "sampleRuns": {
+      "before": [
+        {
+          "planningTime": 0.069,
+          "executionTime": 4.747,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.067,
+          "executionTime": 4.681,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.069,
+          "executionTime": 4.668,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.064,
+          "executionTime": 4.639,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.078,
+          "executionTime": 4.683,
+          "scanType": "Seq Scan"
+        }
+      ],
+      "after": [
+        {
+          "planningTime": 0.112,
+          "executionTime": 4.797,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.095,
+          "executionTime": 4.707,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.098,
+          "executionTime": 4.678,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.145,
+          "executionTime": 4.661,
+          "scanType": "Seq Scan"
+        },
+        {
+          "planningTime": 0.117,
+          "executionTime": 4.658,
+          "scanType": "Seq Scan"
+        }
+      ]
+    },
+    "plans": {
+      "before": "Limit  (cost=0.15..87.28 rows=20 width=180) (actual time=0.014..4.671 rows=1 loops=1)\n  Buffers: shared hit=101\n  ->  Nested Loop  (cost=0.15..244.11 rows=56 width=180) (actual time=0.014..4.670 rows=1 loops=1)\n        Buffers: shared hit=101\n        ->  Seq Scan on vehicle v  (cost=0.00..186.86 rows=56 width=66) (actual time=0.009..4.665 rows=1 loops=1)\n              Filter: ((licenseplate)::text ~~* 'gj01%'::text)\n              Rows Removed by Filter: 11798\n              Buffers: shared hit=99\n        ->  Index Scan using vehicletype_pkey on vehicletype vt  (cost=0.15..1.02 rows=1 width=122) (actual time=0.004..0.004 rows=1 loops=1)\n              Index Cond: (typeid = v.typeid)\n              Buffers: shared hit=2\nPlanning Time: 0.078 ms\nExecution Time: 4.683 ms",
+      "after": "Limit  (cost=0.15..66.07 rows=20 width=180) (actual time=0.017..4.646 rows=1 loops=1)\n  Buffers: shared hit=101\n  ->  Nested Loop  (cost=0.15..310.00 rows=94 width=180) (actual time=0.017..4.646 rows=1 loops=1)\n        Buffers: shared hit=101\n        ->  Seq Scan on vehicle v  (cost=0.00..246.49 rows=94 width=66) (actual time=0.010..4.638 rows=1 loops=1)\n              Filter: ((licenseplate)::text ~~* 'gj01%'::text)\n              Rows Removed by Filter: 11798\n              Buffers: shared hit=99\n        ->  Index Scan using vehicletype_pkey on vehicletype vt  (cost=0.15..0.68 rows=1 width=122) (actual time=0.006..0.006 rows=1 loops=1)\n              Index Cond: (typeid = v.typeid)\n              Buffers: shared hit=2\nPlanning Time: 0.117 ms\nExecution Time: 4.658 ms"
+    }
+  }
+}
