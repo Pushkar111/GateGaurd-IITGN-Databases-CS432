@@ -1,6 +1,6 @@
 """
-race_condition_test.py — Concurrent entry race test for GateGuard API
-GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
+race_condition_test.py: testing concurrent entry race for GateGuard API
+GateGuard Assignment-3 Module B, IIT Gandhinagar CS432
 
 INVARIANT UNDER TEST
 ---------------------
@@ -9,13 +9,14 @@ A member can have at most ONE active (no exittime) PersonVisit at any moment.
 SCENARIO
 --------
 N threads all fire POST /api/person-visits/entry for the SAME member at exactly
-the same instant (synchronized via threading.Barrier).
+the same instant.
 
 EXPECTED RESULT (with SELECT FOR UPDATE fix applied)
 -----------------------------------------------------
   - Exactly 1 request returns HTTP 201 (Created)
   - All other N-1 requests return HTTP 400 (Conflict)
   - DB query confirms: exactly 1 active visit row for that member
+
 
 USAGE
 -----
@@ -38,7 +39,7 @@ from collections import Counter
 from utils.api_client import APIClient
 from utils.db_check   import assert_single_active_visit, get_all_visits_for_member
 
-# ── Configuration ─────────────────────────────────────────────────────────────
+# -- Configuration -------------------------------------------------------------
 MEMBER_ID   = int(os.getenv("RACE_MEMBER_ID", "1"))
 GATE_ID     = int(os.getenv("RACE_GATE_ID",   "1"))
 N_THREADS   = int(os.getenv("RACE_THREADS",   "50"))
@@ -51,27 +52,37 @@ def _make_payload() -> dict:
 
 
 def run_race_test() -> dict:
-    print("\n" + "=" * 62)
-    print(f"  RACE CONDITION TEST")
-    print(f"  Member ID   : {MEMBER_ID}")
-    print(f"  Gate ID     : {GATE_ID}")
-    print(f"  Threads     : {N_THREADS}")
-    print("=" * 62)
+    print("\n" + "=" * 50)
+    print(f"  running race condition test...")
+    print(f"  using member: {MEMBER_ID}, gate: {GATE_ID}, threads: {N_THREADS}")
+    print("=" * 50)
 
     # Pre-check: member must not already have an active visit
     pre_active = assert_single_active_visit(MEMBER_ID, "pre-race-check")
     if pre_active == 1:
-        print(f"\n⚠  Member {MEMBER_ID} already has an active visit.")
+        print(f"\n[Warning] Member {MEMBER_ID} already has an active visit.")
         print("   Close (exit) the visit first, then run this test again.")
         return {"skipped": True, "reason": "existing_active_visit"}
 
     results: list[dict] = []
     barrier = threading.Barrier(N_THREADS)  # all threads fire simultaneously
 
+    # authenticate ONCE here and share the token across all threads
+    # so we dont smash the login endpoint with 50 concurrent requests
+    shared_client = APIClient()
+    shared_token  = shared_client.token
+
     def _fire(thread_id: int):
-        client = APIClient()           # each thread gets its own auth session
+        # each thread gets its own session but reuses the same token
+        client         = APIClient.__new__(APIClient)
+        client.base_url = shared_client.base_url
+        import requests as _req
+        client.session  = _req.Session()
+        client.token    = shared_token
+        client.session.headers.update({"Authorization": f"Bearer {shared_token}"})
+
         payload = _make_payload()
-        barrier.wait()                 # hold — release all at once
+        barrier.wait()                 # hold... release all at once!
         t0 = time.perf_counter()
         try:
             resp    = client.post("/person-visits/entry", payload)
@@ -97,7 +108,7 @@ def run_race_test() -> dict:
     for t in threads:
         t.join(timeout=30)
 
-    # ── Analysis ──────────────────────────────────────────────────────────
+    # -- Analysis ----------------------------------------------------------
     status_counts = Counter(r.get("status_code") for r in results)
     successes     = [r for r in results if r.get("status_code") == 201]
     conflicts     = [r for r in results if r.get("status_code") == 400]
@@ -112,17 +123,17 @@ def run_race_test() -> dict:
     print(f"  Average latency          : {avg_latency:.1f} ms")
 
     # DB-level invariant check
-    active_count = assert_single_active_visit(MEMBER_ID, "post-race")
+    active_count = assert_single_active_visit(MEMBER_ID, "after race check")
     all_visits   = get_all_visits_for_member(MEMBER_ID)
     invariant_ok = (len(successes) == 1 and active_count == 1)
 
-    print(f"\n  Active visits in DB      : {active_count}")
-    print(f"  Total visits created     : {len(all_visits)}")
+    print(f"\n  active visits right now: {active_count}")
+    print(f"  total visits created: {len(all_visits)}")
 
     if invariant_ok:
-        print(f"\n  ✅ INVARIANT HOLDS — exactly 1 success, 1 active visit in DB.")
+        print(f"\n  nice! invariant holds. exactly 1 success and 1 active visit.")
     else:
-        print(f"\n  ❌ INVARIANT VIOLATED — {len(successes)} success(es), {active_count} active visit(s) in DB.")
+        print(f"\n  uh oh, invariant violated :( {len(successes)} success(es), {active_count} active visit(s) in DB.")
         for v in all_visits:
             print(f"     VisitID={v['visitid']}  entry={v['entrytime']}  exit={v['exittime']}")
 

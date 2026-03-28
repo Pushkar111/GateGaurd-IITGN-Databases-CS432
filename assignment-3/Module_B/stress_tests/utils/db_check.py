@@ -1,5 +1,5 @@
 """
-db_check.py — Direct PostgreSQL assertions for Module B correctness validation
+db_check.py: direct PostgreSQL assertions for Module B correctness validation
 GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
 
 Bypasses the API layer and queries the database directly.
@@ -32,7 +32,7 @@ def _get_connection():
     )
 
 
-# ── Query helpers ─────────────────────────────────────────────────────────────
+# -- Query helpers -------------------------------------------------------------
 
 def count_active_visits_for_member(member_id: int) -> int:
     """Count PersonVisit rows for a member where exittime IS NULL (active visits)."""
@@ -67,7 +67,7 @@ def count_audit_rows(table_name: str = None, action: str = None) -> int:
 
     Args:
         table_name : filter by tablename column (optional)
-        action     : filter by action column — 'INSERT' | 'UPDATE' | 'DELETE' (optional)
+        action     : filter by action column ('INSERT' | 'UPDATE' | 'DELETE')
     """
     conditions = []
     params     = []
@@ -85,7 +85,7 @@ def count_audit_rows(table_name: str = None, action: str = None) -> int:
             return int(cur.fetchone()["c"])
 
 
-# ── Assertion helpers ─────────────────────────────────────────────────────────
+# -- Assertion helpers ---------------------------------------------------------
 
 def assert_single_active_visit(member_id: int, context: str = "") -> int:
     """
@@ -110,7 +110,7 @@ def assert_no_active_visit(member_id: int, context: str = ""):
     count = count_active_visits_for_member(member_id)
     assert count == 0, (
         f"INVARIANT VIOLATION [{context}]: Member {member_id} still has {count} "
-        f"active visit(s) — expected 0 after exit."
+        f"active visit(s) - expected 0 after exit."
     )
 
 
@@ -126,6 +126,6 @@ def sample_invariant_check(member_ids: list[int], context: str = "") -> bool:
         try:
             assert_single_active_visit(mid, context)
         except AssertionError as e:
-            print(f"  ❌ {e}")
+            print(f"  [ERROR] {e}")
             ok = False
     return ok

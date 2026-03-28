@@ -1,5 +1,5 @@
 """
-api_client.py — Thin HTTP wrapper for GateGuard API stress tests
+api_client.py: thin HTTP wrapper for GateGuard API stress tests
 GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
 
 Handles:
@@ -53,13 +53,17 @@ class APIClient:
         )
         resp.raise_for_status()
         data = resp.json()
-        # Support both { token: "..." } and { accessToken: "..." } shapes
-        self.token = data.get("token") or data.get("accessToken") or data.get("data", {}).get("token")
+        # Support both { token: "..." } and { data: { accessToken: "..." } } shapes
+        d = data.get("data", {})
+        self.token = (data.get("token")
+                      or data.get("accessToken")
+                      or d.get("token")
+                      or d.get("accessToken"))
         if not self.token:
             raise ValueError(f"Login succeeded but no token in response: {data}")
         self.session.headers.update({"Authorization": f"Bearer {self.token}"})
 
-    # ── HTTP helpers ────────────────────────────────────────────────────
+    # -- HTTP helpers ----------------------------------------------------
 
     def post(self, path: str, body: dict, timeout: int = 10) -> requests.Response:
         return self.session.post(f"{self.base_url}{path}", json=body, timeout=timeout)
@@ -69,6 +73,9 @@ class APIClient:
 
     def patch(self, path: str, body: dict, timeout: int = 10) -> requests.Response:
         return self.session.patch(f"{self.base_url}{path}", json=body, timeout=timeout)
+
+    def put(self, path: str, body: dict, timeout: int = 10) -> requests.Response:
+        return self.session.put(f"{self.base_url}{path}", json=body, timeout=timeout)
 
     def delete(self, path: str, timeout: int = 10) -> requests.Response:
         return self.session.delete(f"{self.base_url}{path}", timeout=timeout)

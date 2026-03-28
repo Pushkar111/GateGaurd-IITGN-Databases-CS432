@@ -1,5 +1,5 @@
 """
-load_profile_runner.py — Multi-profile load test for GateGuard API
+load_profile_runner.py: multi-profile load test for GateGuard API
 GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
 
 PROFILES
@@ -123,7 +123,7 @@ def run_profile(profile: dict) -> dict:
     think    = profile["think_time"]
 
     print(f"\n{'='*62}")
-    print(f"  LOAD PROFILE: {name.upper()} — {n} users × {duration}s")
+    print(f"  LOAD PROFILE: {name.upper()} - {n} users times {duration}s")
     print(f"{'='*62}")
 
     stop_event = threading.Event()
@@ -165,7 +165,7 @@ def run_profile(profile: dict) -> dict:
     sample = random.sample(range(MEMBER_MIN, MEMBER_MAX + 1),
                            min(5, MEMBER_MAX - MEMBER_MIN + 1))
     inv_ok = sample_invariant_check(sample, context=f"load-{name}")
-    print(f"  Invariant check : {'✅ OK' if inv_ok else '❌ VIOLATED'} (sample={sample})")
+    print(f"  Invariant check : {'OK' if inv_ok else 'VIOLATED'} (sample={sample})")
 
     result = {
         "profile":            name,
@@ -187,7 +187,7 @@ def run_profile(profile: dict) -> dict:
 
 def run_all_profiles():
     print("\n" + "=" * 62)
-    print("  GATEGUARD LOAD PROFILE RUNNER — Assignment 3 Module B")
+    print("  GATEGUARD LOAD PROFILE RUNNER - Assignment 3 Module B")
     print("=" * 62)
 
     for profile in PROFILES:
@@ -207,7 +207,7 @@ def run_all_profiles():
     print(f"  {'Profile':<10} {'RPS':>8} {'P95 ms':>10} {'Errors':>8} {'Invariant':>12}")
     print(f"  {'-'*58}")
     for r in all_results:
-        inv = "✅ OK" if r["invariant_ok"] else "❌ FAIL"
+        inv = "[OK]" if r["invariant_ok"] else "[FAIL]"
         print(f"  {r['profile']:<10} {r['throughput_rps']:>8.1f} "
               f"{r['latency_p95_ms']:>10.1f} {r['server_errors']:>8} {inv:>12}")
 
