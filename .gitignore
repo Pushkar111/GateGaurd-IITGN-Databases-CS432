@@ -24,6 +24,7 @@ dist
 
 # Ignore runtime logs for Module B backend
 assignment-2/Module_B/backend/logs/*.log
+assignment-3/Module_B/backend/logs/*.log
 
 # ignore zip files
 *.zip
