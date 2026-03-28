@@ -588,3 +588,852 @@
     at async Object.getRefreshToken (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\models\auth.model.js:16:20)
     at async Object.refreshAccessToken (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\services\auth.service.js:182:23)
     at async refresh (C:\projects\IITGN-Databases-GateGuard\assignment-2\Module_B\backend\src\controllers\auth.controller.js:36:20)
+[2026-03-27T19:21:24.176+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.179+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.181+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.183+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.696+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.698+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.699+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.701+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.703+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.704+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.705+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.706+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.707+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.707+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.708+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.709+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.710+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.711+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.713+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.715+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.716+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.717+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:24.718+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:21:28.020+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc8c4bd3sm66658485ad.63 - gsmtp
+[2026-03-27T19:21:28.121+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d385e27sm5578268b3a.36 - gsmtp
+[2026-03-27T19:21:28.346+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c7673931621sm4703749a12.19 - gsmtp
+[2026-03-27T19:21:28.418+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22d8c425sm6052319a91.12 - gsmtp
+[2026-03-27T19:21:28.459+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22db19e8sm4778984a91.15 - gsmtp
+[2026-03-27T19:21:28.461+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3c7d24sm5984180b3a.46 - gsmtp
+[2026-03-27T19:21:28.480+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c2ed332f4sm845476a91.14 - gsmtp
+[2026-03-27T19:21:28.535+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22db1321sm4833408a91.14 - gsmtp
+[2026-03-27T19:21:28.605+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3c289dsm5521402b3a.47 - gsmtp
+[2026-03-27T19:22:57.363+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:57.373+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:57.374+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:57.376+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.183+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.185+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.186+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.187+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.188+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.190+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.191+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.193+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.194+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.196+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.197+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.198+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.200+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.201+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.202+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.204+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.205+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.206+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:22:58.207+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:23:01.329+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c2da86b81sm941259a91.4 - gsmtp
+[2026-03-27T19:23:01.355+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d385e27sm5581656b3a.36 - gsmtp
+[2026-03-27T19:23:01.495+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3894d0sm7645110b3a.30 - gsmtp
+[2026-03-27T19:23:01.702+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c7673956b15sm5354061a12.22 - gsmtp
+[2026-03-27T19:23:01.775+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d216a0esm5814182b3a.17 - gsmtp
+[2026-03-27T19:23:01.887+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22b9fc96sm4581899a91.7 - gsmtp
+[2026-03-27T19:23:01.905+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc9176acsm63157775ad.82 - gsmtp
+[2026-03-27T19:23:01.981+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d388d06sm5915411b3a.35 - gsmtp
+[2026-03-27T19:23:02.009+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc916b73sm80770395ad.83 - gsmtp
+[2026-03-27T19:23:02.159+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc76b92asm60834865ad.15 - gsmtp
+[2026-03-27T19:23:02.194+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3fa0a8sm5515805b3a.58 - gsmtp
+[2026-03-27T19:43:37.548+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:43:37.550+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-27T19:43:41.499+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c228ab833sm4976412a91.0 - gsmtp
+[2026-03-27T19:43:41.529+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c767382bcecsm4871658a12.13 - gsmtp
+[2026-03-27T19:43:41.862+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d388d11sm5719293b3a.28 - gsmtp
+[2026-03-27T19:43:42.035+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3bf324sm7172484b3a.40 - gsmtp
+[2026-03-27T19:43:42.048+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c228ab833sm4976528a91.0 - gsmtp
+[2026-03-27T19:43:42.056+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c767382bcecsm4871735a12.13 - gsmtp
+[2026-03-27T19:43:42.057+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d3888e8sm5817466b3a.39 - gsmtp
+[2026-03-27T19:43:42.102+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d20ebe5sm5722846b3a.13 - gsmtp
+[2026-03-27T19:43:42.134+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c7673959fb1sm5142773a12.23 - gsmtp
+[2026-03-27T19:43:42.146+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc8ebfb5sm63866045ad.68 - gsmtp
+[2026-03-27T19:43:42.669+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc76f1d7sm67025125ad.1 - gsmtp
+[2026-03-27T19:43:42.683+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc76bbdcsm65100235ad.5 - gsmtp
+[2026-03-27T19:43:42.703+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d216a0esm5860712b3a.17 - gsmtp
+[2026-03-27T19:43:42.863+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc7b233fsm66253235ad.32 - gsmtp
+[2026-03-27T19:43:42.902+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c76737f2869sm4649285a12.1 - gsmtp
+[2026-03-27T19:43:42.910+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc916b73sm81436225ad.83 - gsmtp
+[2026-03-27T19:43:42.919+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d390a4csm7284394b3a.31 - gsmtp
+[2026-03-27T19:43:42.923+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22a81744sm5108992a91.5 - gsmtp
+[2026-03-27T19:43:42.925+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc8ebfb5sm63867065ad.68 - gsmtp
+[2026-03-27T19:43:42.928+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc7a7e3bsm84349965ad.27 - gsmtp
+[2026-03-27T19:43:42.929+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22cebf63sm4938821a91.15 - gsmtp
+[2026-03-27T19:43:42.930+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22ba7b86sm6893093a91.10 - gsmtp
+[2026-03-27T19:43:42.937+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc881b80sm61594705ad.54 - gsmtp
+[2026-03-27T19:43:42.938+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35d8d5ab788sm554493a91.16 - gsmtp
+[2026-03-27T19:43:42.940+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c2ec27ccesm848966a91.9 - gsmtp
+[2026-03-27T19:43:42.950+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc76b6casm63005225ad.16 - gsmtp
+[2026-03-27T19:43:42.986+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0ccc8b781sm26088645ad.80 - gsmtp
+[2026-03-27T19:43:43.085+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22d8c26asm6051339a91.11 - gsmtp
+[2026-03-27T19:43:43.364+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc8fac97sm59381475ad.71 - gsmtp
+[2026-03-27T19:43:43.389+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b0bc8ebfb5sm63867055ad.68 - gsmtp
+[2026-03-27T19:43:44.017+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82c7d215658sm5524503b3a.21 - gsmtp
+[2026-03-28T14:06:25.399+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:25.414+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:25.417+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:25.419+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:25.421+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:28.083+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.603+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.606+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.608+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.610+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.612+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.615+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:31.631+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at process.processTimers (node:internal/timers:516:9)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.197+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.199+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.203+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.205+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.207+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.210+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.213+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:34.216+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:40.774+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:40.776+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:06:43.619+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca8628f44sm1482347b3a.57 - gsmtp
+[2026-03-28T14:06:43.913+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca80d0b6esm1704616b3a.0 - gsmtp
+[2026-03-28T14:06:44.192+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b24266e487sm16036975ad.24 - gsmtp
+[2026-03-28T14:06:44.501+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b242642b43sm21241115ad.9 - gsmtp
+[2026-03-28T14:06:44.553+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b2427973e7sm17201255ad.64 - gsmtp
+[2026-03-28T14:06:44.639+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35d9507dc3bsm1358221a91.9 - gsmtp
+[2026-03-28T14:06:44.734+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca85d8ca9sm1366834b3a.28 - gsmtp
+[2026-03-28T14:06:44.954+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca8466e01sm1468732b3a.20 - gsmtp
+[2026-03-28T14:06:45.031+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b24279a428sm20306825ad.66 - gsmtp
+[2026-03-28T14:06:45.111+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b242765be9sm20014375ad.39 - gsmtp
+[2026-03-28T14:06:45.175+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b242765bf4sm19419555ad.42 - gsmtp
+[2026-03-28T14:06:45.405+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22a54ebfsm7081166a91.4 - gsmtp
+[2026-03-28T14:22:33.056+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:34.657+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:34.660+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:34.662+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:36.447+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:36.451+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:36.454+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:36.457+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:38.688+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:38.692+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:38.700+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.069+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.073+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.075+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.078+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.080+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.082+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.086+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.088+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.094+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.097+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.099+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:41.103+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:42.972+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:42.974+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:42.977+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:42.979+05:30] [ERROR] POST /api/auth/login — 500 — Error: timeout exceeded when trying to connect
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at process.processTimers (node:internal/timers:516:9)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async findUserForAuth (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:20:20)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:95:16)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:47.668+05:30] [ERROR] POST /api/auth/login — 500 — Error: Connection terminated due to connection timeout
+    at C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\node_modules\pg-pool\index.js:45:11
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async query (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\config\db.js:36:18)
+    at async Object.resetFailedAttempts (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\models\auth.model.js:107:3)
+    at async Object.login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\services\auth.service.js:137:3)
+    at async login (C:\projects\IITGN-Databases-GateGuard\assignment-3\Module_B\backend\src\controllers\auth.controller.js:14:20)
+[2026-03-28T14:22:51.276+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 98e67ed59e1d1-35c22a5570esm9080227a91.3 - gsmtp
+[2026-03-28T14:22:51.455+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 41be03b00d2f7-c76916cc65esm1184905a12.10 - gsmtp
+[2026-03-28T14:22:51.623+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca8436f19sm1558033b3a.9 - gsmtp
+[2026-03-28T14:22:51.757+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca85fc735sm1451516b3a.40 - gsmtp
+[2026-03-28T14:22:51.872+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d2e1a72fcca58-82ca860b125sm1480287b3a.50 - gsmtp
+[2026-03-28T14:22:52.076+05:30] [ERROR] [auth] login alert email error: Data command failed: 421-4.3.0 Temporary System Problem. Try again later. For more information, go to
+421 4.3.0  https://support.google.com/a/answer/3221692 d9443c01a7336-2b24265aafbsm21118395ad.19 - gsmtp
