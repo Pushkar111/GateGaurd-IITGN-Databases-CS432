@@ -1,5 +1,5 @@
 """
-locust_gateguard.py — Locust load test file for GateGuard API
+locust_gateguard.py: locust load test file for GateGuard API
 GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
 
 USAGE
@@ -14,7 +14,7 @@ USAGE
 
 TASK WEIGHTS
 ------------
-  record_entry : 3   (most common operation — new person arrives at gate)
+  record_entry : 3   (most common operation - new person arrives at gate)
   record_exit  : 2   (person leaves)
   list_visits  : 1   (guard checks occupancy)
   get_occupancy: 1   (gate display query)
@@ -26,6 +26,7 @@ Author: GateGuard Team
 """
 
 import random
+import time
 import threading
 from locust import HttpUser, task, between, events
 
@@ -33,7 +34,7 @@ from locust import HttpUser, task, between, events
 _active_visits: list[int] = []
 _visits_lock              = threading.Lock()
 
-# Member / gate range — adjust to match your seeded DB
+# Member / gate range - adjust to match your seeded DB
 MEMBER_ID_MIN = 1
 MEMBER_ID_MAX = 20
 GATE_IDS      = [1, 2, 3]
@@ -47,10 +48,13 @@ class GateGuardUser(HttpUser):
     gate operations weighted by real-world usage frequency.
     """
 
+    host      = "http://localhost:5000"   # default - override with --host if needed
     wait_time = between(0.5, 2.0)   # think time between tasks
 
     def on_start(self):
         """Authenticate and store Bearer token for all subsequent requests."""
+        # small random delay so concurrent user startups dont pile up on bcrypt
+        time.sleep(random.uniform(0, 2))
         with self.client.post(
             "/api/auth/login",
             json={"username": "admin", "password": "admin123"},
@@ -59,11 +63,17 @@ class GateGuardUser(HttpUser):
         ) as resp:
             if resp.status_code == 200:
                 data  = resp.json()
+                d     = data.get("data", {})
                 token = (data.get("token")
                          or data.get("accessToken")
-                         or data.get("data", {}).get("token"))
-                self.client.headers.update({"Authorization": f"Bearer {token}"})
-                resp.success()
+                         or d.get("token")
+                         or d.get("accessToken"))
+                
+                if token:
+                    self.client.headers.update({"Authorization": f"Bearer {token}"})
+                    resp.success()
+                else:
+                    resp.failure(f"Login valid but no token parsed: {data}")
             else:
                 resp.failure(f"Login failed: {resp.status_code}")
 
@@ -71,12 +81,12 @@ class GateGuardUser(HttpUser):
         self.member_id = random.randint(MEMBER_ID_MIN, MEMBER_ID_MAX)
         self.gate_id   = random.choice(GATE_IDS)
 
-    # ── Task definitions ──────────────────────────────────────────────────
+    # -- Task definitions --------------------------------------------------
 
     @task(3)
     def record_entry(self):
         """
-        POST /api/person-visits/entry — record a new gate entry.
+        POST /api/person-visits/entry : record a new gate entry.
         200 and 400 both treated as success (400 = member already inside).
         """
         with self.client.post(
@@ -94,14 +104,14 @@ class GateGuardUser(HttpUser):
                     pass
                 resp.success()
             elif resp.status_code == 400:
-                resp.success()      # expected — member already has active visit
+                resp.success()      # expected: member already has active visit
             else:
                 resp.failure(f"Unexpected status {resp.status_code}: {resp.text[:120]}")
 
     @task(2)
     def record_exit(self):
         """
-        PATCH /api/person-visits/:id/exit — record departure.
+        PUT /api/person-visits/:id/exit : record departure.
         Picks a known open visit from the shared list.
         """
         with _visits_lock:
@@ -109,21 +119,21 @@ class GateGuardUser(HttpUser):
                 return
             visit_id = _active_visits.pop(0)
 
-        with self.client.patch(
+        with self.client.put(
             f"/api/person-visits/{visit_id}/exit",
             json={"exitGateId": self.gate_id},
             catch_response=True,
             name="/api/person-visits/:id/exit",
         ) as resp:
             if resp.status_code in (200, 400):
-                resp.success()      # 400 = visit was already closed (race) — still ok
+                resp.success()      # 400 = visit was already closed (race) - still ok
             else:
                 resp.failure(f"Unexpected status {resp.status_code}")
 
     @task(1)
     def list_visits(self):
         """
-        GET /api/person-visits?limit=20 — guard console read.
+        GET /api/person-visits?limit=20 : guard console read.
         Expected HTTP 200.
         """
         with self.client.get(
@@ -140,7 +150,7 @@ class GateGuardUser(HttpUser):
     @task(1)
     def get_occupancy(self):
         """
-        GET /api/gate-occupancy — gate display board query.
+        GET /api/gate-occupancy : gate display board query.
         Expected HTTP 200.
         """
         with self.client.get(
@@ -154,7 +164,7 @@ class GateGuardUser(HttpUser):
                 resp.failure(f"Occupancy query failed: {resp.status_code}")
 
 
-# ── Event hooks (optional — prints summary on Locust stop) ───────────────────
+# -- Event hooks -------------------
 
 @events.quitting.add_listener
 def on_quitting(environment, **kwargs):
