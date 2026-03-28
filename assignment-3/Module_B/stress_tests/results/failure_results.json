@@ -1,0 +1,27 @@
+[
+  {
+    "test": "invalid_member",
+    "passed": true,
+    "status_code": 404,
+    "visits_before": 0,
+    "visits_after": 0
+  },
+  {
+    "test": "duplicate_active_visit",
+    "passed": true,
+    "status_code": 400,
+    "active_visits_after": 1
+  },
+  {
+    "test": "malformed_payload",
+    "passed": true,
+    "status_code": 422,
+    "new_visits_created": 0
+  },
+  {
+    "test": "exit_on_closed_visit",
+    "passed": true,
+    "visit_id": 46570,
+    "status_code": 400
+  }
+]
