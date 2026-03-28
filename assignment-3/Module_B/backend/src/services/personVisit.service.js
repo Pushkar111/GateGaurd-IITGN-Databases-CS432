@@ -2,17 +2,17 @@
 //
 // Assignment-3 Module B fix (Phase 5):
 //   recordEntry() now wraps the duplicate-check + INSERT in a single
-//   PostgreSQL transaction with SELECT … FOR UPDATE on the Member row.
+//   PostgreSQL transaction with SELECT FOR UPDATE on the Member row.
 //
 //   Why this closes the race:
 //     Before the fix, two concurrent requests could both read "no active visit"
 //     (findActiveByMember returns NULL for both), then both INSERT, creating two
 //     simultaneous active visits for the same member.
 //
-//     With SELECT … FOR UPDATE, the first transaction acquires a row-level lock
+//     With SELECT FOR UPDATE, the first transaction gets a row-level lock
 //     on the Member row.  The second transaction BLOCKS at the same SELECT until
-//     the first either commits (→ sees the new active visit, returns 400) or
-//     rolls back (→ safe to proceed).  The race window is eliminated.
+//     the first one either commits (so second one sees the active visit and gives 400) or
+//     rolls back (so it's safe to proceed). no more race condition here.
 //
 const personVisitModel = require('../models/personVisit.model');
 const vehicleVisitModel = require('../models/vehicleVisit.model');
@@ -46,7 +46,7 @@ async function getById(id) {
 }
 
 async function recordEntry(data) {
-  // ── Assignment-3 Module B fix: SELECT FOR UPDATE ─────────────────────────
+  // Assignment-3 Module B fix: SELECT FOR UPDATE
   //
   // Acquires a row-level lock on the Member row BEFORE checking for an active
   // visit.  Any concurrent request for the same memberId will block at this
@@ -57,7 +57,7 @@ async function recordEntry(data) {
   try {
     await client.query('BEGIN');
 
-    // 1. Lock the member row — serialises all concurrent entry attempts
+    // 1. lock the member row to block concurrent entry requests
     const { rows: memberRows } = await client.query(
       'SELECT memberid FROM member WHERE memberid = $1 FOR UPDATE',
       [data.memberId]

@@ -1,5 +1,5 @@
 """
-consistency.py — B+ Tree ↔ Table consistency verifier
+consistency.py: B+ Tree <=> Table consistency verifier
 GateGuard Assignment-3 Module A
 
 Verifies that the B+ Tree index inside each Table is internally consistent.
@@ -28,7 +28,7 @@ Run this checker:
   - After every rollback (must show pre-transaction state)
   - After startup recovery (must show recovered state)
 
-Author: GateGuard Team — IIT Gandhinagar CS432
+Author: GateGuard Team, IIT Gandhinagar CS432
 """
 
 from .db_manager import DatabaseManager
@@ -47,7 +47,7 @@ class ConsistencyChecker:
     def __init__(self, db: DatabaseManager):
         self._db = db
 
-    # ── Per-table check ───────────────────────────────────────────────────
+    # -- Per-table check ---------------------------------------------------
 
     def check_table(self, table_name: str) -> dict:
         """
@@ -106,7 +106,7 @@ class ConsistencyChecker:
             "issues":       issues,
         }
 
-    # ── All-table check ───────────────────────────────────────────────────
+    # -- All-table check ---------------------------------------------------
 
     def check_all(self, verbose: bool = True) -> dict:
         """
@@ -133,25 +133,25 @@ class ConsistencyChecker:
             result = self.check_table(table_name)
             results[table_name] = result
 
-            status = "✅ OK" if result["ok"] else "❌ FAIL"
+            status = "OK" if result["ok"] else "FAIL"
 
             if verbose:
                 print(f"  {table_name:<26} {result['record_count']:>8}  {status}")
                 for issue in result["issues"]:
-                    print(f"    ⚠ {issue}")
+                    print(f"    [Warning] {issue}")
 
             if not result["ok"]:
                 overall = False
 
         if verbose:
             print("=" * 58)
-            over_str = "✅ OVERALL PASS" if overall else "❌ OVERALL FAIL"
+            over_str = "OVERALL PASS" if overall else "OVERALL FAIL"
             print(f"  {over_str}")
             print("=" * 58 + "\n")
 
         return {"overall_ok": overall, "tables": results}
 
-    # ── Cross-table relational check ──────────────────────────────────────
+    # -- Cross-table relational check --------------------------------------
 
     def check_referential_integrity(self, child_table: str, fk_col: str,
                                     parent_table: str, pk_col: str) -> dict:
@@ -176,13 +176,13 @@ class ConsistencyChecker:
         for rec in child.select_all():
             fk_val = rec.get(fk_col)
             if fk_val is None:
-                continue   # nullable FK — skip
+                continue   # nullable FK - skip
             if parent.select(fk_val) is None:
                 orphans.append((rec.get(child.primary_key), fk_val))
 
         ok = len(orphans) == 0
         if not ok:
-            print(f"  ⚠ Referential integrity FAIL: {child_table}.{fk_col} → {parent_table}.{pk_col}")
+            print(f"  [Warning] Referential integrity FAIL: {child_table}.{fk_col} -> {parent_table}.{pk_col}")
             for (cpk, fk) in orphans[:10]:   # show first 10 orphans max
                 print(f"    Orphan: child pk={cpk}  fk_val={fk} not in {parent_table}")
 

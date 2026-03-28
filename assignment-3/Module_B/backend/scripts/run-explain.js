@@ -18,7 +18,7 @@ const pool = new Pool({
   application_name: 'GateGuardExplain',
 });
 
-// ── 8 benchmark queries ───────────────────────────────────────────────
+// -- 8 benchmark queries -----------------------------------------------
 const BENCHMARKS = [
   {
     name: 'memberSearch',
@@ -103,7 +103,7 @@ const BENCHMARKS = [
 
 const RUNS_PER_QUERY = 5;
 
-// ── Parse EXPLAIN ANALYZE output ──────────────────────────────────────
+// -- Parse EXPLAIN ANALYZE output --------------------------------------
 function parseExplain(rows) {
   const lines = rows.map((r) => r['QUERY PLAN'] || r[Object.keys(r)[0]]);
   const planText = lines.join('\n');
@@ -193,7 +193,7 @@ async function resolveRepresentativeParams() {
   }
 }
 
-// ── Drop all non-PK indexes (benchmark without indexes) ───────────────
+// -- Drop all non-PK indexes (benchmark without indexes) ---------------
 async function dropCustomIndexes() {
   const { rows } = await pool.query(
     `SELECT indexname, tablename
@@ -212,7 +212,7 @@ async function dropCustomIndexes() {
   return dropped;
 }
 
-// ── Re-create indexes from indexes.sql ────────────────────────────────
+// -- Re-create indexes from indexes.sql --------------------------------
 async function recreateIndexes() {
   const indexSqlPath = path.join(__dirname, '..', 'sql', 'indexes.sql');
   if (!fs.existsSync(indexSqlPath)) {
@@ -223,11 +223,11 @@ async function recreateIndexes() {
   await pool.query(sql);
 }
 
-// ── Print aligned table ───────────────────────────────────────────────
+// -- Print aligned table -----------------------------------------------
 function printTable(results) {
   const COL = [38, 14, 14, 18, 18];
   const header = ['Query', 'Before (ms)', 'After (ms)', 'Before scan', 'After scan'];
-  const sep = COL.map((w) => '─'.repeat(w)).join('─┬─');
+  const sep = COL.map((w) => '-'.repeat(w)).join('-┬-');
   const sanitize = (value) => String(value ?? '').replace(/[\r\n\t]+/g, ' ');
   const fit = (value, width) => {
     const s = sanitize(value);
@@ -251,10 +251,10 @@ function printTable(results) {
   console.log(sep + '\n');
 }
 
-// ── Main ──────────────────────────────────────────────────────────────
+// -- Main --------------------------------------------------------------
 async function main() {
   console.log('\nGateGuard EXPLAIN ANALYZE Benchmark');
-  console.log('────────────────────────────────────────\n');
+  console.log('----------------------------------------\n');
   console.log(`Using ${RUNS_PER_QUERY} measured runs per query (after warm-up).\n`);
 
   const results = {};

@@ -20,7 +20,7 @@ import ActionCenter from '@/components/action-center/ActionCenter';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import * as dashboardApi from '@/api/dashboard.api';
 
-// ── Tooltip-wrapped icon button ───────────────────────────────────────
+// -- Tooltip-wrapped icon button ---------------------------------------
 function RailItem({ item, isActive }) {
   const Icon = item.icon;
   return (
@@ -65,7 +65,7 @@ const iconMap = {
   CircleUserRound,
 };
 
-// ── Main layout ───────────────────────────────────────────────────────
+// -- Main layout -------------------------------------------------------
 export default function AppLayout() {
   const { user, logout, hasRole, mustChangePassword } = useAuth();
   const location                  = useLocation();
@@ -97,7 +97,7 @@ export default function AppLayout() {
       .catch(() => {});
   }, []);
 
-  // ── Keyboard shortcuts ───────────────────────────────────────────
+  // -- Keyboard shortcuts -------------------------------------------
   useEffect(() => {
     const handler = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -114,7 +114,7 @@ export default function AppLayout() {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  // ── Poll active visit counts ──────────────────────────────────────
+  // -- Poll active visit counts --------------------------------------
   useEffect(() => {
     let mounted = true;
     const syncCounts = () => {
@@ -167,7 +167,7 @@ export default function AppLayout() {
 
   return (
     <div className="min-h-screen bg-transparent">
-      {/* ── TopBar ─────────────────────────────────────────────────── */}
+      {/* -- TopBar --------------------------------------------------- */}
       <header className="fixed top-0 left-0 right-0 h-14 z-50
                          flex items-center px-4 gap-4
                          bg-[hsl(228_50%_4%/0.8)] backdrop-blur-xl
@@ -256,7 +256,7 @@ export default function AppLayout() {
         </div>
       </header>
 
-      {/* ── Icon Rail (md+) ─────────────────────────────────────────── */}
+      {/* -- Icon Rail (md+) ------------------------------------------- */}
       <nav className="hidden md:flex fixed left-0 top-14 bottom-0 w-16 z-40
                       flex-col items-center py-3 gap-1
                       bg-[hsl(228_50%_4%/0.6)] backdrop-blur-xl
@@ -279,7 +279,7 @@ export default function AppLayout() {
         </div>
       </nav>
 
-      {/* ── Main content ────────────────────────────────────────────── */}
+      {/* -- Main content ---------------------------------------------- */}
       <main className="md:ml-16 pt-14 min-h-screen">
         <AnimatePresence mode="wait">
           <motion.div
@@ -295,7 +295,7 @@ export default function AppLayout() {
         </AnimatePresence>
       </main>
 
-      {/* ── Mobile bottom tab bar ────────────────────────────────────── */}
+      {/* -- Mobile bottom tab bar -------------------------------------- */}
       <nav className="flex md:hidden fixed bottom-0 left-0 right-0 z-50 h-16
                       items-center justify-around
                       bg-[hsl(228_50%_4%/0.95)] backdrop-blur-xl
@@ -318,10 +318,10 @@ export default function AppLayout() {
         })}
       </nav>
 
-      {/* ── Command Palette ──────────────────────────────────────────── */}
+      {/* -- Command Palette -------------------------------------------- */}
       <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
 
-      {/* ── Unified Action Center ────────────────────────────────────── */}
+      {/* -- Unified Action Center -------------------------------------- */}
       <ActionCenter
         open={actionCenterOpen}
         onOpenChange={setActionCenterOpen}

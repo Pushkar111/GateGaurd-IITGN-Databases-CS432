@@ -4,7 +4,7 @@
 const { query } = require('../config/db');
 const crypto    = require('crypto');
 
-// ── Refresh Tokens ────────────────────────────────────────────────────
+// -- Refresh Tokens ----------------------------------------------------
 async function saveRefreshToken(userId, token, expiresAt) {
   await query(
     `INSERT INTO refreshtoken (userid, token, expiresat) VALUES ($1, $2, $3)`,
@@ -28,7 +28,7 @@ async function revokeAllUserRefreshTokens(userId) {
   await query(`UPDATE refreshtoken SET revoked = TRUE WHERE userid = $1 AND revoked = FALSE`, [userId]);
 }
 
-// ── OTP / Password Reset Token ────────────────────────────────────────
+// -- OTP / Password Reset Token ----------------------------------------
 async function saveOTP(userId, otp, token, expiresAt) {
   // invalidate any existing unused OTPs for this user first
   await query(`UPDATE passwordresettoken SET used = TRUE WHERE userid = $1 AND used = FALSE`, [userId]);
@@ -55,7 +55,7 @@ async function deleteExpiredOTPs() {
   return rowCount;
 }
 
-// ── Token Blacklist ───────────────────────────────────────────────────
+// -- Token Blacklist ---------------------------------------------------
 async function blacklistToken(token, expiresAt) {
   await query(
     `INSERT INTO tokenblacklist (token, expiresat) VALUES ($1, $2) ON CONFLICT (token) DO NOTHING`,
@@ -76,7 +76,7 @@ async function cleanExpiredBlacklist() {
   return rowCount;
 }
 
-// ── Login History ─────────────────────────────────────────────────────
+// -- Login History -----------------------------------------------------
 async function saveLoginHistory(userId, ipAddress, userAgent, success, failReason) {
   await query(
     `INSERT INTO loginhistory (userid, ipaddress, useragent, success, failreason) VALUES ($1, $2, $3, $4, $5)`,
@@ -93,7 +93,7 @@ async function getLoginHistory(userId, limit = 10) {
   return rows;
 }
 
-// ── Account Lockout ───────────────────────────────────────────────────
+// -- Account Lockout ---------------------------------------------------
 async function incrementFailedAttempts(userId) {
   const { rows } = await query(
     `UPDATE "User" SET failedattempts = COALESCE(failedattempts, 0) + 1
@@ -115,7 +115,7 @@ async function unlockAccount(userId) {
   await query(`UPDATE "User" SET lockeduntil = NULL, failedattempts = 0 WHERE userid = $1`, [userId]);
 }
 
-// ── Last Login / MustChangePassword ───────────────────────────────────
+// -- Last Login / MustChangePassword -----------------------------------
 async function updateLastLogin(userId) {
   await query(`UPDATE "User" SET lastloginat = NOW() WHERE userid = $1`, [userId]);
 }

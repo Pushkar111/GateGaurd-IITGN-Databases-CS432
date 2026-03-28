@@ -36,10 +36,10 @@ const INDEXED_TABLES = ['Member', 'PersonVisit', 'VehicleVisit', 'User', 'Vehicl
 
 async function main() {
   console.log(`\n${BOLD}GateGuard Health Check${RESET}`);
-  console.log('──────────────────────────────\n');
+  console.log('------------------------------\n');
   let allGreen = true;
 
-  // ── Check 1: PostgreSQL connectivity ──────────────────────────────
+  // -- Check 1: PostgreSQL connectivity ------------------------------
   console.log(`${BOLD}[1] Database Connection${RESET}`);
   try {
     const { rows } = await pool.query('SELECT NOW() AS ts');
@@ -53,7 +53,7 @@ async function main() {
   }
   console.log();
 
-  // ── Check 2: Required tables ───────────────────────────────────────
+  // -- Check 2: Required tables ---------------------------------------
   console.log(`${BOLD}[2] Schema — Required Tables${RESET}`);
   const { rows: tableRows } = await pool.query(
     `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'`
@@ -69,7 +69,7 @@ async function main() {
   }
   console.log();
 
-  // ── Check 3: Data — at least 1 user ───────────────────────────────
+  // -- Check 3: Data — at least 1 user -------------------------------
   console.log(`${BOLD}[3] Data Presence${RESET}`);
   try {
     const { rows: users } = await pool.query(`SELECT COUNT(*)::int AS cnt FROM "User"`);
@@ -92,7 +92,7 @@ async function main() {
   }
   console.log();
 
-  // ── Check 4: Indexes ──────────────────────────────────────────────
+  // -- Check 4: Indexes ----------------------------------------------
   console.log(`${BOLD}[4] Performance Indexes${RESET}`);
   try {
     const { rows: idxRows } = await pool.query(
@@ -112,7 +112,7 @@ async function main() {
   }
   console.log();
 
-  // ── Summary ───────────────────────────────────────────────────────
+  // -- Summary -------------------------------------------------------
   if (allGreen) {
     console.log(`${GREEN}${BOLD}All checks passed — system is healthy.${RESET}\n`);
   } else {

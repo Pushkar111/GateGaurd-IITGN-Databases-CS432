@@ -519,17 +519,17 @@ class BPlusTree:
         constraint=false edges connect record-shape nodes — a known Windows bug.
 
         Layout:
-          ┌─────────────────────────────────┐
+          ┌---------------------------------┐
           │  ROOT  (only if root)           │  ← header row (purple/blue/green)
-          ├────────┬────────┬───────────────┤
+          ├--------┬--------┬---------------┤
           │  key1  │  key2  │  ...          │  ← keys row
-          └────────┴────────┴───────────────┘
+          └--------┴--------┴---------------┘
           For leaves each cell shows  key : value
         """
         e = self._html_escape
 
         if node.is_leaf:
-            # ── colours ─────────────────────────────────────────────────────
+            # -- colours -----------------------------------------------------
             hdr_bg   = "#1a4d36" if not is_root else "#0f3326"
             hdr_fg   = "#4ade80"
             cell_bg  = "#163326"
@@ -559,7 +559,7 @@ class BPlusTree:
             html += '</TR></TABLE>>'
 
         elif is_root:
-            # ── colours ─────────────────────────────────────────────────────
+            # -- colours -----------------------------------------------------
             hdr_bg   = "#3b1f6e"
             hdr_fg   = "#e9d5ff"
             cell_bg  = "#2d1b4e"
@@ -586,7 +586,7 @@ class BPlusTree:
             html += '</TR></TABLE>>'
 
         else:
-            # ── ordinary internal node ───────────────────────────────────────
+            # -- ordinary internal node ---------------------------------------
             hdr_bg   = "#252960"
             hdr_fg   = "#c7d2fe"
             cell_bg  = "#17193a"

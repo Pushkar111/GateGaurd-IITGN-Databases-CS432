@@ -24,7 +24,7 @@ import {
   pageVariants, staggerContainer, staggerItem, fadeInUp, cardHover,
 } from '@/lib/motion';
 
-// ── Time-based greeting ───────────────────────────────────────────────
+// -- Time-based greeting -----------------------------------------------
 function getGreeting() {
   const h = new Date().getHours();
   if (h < 12) return 'Good Morning';
@@ -33,7 +33,7 @@ function getGreeting() {
   return 'Good Night';
 }
 
-// ── Custom recharts tooltip ───────────────────────────────────────────
+// -- Custom recharts tooltip -------------------------------------------
 function ChartTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
@@ -50,7 +50,7 @@ function ChartTooltip({ active, payload, label }) {
   );
 }
 
-// ── Gate occupancy color ──────────────────────────────────────────────
+// -- Gate occupancy color ----------------------------------------------
 function gateColor(count, capacity = 100) {
   const pct = count / capacity;
   if (pct < 0.5) return '#10b981'; // emerald
@@ -58,7 +58,7 @@ function gateColor(count, capacity = 100) {
   return '#ef4444'; // red
 }
 
-// ── QuickAction card ──────────────────────────────────────────────────
+// -- QuickAction card --------------------------------------------------
 function QuickActionCard({ icon: Icon, label, sublabel, color, onClick }) {
   return (
     <motion.button
@@ -80,7 +80,7 @@ function QuickActionCard({ icon: Icon, label, sublabel, color, onClick }) {
   );
 }
 
-// ── Main component ─────────────────────────────────────────────────────
+// -- Main component -----------------------------------------------------
 export default function DashboardPage() {
   const { user, hasRole } = useAuth();
   const navigate        = useNavigate();
@@ -260,7 +260,7 @@ export default function DashboardPage() {
       animate="animate"
       className="p-6 space-y-6 pb-20 md:pb-6"
     >
-      {/* ── Welcome Hero ─────────────────────────────────────────── */}
+      {/* -- Welcome Hero ------------------------------------------- */}
       <motion.div
         variants={fadeInUp}
         initial="initial"
@@ -395,7 +395,7 @@ export default function DashboardPage() {
         ) : null}
       </motion.div>
 
-      {/* ── Stat Cards ───────────────────────────────────────────── */}
+      {/* -- Stat Cards --------------------------------------------- */}
       <motion.div
         variants={staggerContainer}
         initial="initial"
@@ -416,7 +416,7 @@ export default function DashboardPage() {
         </motion.div>
       </motion.div>
 
-      {/* ── Charts row ───────────────────────────────────────────── */}
+      {/* -- Charts row --------------------------------------------- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Visit trend — AreaChart */}
@@ -533,7 +533,7 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
-      {/* ── Bottom row ───────────────────────────────────────────── */}
+      {/* -- Bottom row --------------------------------------------- */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
         {/* Recent Activity */}

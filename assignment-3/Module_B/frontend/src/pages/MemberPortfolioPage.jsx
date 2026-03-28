@@ -20,7 +20,7 @@ import EmptyState      from '@/components/shared/EmptyState';
 import { cn, getInitials, formatDate, formatRelativeTime, formatDuration } from '@/lib/utils';
 import { pageVariants, staggerContainer, staggerItem, fadeInUp } from '@/lib/motion';
 
-// ── Constants ─────────────────────────────────────────────────────────
+// -- Constants ---------------------------------------------------------
 const CIRCUMFERENCE = 2 * Math.PI * 28; // small rings r=28
 
 const RING_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#a855f7'];
@@ -38,7 +38,7 @@ function charHash(s = '') {
 }
 function memberGrad(name) { return GRAD_CLASSES[charHash(name) % GRAD_CLASSES.length]; }
 
-// ── Small SVG stat ring ───────────────────────────────────────────────
+// -- Small SVG stat ring -----------------------------------------------
 function StatRing({ label, value, max = 100, color = '#6366f1' }) {
   const pct    = Math.min((value || 0) / (max || 1), 1);
   const offset = CIRCUMFERENCE * (1 - pct);
@@ -64,7 +64,7 @@ function StatRing({ label, value, max = 100, color = '#6366f1' }) {
   );
 }
 
-// ── Member type icon ──────────────────────────────────────────────────
+// -- Member type icon --------------------------------------------------
 function TypeIcon({ type }) {
   const t = (type || '').toLowerCase();
   if (t.includes('faculty') || t.includes('staff')) return <Briefcase size={16} className="text-indigo-400" />;
@@ -178,7 +178,7 @@ export default function MemberPortfolioPage() {
     <motion.div variants={pageVariants} initial="initial" animate="animate"
       className="p-6 space-y-6 pb-20 md:pb-6">
 
-      {/* ── Hero Section ──────────────────────────────────────── */}
+      {/* -- Hero Section ---------------------------------------- */}
       <motion.div variants={fadeInUp} initial="initial" animate="animate" className="glass-card p-8">
         <div className="flex flex-col items-center text-center gap-5">
           {/* Spinning gradient ring + avatar */}
@@ -230,7 +230,7 @@ export default function MemberPortfolioPage() {
         </div>
       </motion.div>
 
-      {/* ── Bento Grid + access overlay ─────────────────────── */}
+      {/* -- Bento Grid + access overlay ----------------------- */}
       <div className="relative">
         <div className={cn('grid gap-4 transition-all', { 'blur-sm pointer-events-none select-none': !hasAccess })}
           style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
@@ -328,7 +328,7 @@ export default function MemberPortfolioPage() {
         )}
       </div>
 
-      {/* ── Recent Visits Timeline ───────────────────────────── */}
+      {/* -- Recent Visits Timeline ----------------------------- */}
       <div className="relative">
         <div className={cn('space-y-4', { 'blur-sm pointer-events-none select-none': !hasAccess })}>
           <p className="text-sm font-semibold text-white/50 uppercase tracking-widest">Recent Visits</p>

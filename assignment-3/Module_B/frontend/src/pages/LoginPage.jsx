@@ -71,13 +71,13 @@ function warmPostLoginChunks() {
   ]);
 }
 
-// ── Zod schema ─────────────────────────────────────────────────────────
+// -- Zod schema ---------------------------------------------------------
 const schema = z.object({
   username: z.string().min(2, 'Username must be at least 2 characters'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-// ── Typewriter hook ────────────────────────────────────────────────────
+// -- Typewriter hook ----------------------------------------------------
 function useTypewriter(text, speed = 60) {
   const [displayed, setDisplayed] = useState('');
   const [done,      setDone]      = useState(false);
@@ -97,7 +97,7 @@ function useTypewriter(text, speed = 60) {
   return { displayed, done };
 }
 
-// ── Floating label auth-input wrapper ─────────────────────────────────
+// -- Floating label auth-input wrapper ---------------------------------
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
     <div className="space-y-1">
@@ -134,7 +134,7 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// ── Main Content ───────────────────────────────────────────────────────
+// -- Main Content -------------------------------------------------------
 export default function LoginPage() {
   const { login }          = useAuth();
   const navigate           = useNavigate();
@@ -240,7 +240,7 @@ export default function LoginPage() {
           {/* Card */}
           <div className={cn('auth-card p-8 md:p-10 transition-all duration-500', isLocked && 'border-red-500/40 shadow-[0_0_40px_rgba(239,68,68,0.1)]')}>
             
-            {/* ── Logo ───────────────────────────────────────────────── */}
+            {/* -- Logo ------------------------------------------------- */}
             <div className="flex flex-col items-center gap-3 text-center mb-8">
               {isLocked ? (
                 <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
@@ -273,7 +273,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* ── Lockout State Content ─────────────────────────────── */}
+            {/* -- Lockout State Content ------------------------------- */}
             {isLocked ? (
               <div className="text-center space-y-6 py-4">
                 <div className="text-red-400 text-sm">Too many failed login attempts.</div>
@@ -291,7 +291,7 @@ export default function LoginPage() {
               </div>
             ) : (
               <>
-                {/* ── Typewriter ─────────────────────────────────────────── */}
+                {/* -- Typewriter ------------------------------------------- */}
                 <div className="text-center mb-6 h-5">
                   <span className="text-white/60 text-sm font-medium">
                     {displayed}
@@ -299,7 +299,7 @@ export default function LoginPage() {
                   </span>
                 </div>
 
-                {/* ── Form ───────────────────────────────────────────────── */}
+                {/* -- Form ------------------------------------------------- */}
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
                   
                   <FloatingInput

@@ -30,7 +30,7 @@ const DEMO_USERS = [
 
 async function main() {
   console.log('\nGateGuard seed-users.js');
-  console.log('──────────────────────────────\n');
+  console.log('------------------------------\n');
 
   // 1 — Ensure roles exist
   // Table: role (lowercase). Columns: roleid, rolename, createdat, updatedat

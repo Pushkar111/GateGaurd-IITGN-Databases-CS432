@@ -29,14 +29,14 @@ import {
   pageVariants, staggerContainer, staggerItem, scaleIn, backdropVariants,
 } from '@/lib/motion';
 
-// ── Zod schema ─────────────────────────────────────────────────────────
+// -- Zod schema ---------------------------------------------------------
 const vehicleSchema = z.object({
   registrationNumber: z.string().min(4, 'Registration number required').max(20).toUpperCase(),
   typeId: z.coerce.number().int().positive('Vehicle type required'),
   ownerId: z.coerce.number().int().positive('Owner required'),
 });
 
-// ── Vehicle type icon ─────────────────────────────────────────────────
+// -- Vehicle type icon -------------------------------------------------
 const TYPE_ICONS = { Car, Truck };
 const TYPE_COLORS = {
   Car:      'from-indigo-500 to-indigo-700',
@@ -51,7 +51,7 @@ function VehicleTypeIcon({ typeName, size = 20 }) {
   return <Icon size={size} />;
 }
 
-// ── Vehicle card ──────────────────────────────────────────────────────
+// -- Vehicle card ------------------------------------------------------
 function VehicleCard({ vehicle, onEdit, onDelete, canEdit, canDelete }) {
   const navigate  = useNavigate();
   const typeName  = vehicle.TypeName    || vehicle.typename    || 'Car';
@@ -104,7 +104,7 @@ function VehicleCard({ vehicle, onEdit, onDelete, canEdit, canDelete }) {
   );
 }
 
-// ── Card skeleton ─────────────────────────────────────────────────────
+// -- Card skeleton -----------------------------------------------------
 function CardSkeleton() {
   return (
     <div className="glass-card p-5 space-y-3">
@@ -116,7 +116,7 @@ function CardSkeleton() {
   );
 }
 
-// ── Owner combobox ────────────────────────────────────────────────────
+// -- Owner combobox ----------------------------------------------------
 function OwnerCombobox({ value, onChange }) {
   const [open,          setOpen]          = useState(false);
   const [comboSearch,   setComboSearch]   = useState('');
@@ -192,7 +192,7 @@ function OwnerCombobox({ value, onChange }) {
   );
 }
 
-// ── Add/Edit modal ────────────────────────────────────────────────────
+// -- Add/Edit modal ----------------------------------------------------
 function VehicleModal({ open, onOpenChange, editVehicle, vehicleTypes, onSuccess }) {
   const isEdit = Boolean(editVehicle);
   const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm({
@@ -295,7 +295,7 @@ function VehicleModal({ open, onOpenChange, editVehicle, vehicleTypes, onSuccess
   );
 }
 
-// ── Table columns ─────────────────────────────────────────────────────
+// -- Table columns -----------------------------------------------------
 function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
   return [
     { header: '#', accessorKey: 'VehicleID', size: 50, cell: (c) => <span className="text-white/30 tabular-nums">{c.getValue() || c.row.original.vehicleid}</span> },
@@ -318,7 +318,7 @@ function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
   ];
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// -- Main page ---------------------------------------------------------
 export default function VehiclesPage() {
   const navigate    = useNavigate();
   const { hasRole } = useAuth();

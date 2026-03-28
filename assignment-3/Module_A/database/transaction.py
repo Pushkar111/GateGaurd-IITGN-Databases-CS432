@@ -1,5 +1,5 @@
 """
-transaction.py — TransactionManager for GateGuard Assignment-3 Module A
+transaction.py: TransactionManager for GateGuard Assignment-3 Module A
 
 Wraps DatabaseManager with full ACID transaction semantics built
 on top of the WAL (Write-Ahead Log) in wal.py.
@@ -17,7 +17,7 @@ Usage
     wal = WALWriter("gateguard_wal.log")
     tm  = TransactionManager(db, wal)
 
-    # Context-manager style (recommended — auto-rollback on exception):
+    # Context-manager style (recommended - auto-rollback on exception):
     with tm.transaction("add_member_visit") as txn:
         txn.insert("Member",      { ... })
         txn.insert("PersonVisit", { ... })
@@ -28,7 +28,7 @@ Usage
     txn.insert("Member", { ... })
     txn.commit()   # or txn.rollback()
 
-Author: GateGuard Team — IIT Gandhinagar CS432
+Author: GateGuard Team, IIT Gandhinagar CS432
 """
 
 import uuid
@@ -47,14 +47,14 @@ class TransactionError(Exception):
 
 
 # ---------------------------------------------------------------------------
-# Transaction — one active unit of work
+# Transaction - one active unit of work
 # ---------------------------------------------------------------------------
 
 class Transaction:
     """
     Represents a single active transaction.
 
-    Do NOT instantiate directly — always use TransactionManager.begin()
+    Do NOT instantiate directly - always use TransactionManager.begin()
     or the TransactionManager.transaction() context manager.
 
     Internal undo stack format
@@ -64,7 +64,7 @@ class Transaction:
 
     Where:
         operation    : "INSERT" | "UPDATE" | "DELETE"
-        table_name   : str — e.g., "Member"
+        table_name   : str - e.g., "Member"
         key          : primary-key value used in the B+ Tree
         before_value : dict (old record) or None (for INSERT, nothing to restore)
 
@@ -84,17 +84,17 @@ class Transaction:
 
         # WAL-first: log BEGIN before anything else
         self._wal.log_begin(txn_id)
-        print(f"[TXN] ▶  BEGIN    txn_id={txn_id}")
+        print(f"starting txn: {txn_id}...")
 
-    # ── Mutation interface ────────────────────────────────────────────────
+    # -- Mutation interface ------------------------------------------------
 
     def insert(self, table_name: str, record: dict):
         """
         Insert a new record into `table_name`.
 
         Sequence:
-          1. Guard — reject duplicates (fail early, no log written).
-          2. WAL log_insert — disk first.
+          1. Guard - reject duplicates (fail early, no log written).
+          2. WAL log_insert - disk first.
           3. Push undo entry (INSERT → undo via DELETE).
           4. Apply to B+ Tree.
         """
@@ -108,7 +108,7 @@ class Transaction:
                 f"column '{table.primary_key}'."
             )
 
-        # Guard against silent upsert — we treat inserts as strictly new
+        # Guard against silent upsert - we treat inserts as strictly new
         if table.select(key) is not None:
             raise TransactionError(
                 f"INSERT into '{table_name}': key={key} already exists. "
@@ -123,7 +123,7 @@ class Transaction:
 
         # Apply
         table.insert(record)
-        print(f"[TXN]    INSERT   table={table_name:<14} key={key}")
+        print(f"  -> inserting into {table_name} with key {key}")
 
     def update(self, table_name: str, key, updated_fields: dict):
         """
@@ -152,7 +152,7 @@ class Transaction:
 
         # Apply directly to B+ Tree update (bypasses Table.update merge to set exact dict)
         table.index.update(key, new_val)
-        print(f"[TXN]    UPDATE   table={table_name:<14} key={key}")
+        print(f"  -> updating {table_name} with key {key}")
 
     def delete(self, table_name: str, key):
         """
@@ -178,9 +178,9 @@ class Transaction:
 
         # Apply
         table.delete(key)
-        print(f"[TXN]    DELETE   table={table_name:<14} key={key}")
+        print(f"  -> deleting from {table_name} with key {key}")
 
-    # ── Lifecycle ────────────────────────────────────────────────────────
+    # -- Lifecycle --------------------------------------------------------
 
     def commit(self):
         """
@@ -192,12 +192,12 @@ class Transaction:
         """
         self._assert_active("commit")
 
-        # COMMIT goes to disk — durability guarantee
+        # COMMIT goes to disk - durability guarantee
         self._wal.log_commit(self.txn_id)
 
         self._active    = False
         self._committed = True
-        print(f"[TXN] ✔  COMMIT   txn_id={self.txn_id}  ({len(self._undo_stack)} op(s))")
+        print(f"committed txn {self.txn_id} yay!")
 
     def rollback(self):
         """
@@ -207,40 +207,40 @@ class Transaction:
         begin() was called. The WAL records an ABORT marker.
         """
         if not self._active:
-            # Already settled — idempotent, no-op
+            # Already settled - idempotent, no-op
             return
 
         n = len(self._undo_stack)
-        print(f"[TXN] ✖  ROLLBACK txn_id={self.txn_id}  undoing {n} op(s)...")
+        print(f"uh oh rolling back txn {self.txn_id}! undoing {n} things..")
 
         for op, table_name, key, before_val in reversed(self._undo_stack):
             table = self._db.get_table(table_name)
             try:
                 if op == "INSERT":
-                    # Undo insert → delete the key we added
+                    # Undo insert -> delete the key we added
                     table.delete(key)
-                    print(f"  ↩  UNDO INSERT  table={table_name} key={key}")
+                    print(f"  -> undoing insert on {table_name}")
 
                 elif op == "UPDATE":
-                    # Undo update → restore exact old record
+                    # Undo update -> restore exact old record
                     table.index.update(key, before_val)
-                    print(f"  ↩  UNDO UPDATE  table={table_name} key={key}")
+                    print(f"  -> undoing update on {table_name}")
 
                 elif op == "DELETE":
-                    # Undo delete → re-insert the old record
+                    # Undo delete -> re-insert the old record
                     table.insert(before_val)
-                    print(f"  ↩  UNDO DELETE  table={table_name} key={key}")
+                    print(f"  -> undoing delete on {table_name}")
 
             except Exception as exc:
                 # Log the undo failure but continue undoing remaining ops
-                print(f"  ⚠  UNDO ERROR {op} table={table_name} key={key}: {exc}")
+                print(f"  -> oops error while undoing: {exc}")
 
         # Record the abort in WAL
         self._wal.log_abort(self.txn_id)
         self._active = False
-        print(f"[TXN]    ABORTED  txn_id={self.txn_id}")
+        print(f"txn aborted: {self.txn_id}")
 
-    # ── Helpers ──────────────────────────────────────────────────────────
+    # -- Helpers ----------------------------------------------------------
 
     def _assert_active(self, op_name: str):
         """Raise TransactionError if the transaction is no longer active."""
@@ -265,7 +265,7 @@ class Transaction:
 
 
 # ---------------------------------------------------------------------------
-# TransactionManager — the public entry point
+# TransactionManager - the public entry point
 # ---------------------------------------------------------------------------
 
 class TransactionManager:
@@ -277,7 +277,7 @@ class TransactionManager:
     - Only ONE active transaction at a time (single-threaded Module A model).
     - Every mutation goes through this manager so WAL is always written first.
     - The context-manager API (with tm.transaction(...) as txn) is the
-      recommended style — it guarantees rollback on any exception including
+      recommended style - it guarantees rollback on any exception including
       KeyboardInterrupt.
 
     Example
@@ -297,7 +297,7 @@ class TransactionManager:
             txn.insert("Member", { "MemberID": 2, ... })
             raise RuntimeError("disk full!")   # triggers auto-rollback
     except RuntimeError:
-        pass   # Member 2 is gone — never committed
+        pass   # Member 2 is gone - never committed
     """
 
     def __init__(self, db: DatabaseManager, wal: WALWriter):
@@ -349,8 +349,8 @@ class TransactionManager:
             if txn.is_active:
                 txn.commit()
         except Exception as exc:
-            print(f"\n[TXN] Exception in transaction '{txn.txn_id}': {exc}")
-            print(f"[TXN] Auto-rolling back...")
+            print(f"\\noops transaction crashed: {exc}")
+            print(f"auto rolling back now...")
             txn.rollback()
             raise   # re-raise so the caller knows about the failure
 

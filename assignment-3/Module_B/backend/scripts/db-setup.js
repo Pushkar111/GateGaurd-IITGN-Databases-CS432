@@ -94,7 +94,7 @@ async function preCleanAuxiliaryObjects() {
 
 async function main() {
   console.log(`\n${BOLD}GateGuard db-setup.js${RESET}`);
-  console.log('────────────────────────────────\n');
+  console.log('--------------------------------\n');
 
   // Test connection first
   try {

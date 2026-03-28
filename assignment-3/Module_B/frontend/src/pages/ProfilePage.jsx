@@ -16,7 +16,7 @@ import { cn, getInitials, formatDate } from '@/lib/utils';
 import { pageVariants, fadeInUp, staggerContainer, staggerItem } from '@/lib/motion';
 import { AnimatePresence } from 'framer-motion';
 
-// ── Floating label auth-input wrapper ─────────────────────────────────
+// -- Floating label auth-input wrapper ---------------------------------
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
     <div className="space-y-1">
@@ -53,7 +53,7 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// ── Avatar gradients ──────────────────────────────────────────────────
+// -- Avatar gradients --------------------------------------------------
 const GRADS = [
   'from-indigo-500 to-purple-600', 'from-emerald-500 to-teal-600',
   'from-amber-500 to-orange-600',  'from-rose-500 to-pink-600',
@@ -64,7 +64,7 @@ function avatarGrad(name = '') {
   return GRADS[h % GRADS.length];
 }
 
-// ── Password strength ─────────────────────────────────────────────────
+// -- Password strength -------------------------------------------------
 function getStrength(pw = '') {
   let score = 0;
   if (pw.length >= 8)           score++;
@@ -95,7 +95,7 @@ function LiquidStrengthMeter({ score }) {
   );
 }
 
-// ── Relative time helper ──────────────────────────────────────────────
+// -- Relative time helper ----------------------------------------------
 function formatRelativeTime(dateStr) {
   const d = new Date(dateStr);
   const diff = (Date.now() - d.getTime()) / 1000;
@@ -105,13 +105,13 @@ function formatRelativeTime(dateStr) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-// ── Browser/Device guesser from UA ───────────────────────────────────
+// -- Browser/Device guesser from UA -----------------------------------
 function guessDevice(ua = '') {
   if (/mobile|android|iphone/i.test(ua)) return <Smartphone size={13}/>;
   return <Monitor size={13}/>;
 }
 
-// ── Login History section ─────────────────────────────────────────────
+// -- Login History section ---------------------------------------------
 function LoginHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -212,7 +212,7 @@ function LoginHistory() {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// -- Main page ---------------------------------------------------------
 export default function ProfilePage() {
   const { user, markPasswordUpdated } = useAuth();
 
@@ -403,7 +403,7 @@ export default function ProfilePage() {
           </div>
         </motion.div>
 
-        {/* ── Login History ─────────────────────────────────────── */}
+        {/* -- Login History --------------------------------------- */}
         <LoginHistory/>
       </motion.div>
     </motion.div>

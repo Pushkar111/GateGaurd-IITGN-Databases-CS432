@@ -27,3 +27,7 @@ assignment-2/Module_B/backend/logs/*.log
 
 # ignore zip files
 *.zip
+
+
+# python cache
+__pycache__

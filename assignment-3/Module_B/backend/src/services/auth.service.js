@@ -15,7 +15,7 @@ const logger    = require('../utils/logger');
 const env       = require('../config/env');
 const { query } = require('../config/db');
 
-// ── Helper: find user with auth fields ────────────────────────────────
+// -- Helper: find user with auth fields --------------------------------
 async function findUserForAuth(username) {
   const { rows } = await query(
     `SELECT u.userid, u.username, u.passwordhash, u.roleid, u.email,
@@ -53,7 +53,7 @@ async function findUserByEmail(emailAddr) {
   return rows[0] || null;
 }
 
-// ── Helper: member association ────────────────────────────────────────
+// -- Helper: member association ----------------------------------------
 async function getMemberId(username) {
   try {
     const { rows } = await query(
@@ -68,7 +68,7 @@ async function getMemberId(username) {
   } catch { return null; }
 }
 
-// ── Helper: generate tokens ──────────────────────────────────────────
+// -- Helper: generate tokens ------------------------------------------
 function generateAccessToken(payload) {
   return jwt.sign(payload, env.JWT_SECRET, { expiresIn: env.JWT_ACCESS_EXPIRES });
 }
@@ -133,7 +133,7 @@ async function login(username, password, ipAddress, userAgent) {
     });
   }
 
-  // ── Correct password ────────────────────────────────────────────────
+  // -- Correct password ------------------------------------------------
   await authModel.resetFailedAttempts(user.userid);
   await authModel.updateLastLogin(user.userid);
 

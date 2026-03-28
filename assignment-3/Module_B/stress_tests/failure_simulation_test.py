@@ -1,5 +1,5 @@
 """
-failure_simulation_test.py — Mid-operation failure scenarios for GateGuard API
+failure_simulation_test.py: simulating failures for GateGuard API
 GateGuard Assignment-3 Module B | IIT Gandhinagar CS432
 
 WHAT THIS TESTS
@@ -45,24 +45,24 @@ _results: list[dict] = []
 
 
 def _record(test: str, passed: bool, **extra):
-    status = "✅ PASS" if passed else "❌ FAIL"
+    status = "PASS" if passed else "FAIL"
     print(f"  {status}")
     _results.append({"test": test, "passed": passed, **extra})
 
 
-# ── Individual test functions ─────────────────────────────────────────────────
+# -- Individual test functions -------------------------------------------------
 
 def test_invalid_member():
     """
     POST entry for member ID 99999 (does not exist).
     Expected: HTTP 404, zero visit rows for that ID exist now or after.
     """
-    print("\n[TEST 1] Invalid member ID → should return 404, no DB change")
+    print("\ntest 1: tracking invalid member ID (should 404 and no db change)")
     client = APIClient()
     before = len(get_all_visits_for_member(99999))
     resp   = client.post("/person-visits/entry", {"memberId": 99999, "entryGateId": GATE_ID})
     after  = len(get_all_visits_for_member(99999))
-    print(f"  HTTP {resp.status_code}  |  Visits before={before}  after={after}")
+    print(f"  got HTTP {resp.status_code} | visits before={before} after={after}")
     passed = (resp.status_code == 404 and after == before == 0)
     _record("invalid_member", passed,
             status_code=resp.status_code, visits_before=before, visits_after=after)
@@ -74,7 +74,7 @@ def test_duplicate_active_visit():
     the first is still open.
     Expected: second attempt returns HTTP 400, DB still has exactly 1 active visit.
     """
-    print("\n[TEST 2] Duplicate active visit → should return 400, 1 active visit in DB")
+    print("\ntest 2: duplicate active visit (should 400 and keep 1 visit)")
     client = APIClient()
 
     # Ensure member has no active visit before we start
@@ -83,11 +83,11 @@ def test_duplicate_active_visit():
         r1 = client.post("/person-visits/entry",
                          {"memberId": MEMBER_ID, "entryGateId": GATE_ID})
         assert r1.status_code == 201, f"Setup failed (status={r1.status_code}): {r1.text}"
-        print(f"  Setup: created entry VisitID={r1.json().get('data', {}).get('VisitID', '?')}")
+        print(f"  setup: created entry VisitID={r1.json().get('data', {}).get('VisitID', '?')}")
     else:
-        print(f"  Member already has {active} active visit(s) — skipping setup.")
+        print(f"  member already has {active} active visit(s) so skipping setup")
 
-    # Second concurrent entry — must be rejected
+    # Second concurrent entry - must be rejected
     r2           = client.post("/person-visits/entry",
                                {"memberId": MEMBER_ID, "entryGateId": GATE_ID})
     active_after = count_active_visits_for_member(MEMBER_ID)
@@ -102,7 +102,7 @@ def test_malformed_payload():
     POST body with missing 'entryGateId' field.
     Expected: HTTP 400 or 422 from validation middleware, zero new visits created.
     """
-    print("\n[TEST 3] Malformed payload (missing entryGateId) → 400/422, no new visit")
+    print("\ntest 3: malformed payload missing gate info (should 400/422)")
     client        = APIClient()
     visits_before = len(get_all_visits_for_member(MEMBER_ID))
     resp          = client.post("/person-visits/entry", {"memberId": MEMBER_ID})  # missing gate
@@ -119,7 +119,7 @@ def test_exit_on_closed_visit():
     Try to record exit for a visit that is already closed (has exittime set).
     Expected: HTTP 400, the visit row is unchanged.
     """
-    print("\n[TEST 4] Exit on already-closed visit → 400, no DB change")
+    print("\ntest 4: exit on already-closed visit (should 400)")
     client     = APIClient()
     all_visits = get_all_visits_for_member(MEMBER_ID)
     closed     = [v for v in all_visits if v["exittime"] is not None]
@@ -131,17 +131,17 @@ def test_exit_on_closed_visit():
                               {"memberId": MEMBER_ID, "entryGateId": GATE_ID})
         if r_entry.status_code == 201:
             visit_id = r_entry.json().get("data", {}).get("VisitID")
-            client.patch(f"/person-visits/{visit_id}/exit", {"exitGateId": GATE_ID})
+            client.put(f"/person-visits/{visit_id}/exit", {"exitGateId": GATE_ID})
         all_visits = get_all_visits_for_member(MEMBER_ID)
         closed     = [v for v in all_visits if v["exittime"] is not None]
 
     if not closed:
-        print("  ⚠  Still no closed visit available — skipping this test.")
+        print("  [Warning] Still no closed visit available - skipping this test.")
         _record("exit_on_closed_visit", False, reason="no_closed_visit_available")
         return
 
     target_visit_id = closed[-1]["visitid"]
-    resp = client.patch(f"/person-visits/{target_visit_id}/exit",
+    resp = client.put(f"/person-visits/{target_visit_id}/exit",
                         {"exitGateId": GATE_ID})
     print(f"  HTTP {resp.status_code}  |  VisitID={target_visit_id} (already closed)")
     passed = (resp.status_code == 400)
@@ -149,12 +149,12 @@ def test_exit_on_closed_visit():
             visit_id=target_visit_id, status_code=resp.status_code)
 
 
-# ── Runner ────────────────────────────────────────────────────────────────────
+# -- Runner --------------------------------------------------------------------
 
 def run_all() -> list[dict]:
-    print("\n" + "=" * 62)
-    print("  FAILURE SIMULATION TESTS")
-    print("=" * 62)
+    print("\n" + "*" * 50)
+    print("  running failure simulation...")
+    print("*" * 50)
 
     test_invalid_member()
     test_duplicate_active_visit()

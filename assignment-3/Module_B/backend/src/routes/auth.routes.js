@@ -13,7 +13,7 @@ const {
   registerSchema
 } = require('../validators/auth.validator');
 
-// ── Public Auth ───────────────────────────────────────────────────────
+// -- Public Auth -------------------------------------------------------
 router.post('/login',
   validate(loginSchema),
   authController.login
@@ -39,7 +39,7 @@ router.post('/reset-password',
   authController.resetPassword
 );
 
-// ── Authenticated Auth ────────────────────────────────────────────────
+// -- Authenticated Auth ------------------------------------------------
 router.post('/logout',
   authenticate,
   authController.logout
@@ -61,7 +61,7 @@ router.get('/login-history',
   authController.getLoginHistory
 );
 
-// ── Admin Endpoints ───────────────────────────────────────────────────
+// -- Admin Endpoints ---------------------------------------------------
 router.post('/register',
   authenticate,
   authorize(ROLES.SUPERADMIN),

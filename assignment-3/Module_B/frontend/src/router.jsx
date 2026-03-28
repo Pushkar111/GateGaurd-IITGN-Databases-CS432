@@ -7,7 +7,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
-// ── Loading fallback for lazy pages ──────────────────────────────────
+// -- Loading fallback for lazy pages ----------------------------------
 function PageLoader() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#090d12]">
@@ -19,7 +19,7 @@ function PageLoader() {
   );
 }
 
-// ── Lazy-load all page components ─────────────────────────────────────
+// -- Lazy-load all page components -------------------------------------
 const LoginPage            = lazy(() => import('@/pages/LoginPage'));
 const ForgotPasswordPage   = lazy(() => import('@/pages/ForgotPasswordPage'));
 const ChangePasswordPage   = lazy(() => import('@/pages/ChangePasswordPage'));
@@ -41,7 +41,7 @@ const UsersPage          = lazy(() => import('@/pages/admin/UsersPage'));
 const AuditPage          = lazy(() => import('@/pages/admin/AuditPage'));
 const ProfilePage        = lazy(() => import('@/pages/ProfilePage'));
 
-// ── Route guards ──────────────────────────────────────────────────────
+// -- Route guards ------------------------------------------------------
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();
   if (isLoading) return <PageLoader />;
@@ -57,7 +57,7 @@ function AdminRoute({ children }) {
   return children;
 }
 
-// ── Router definition ─────────────────────────────────────────────────
+// -- Router definition -------------------------------------------------
 const router = createBrowserRouter([
   // Public routes
   {

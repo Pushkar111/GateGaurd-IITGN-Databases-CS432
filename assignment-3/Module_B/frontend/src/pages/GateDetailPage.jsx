@@ -36,7 +36,7 @@ const editSchema = z.object({
   status:   z.enum(['Active', 'Inactive']),
 });
 
-// ── Visit column builders ─────────────────────────────────────────────
+// -- Visit column builders ---------------------------------------------
 function buildPersonCols(gateId) {
   return [
   { header: 'Member',     id: 'mem',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs font-medium">{v.MemberName || v.membername || '—'}</span> },

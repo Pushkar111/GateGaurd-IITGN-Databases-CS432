@@ -17,10 +17,10 @@ import { useSavedViews } from '@/hooks/useSavedViews';
 import { cn, getInitials, formatDuration } from '@/lib/utils';
 import { pageVariants, staggerContainer, staggerItem } from '@/lib/motion';
 
-// ── 8 hour threshold for overstay ─────────────────────────────────────
+// -- 8 hour threshold for overstay -------------------------------------
 const OVERSTAY_MS = 8 * 60 * 60 * 1000;
 
-// ── Quick-exit popover ────────────────────────────────────────────────
+// -- Quick-exit popover ------------------------------------------------
 function QuickExitPopover({ visit, gates, onExit }) {
   const [open,         setOpen]         = useState(false);
   const [gateId,       setGateId]       = useState('');
@@ -63,7 +63,7 @@ function QuickExitPopover({ visit, gates, onExit }) {
   );
 }
 
-// ── Single visit card ─────────────────────────────────────────────────
+// -- Single visit card -------------------------------------------------
 function VisitCard({ visit, now, gates, onExit, onRemove }) {
   const isPerson   = visit._type === 'person';
   const entryTime  = visit.EntryTime || visit.entrytime;
@@ -134,7 +134,7 @@ function VisitCard({ visit, now, gates, onExit, onRemove }) {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// -- Main page ---------------------------------------------------------
 export default function ActiveVisitsPage() {
   const [visits,     setVisits]     = useState([]);
   const [gates,      setGates]      = useState([]);

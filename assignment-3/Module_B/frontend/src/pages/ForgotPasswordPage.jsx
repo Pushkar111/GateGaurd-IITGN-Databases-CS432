@@ -14,7 +14,7 @@ import * as authApi from '@/api/auth.api';
 import { toast } from 'sonner';
 import { HeroHighlight } from '@/components/ui/hero-highlight';
 
-// ── Floating label auth-input wrapper ─────────────────────────────────
+// -- Floating label auth-input wrapper ---------------------------------
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
     <div className="space-y-1">
@@ -51,14 +51,14 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// ── Step transition variants ──────────────────────────────────────────
+// -- Step transition variants ------------------------------------------
 const stepVariants = {
   enter:  { x: 60,  opacity: 0, filter: 'blur(4px)' },
   center: { x: 0,   opacity: 1, filter: 'blur(0px)', transition: { duration: 0.3, ease: 'easeOut' } },
   exit:   { x: -60, opacity: 0, filter: 'blur(4px)', transition: { duration: 0.3, ease: 'easeIn'  } },
 };
 
-// ── Password strength helper ──────────────────────────────────────────
+// -- Password strength helper ------------------------------------------
 function getStrength(pw) {
   let score = 0;
   if (pw.length >= 8)      score++;
@@ -77,7 +77,7 @@ const STRENGTH_TIPS    = [
   'Excellent password!',
 ];
 
-// ── debounce hook ─────────────────────────────────────────────────────
+// -- debounce hook -----------------------------------------------------
 function useDebounce(value, delay) {
   const [debounced, setDebounced] = useState(value);
   useEffect(() => {
@@ -87,7 +87,7 @@ function useDebounce(value, delay) {
   return debounced;
 }
 
-// ── Mask email: s*****n@iitgn.ac.in ──────────────────────────────────
+// -- Mask email: s*****n@iitgn.ac.in ----------------------------------
 function maskEmail(email) {
   if (!email || !email.includes('@')) return email;
   const [local, domain] = email.split('@');
@@ -95,7 +95,7 @@ function maskEmail(email) {
   return `${local[0]}${'*'.repeat(Math.min(5, local.length - 1))}@${domain}`;
 }
 
-// ── OTP Countdown (15 minutes = 900s) ────────────────────────────────
+// -- OTP Countdown (15 minutes = 900s) --------------------------------
 function useCountdown(initial = 900) {
   const [seconds, setSeconds] = useState(initial);
   const timerRef = useRef(null);
@@ -115,7 +115,7 @@ function useCountdown(initial = 900) {
   return { seconds, fmt, reset };
 }
 
-// ── Animated Mail SVG (Step 1) ────────────────────────────────────────
+// -- Animated Mail SVG (Step 1) ----------------------------------------
 function AnimatedMailIcon() {
   return (
     <div className="mx-auto mb-6" style={{ width: 72, height: 72 }}>
@@ -137,7 +137,7 @@ function AnimatedMailIcon() {
   );
 }
 
-// ── Animated Envelope-Open SVG (Step 2) ──────────────────────────────
+// -- Animated Envelope-Open SVG (Step 2) ------------------------------
 function AnimatedEnvelopeOpen() {
   return (
     <div className="mx-auto mb-6 relative" style={{ width: 80, height: 80 }}>
@@ -171,7 +171,7 @@ function AnimatedEnvelopeOpen() {
   );
 }
 
-// ── Animated Shield SVG (Step 3) ──────────────────────────────────────
+// -- Animated Shield SVG (Step 3) --------------------------------------
 function AnimatedShieldIcon({ isSuccess }) {
   const color = isSuccess ? '#10b981' : '#6366f1';
   return (
@@ -195,7 +195,7 @@ function AnimatedShieldIcon({ isSuccess }) {
   );
 }
 
-// ── Animated Success Checkmark ────────────────────────────────────────
+// -- Animated Success Checkmark ----------------------------------------
 function SuccessCheckmark() {
   return (
     <div className="mx-auto mb-6" style={{ width: 80, height: 80 }}>
@@ -217,7 +217,7 @@ function SuccessCheckmark() {
   );
 }
 
-// ── Step Indicator ────────────────────────────────────────────────────
+// -- Step Indicator ----------------------------------------------------
 function StepIndicator({ step }) {
   const steps = ['Email', 'OTP', 'Password'];
   return (
@@ -271,7 +271,7 @@ function StepIndicator({ step }) {
   );
 }
 
-// ── Liquid-fill Strength Meter ────────────────────────────────────────
+// -- Liquid-fill Strength Meter ----------------------------------------
 function StrengthMeter({ score }) {
   if (score === 0) return null;
   const color = STRENGTH_COLORS[score - 1];
@@ -290,7 +290,7 @@ function StrengthMeter({ score }) {
   );
 }
 
-// ── MAIN COMPONENT ────────────────────────────────────────────────────
+// -- MAIN COMPONENT ----------------------------------------------------
 export default function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [step,       setStep]       = useState(1);
@@ -443,7 +443,7 @@ export default function ForgotPasswordPage() {
               <StepIndicator step={step} />
 
               <AnimatePresence mode="wait">
-                {/* ── STEP 1 ─── */}
+                {/* -- STEP 1 --- */}
                 {step === 1 && (
                   <motion.div key="s1" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedMailIcon/>
@@ -488,7 +488,7 @@ export default function ForgotPasswordPage() {
                   </motion.div>
                 )}
 
-                {/* ── STEP 2 ─── */}
+                {/* -- STEP 2 --- */}
                 {step === 2 && (
                   <motion.div key="s2" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedEnvelopeOpen/>
@@ -577,7 +577,7 @@ export default function ForgotPasswordPage() {
                   </motion.div>
                 )}
 
-                {/* ── STEP 3 ─── */}
+                {/* -- STEP 3 --- */}
                 {step === 3 && (
                   <motion.div key="s3" variants={stepVariants} initial="enter" animate="center" exit="exit">
                     <AnimatedShieldIcon isSuccess={canReset}/>

@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const logger     = require('./logger');
 const env        = require('../config/env');
 
-// ── Transporter (null if not configured) ──────────────────────────────
+// -- Transporter (null if not configured) ------------------------------
 function createTransporter() {
   if (!env.SMTP_HOST || !env.SMTP_USER) return null;
   return nodemailer.createTransport({
@@ -17,7 +17,7 @@ function createTransporter() {
   });
 }
 
-// ── Shared email template ──────────────────────────────────────────────
+// -- Shared email template ----------------------------------------------
 function wrapHtml(body) {
   return `
     <div style="background:#0d0d1a;padding:40px 20px;font-family:'Segoe UI',Roboto,sans-serif;">
@@ -38,7 +38,7 @@ function wrapHtml(body) {
     </div>`;
 }
 
-// ── Send helper ─────────────────────────────────────────────────────────
+// -- Send helper ---------------------------------------------------------
 async function sendMail(to, subject, htmlBody) {
   const transporter = createTransporter();
   if (!transporter) {
@@ -53,7 +53,7 @@ async function sendMail(to, subject, htmlBody) {
   logger.info(`[email] Sent "${subject}" to ${to}`);
 }
 
-// ── OTP Email ──────────────────────────────────────────────────────────
+// -- OTP Email ----------------------------------------------------------
 async function sendOTPEmail(to, username, otp, expiryMinutes) {
   const digits = otp.split('').map((d) =>
     `<span style="display:inline-block;background:#1e1e3f;border:2px solid #6366f1;border-radius:8px;padding:12px 16px;font-size:28px;font-weight:800;color:#a78bfa;letter-spacing:2px;margin:0 4px;">${d}</span>`
@@ -69,7 +69,7 @@ async function sendOTPEmail(to, username, otp, expiryMinutes) {
   `);
 }
 
-// ── Password Changed Email ─────────────────────────────────────────────
+// -- Password Changed Email ---------------------------------------------
 async function sendPasswordChangedEmail(to, username) {
   await sendMail(to, 'GateGuard — Password Changed Successfully', `
     <div style="text-align:center;margin-bottom:16px;">
@@ -85,7 +85,7 @@ async function sendPasswordChangedEmail(to, username) {
   `);
 }
 
-// ── Account Locked Email ───────────────────────────────────────────────
+// -- Account Locked Email -----------------------------------------------
 async function sendAccountLockedEmail(to, username, unlockTime) {
   await sendMail(to, 'GateGuard — Account Temporarily Locked', `
     <div style="text-align:center;margin-bottom:16px;">
@@ -98,7 +98,7 @@ async function sendAccountLockedEmail(to, username, unlockTime) {
   `);
 }
 
-// ── Welcome Email ──────────────────────────────────────────────────────
+// -- Welcome Email ------------------------------------------------------
 async function sendWelcomeEmail(to, username, temporaryPassword) {
   const appUrl = env.FRONTEND_URL || 'http://localhost:5173';
   await sendMail(to, 'GateGuard — Welcome to the System', `
@@ -115,7 +115,7 @@ async function sendWelcomeEmail(to, username, temporaryPassword) {
   `);
 }
 
-// ── Login Alert Email ──────────────────────────────────────────────────
+// -- Login Alert Email --------------------------------------------------
 async function sendLoginAlertEmail(to, username, ipAddress, timestamp) {
   await sendMail(to, 'GateGuard — New Login to Your Account', `
     <p style="color:#c7d2fe;font-size:15px;">Hi ${username},</p>

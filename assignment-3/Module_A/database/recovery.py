@@ -1,5 +1,5 @@
 """
-recovery.py — WAL-based crash recovery for GateGuard Assignment-3 Module A
+recovery.py: WAL-based crash recovery for GateGuard Assignment-3 Module A
 
 Called ONCE at database startup, before serving any new requests.
 
@@ -15,7 +15,7 @@ Recovery algorithm (Undo + Redo WAL)
        → If the process crashed, their mutations may be partially applied;
          but because we WAL-first (disk before memory), any record that made
          it to memory was either fully applied or not at all from the B+ Tree
-         perspective. We leave them absent — they never committed.
+         perspective. We leave them absent - they never committed.
   6. Print a human-readable summary.
 
 Idempotency
@@ -23,7 +23,7 @@ Idempotency
 Running recovery twice produces the same result as running it once.
 Each redo operation checks the current state before applying.
 
-Author: GateGuard Team — IIT Gandhinagar CS432
+Author: GateGuard Team, IIT Gandhinagar CS432
 """
 
 from .wal        import WALReader
@@ -35,14 +35,14 @@ class RecoveryManager:
     Replays committed WAL transactions into a (freshly created) DatabaseManager.
 
     The DatabaseManager passed in should be empty (just created via
-    create_gateguard_db()) — recovery populates it from the WAL.
+    create_gateguard_db()) - recovery populates it from the WAL.
     """
 
     def __init__(self, db: DatabaseManager, wal_path: str = "gateguard_wal.log"):
         self._db     = db
         self._reader = WALReader(wal_path)
 
-    # ── Public API ────────────────────────────────────────────────────────
+    # -- Public API --------------------------------------------------------
 
     def recover(self) -> dict:
         """
@@ -64,7 +64,7 @@ class RecoveryManager:
         all_records = self._reader.read_all()
 
         if not all_records:
-            print("  [RECOVERY] WAL is empty — nothing to recover.")
+            print("  [RECOVERY] WAL is empty - nothing to recover.")
             print("=" * 62 + "\n")
             return {
                 "committed_txns":   0,
@@ -87,11 +87,11 @@ class RecoveryManager:
         print(f"  Uncommitted txns  : {len(uncommitted_ids)}")
 
         if uncommitted_ids:
-            print(f"  ⚠  Uncommitted txns (will be skipped): {uncommitted_ids}")
+            print(f"  [Warning] Uncommitted txns (will be skipped): {uncommitted_ids}")
 
         print()
 
-        # ── Redo pass: replay all committed transactions ─────────────────
+        # -- Redo pass: replay all committed transactions -----------------
         for txn_id in committed_ids:
             records = sorted(
                 groups.get(txn_id, []),
@@ -109,9 +109,9 @@ class RecoveryManager:
 
                 # Guard: table must exist in the schema
                 if table_name not in self._db.list_tables():
-                    msg = f"Recovery: table '{table_name}' not found in DB — skipping record."
+                    msg = f"Recovery: table '{table_name}' not found in DB - skipping record."
                     errors.append(msg)
-                    print(f"    ⚠  {msg}")
+                    print(f"    [Warning] {msg}")
                     skipped += 1
                     continue
 
@@ -146,7 +146,7 @@ class RecoveryManager:
         print("=" * 62 + "\n")
         return summary
 
-    # ── Internal helpers ─────────────────────────────────────────────────
+    # -- Internal helpers -------------------------------------------------
 
     def _apply_record(self, table, rtype: str, key, rec: dict) -> str:
         """
@@ -158,7 +158,7 @@ class RecoveryManager:
         if rtype == "INSERT":
             existing = table.select(key)
             if existing is not None:
-                return "skipped"   # already present — idempotent
+                return "skipped"   # already present - idempotent
             table.insert(rec["new_val"])
             return "replayed"
 
@@ -167,7 +167,7 @@ class RecoveryManager:
             if existing == rec["new_val"]:
                 return "skipped"   # already at the target state
             if existing is None:
-                # Record was deleted after commit — unusual but handle gracefully
+                # Record was deleted after commit - unusual but handle gracefully
                 table.insert(rec["new_val"])
             else:
                 table.index.update(key, rec["new_val"])

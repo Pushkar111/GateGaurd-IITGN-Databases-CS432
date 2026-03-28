@@ -25,7 +25,7 @@ import { useSavedViews } from '@/hooks/useSavedViews';
 import { cn, getInitials, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, scaleIn, backdropVariants, slideInRight } from '@/lib/motion';
 
-// ── Member combobox ───────────────────────────────────────────────────
+// -- Member combobox ---------------------------------------------------
 function MemberCombobox({ value, label, onChange, excludedIds = new Set() }) {
   const [open,    setOpen]    = useState(false);
   const [search,  setSearch]  = useState('');
@@ -79,7 +79,7 @@ function MemberCombobox({ value, label, onChange, excludedIds = new Set() }) {
   );
 }
 
-// ── Sheet (side drawer) ───────────────────────────────────────────────
+// -- Sheet (side drawer) -----------------------------------------------
 function Sheet({ open, onOpenChange, title, children }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -109,7 +109,7 @@ function Sheet({ open, onOpenChange, title, children }) {
   );
 }
 
-// ── Table columns ─────────────────────────────────────────────────────
+// -- Table columns -----------------------------------------------------
 function buildColumns(navigate, onDelete, canDelete) {
   return [
     {
@@ -149,7 +149,7 @@ function buildColumns(navigate, onDelete, canDelete) {
   ].filter(Boolean);
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// -- Main page ---------------------------------------------------------
 export default function PersonVisitsPage() {
   const navigate            = useNavigate();
   const [searchParams]      = useSearchParams();
@@ -428,7 +428,7 @@ export default function PersonVisitsPage() {
         emptyMessage="No person visits recorded."
       />
 
-      {/* ── Entry Sheet ────────────────────────────────────────── */}
+      {/* -- Entry Sheet ------------------------------------------ */}
       <Sheet open={showEntry} onOpenChange={setShowEntry} title="Record Person Entry">
         <div className="space-y-4">
           <div className="space-y-1">
@@ -458,7 +458,7 @@ export default function PersonVisitsPage() {
         </div>
       </Sheet>
 
-      {/* ── Exit Sheet ─────────────────────────────────────────── */}
+      {/* -- Exit Sheet ------------------------------------------- */}
       <Sheet open={showExit} onOpenChange={setShowExit} title="Record Person Exit">
         <div className="space-y-4">
           <p className="text-xs text-white/40">Select the active visit to close:</p>

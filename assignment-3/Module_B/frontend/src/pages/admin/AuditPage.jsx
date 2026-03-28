@@ -165,7 +165,7 @@ function DatePickerField({ value, onChange, placeholder = 'Select date' }) {
   );
 }
 
-// ── Action config ─────────────────────────────────────────────────────
+// -- Action config -----------------------------------------------------
 const ACTION_COLOR = {
   CREATE: 'border-emerald-500',
   UPDATE: 'border-amber-500',
@@ -179,7 +179,7 @@ const ACTION_BADGE = {
   READ:   'badge-primary',
 };
 
-// ── JSON pretty printer ───────────────────────────────────────────────
+// -- JSON pretty printer -----------------------------------------------
 function JsonBlock({ label, value, tint }) {
   const text = (() => {
     try {
@@ -198,7 +198,7 @@ function JsonBlock({ label, value, tint }) {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// -- Main page ---------------------------------------------------------
 export default function AuditPage() {
   const [logs,         setLogs]         = useState([]);
   const [total,        setTotal]        = useState(0);
