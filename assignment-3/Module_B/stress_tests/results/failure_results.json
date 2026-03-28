@@ -21,7 +21,7 @@
   {
     "test": "exit_on_closed_visit",
     "passed": true,
-    "visit_id": 46570,
+    "visit_id": 50010,
     "status_code": 400
   }
 ]
