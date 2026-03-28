@@ -1,19 +1,19 @@
 """
-wal.py — Write-Ahead Log (WAL) for GateGuard Assignment-3 Module A
+wal.py: Write-Ahead Log (WAL) for GateGuard Assignment-3 Module A
 
 Every mutation is persisted to disk BEFORE it touches the in-memory B+ Tree.
 Format: JSONL (append-only). One JSON object per line. Never overwrite.
 
 Record types
 ------------
-  BEGIN   — transaction started
-  INSERT  — new key inserted into a table
-  UPDATE  — existing key's value changed
-  DELETE  — key removed from a table
-  COMMIT  — transaction committed successfully
-  ABORT   — transaction rolled back (rollback completed)
+  BEGIN   : transaction started
+  INSERT  : new key inserted into a table
+  UPDATE  : existing key's value changed
+  DELETE  : key removed from a table
+  COMMIT  : transaction committed successfully
+  ABORT   : transaction rolled back (rollback completed)
 
-Author: GateGuard Team — IIT Gandhinagar CS432
+Author: GateGuard Team, IIT Gandhinagar CS432
 """
 
 import json
@@ -22,7 +22,7 @@ import threading
 from datetime import datetime, timezone
 
 
-# Module-level lock — protects concurrent appends (defensive; Module A is
+# Module-level lock - protects concurrent appends (defensive; Module A is
 # single-threaded in practice, but the lock makes the WAL safe if used in
 # a multi-threaded context later).
 _WAL_LOCK = threading.Lock()
@@ -45,7 +45,7 @@ class WALWriter:
         self.path = path
         self._seq = self._read_highest_seq()
 
-    # ── Internal helpers ────────────────────────────────────────────────
+    # -- Internal helpers ------------------------------------------------
 
     def _read_highest_seq(self) -> int:
         """Scan existing WAL for the highest sequence number."""
@@ -61,7 +61,7 @@ class WALWriter:
                     rec = json.loads(line)
                     highest = max(highest, rec.get("seq", 0))
                 except json.JSONDecodeError:
-                    pass   # corrupted tail — skip silently
+                    pass   # corrupted tail - skip silently
         return highest
 
     def _next_seq(self) -> int:
@@ -86,7 +86,7 @@ class WALWriter:
                 f.flush()
                 os.fsync(f.fileno())
 
-    # ── Public log methods ────────────────────────────────────────────────
+    # -- Public log methods ------------------------------------------------
 
     def log_begin(self, txn_id: str):
         """Record the start of a transaction."""
@@ -166,7 +166,7 @@ class WALReader:
                 try:
                     records.append(json.loads(line))
                 except json.JSONDecodeError:
-                    print(f"[WAL] Warning: corrupted record at line {lineno} — skipping.")
+                    print(f"[WAL] Warning: corrupted record at line {lineno} - skipping.")
         return records
 
     def group_by_transaction(self) -> dict:
