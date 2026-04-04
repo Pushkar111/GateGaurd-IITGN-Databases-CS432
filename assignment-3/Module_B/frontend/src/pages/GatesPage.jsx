@@ -2,6 +2,7 @@
 // Gates & Occupancy — SVG radial rings, slide-in detail panel, CRUD
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +25,7 @@ import {
   backdropVariants, slideInRight, cardHover,
 } from '@/lib/motion';
 
-// -- Constants ---------------------------------------------------------
+// ── Constants ─────────────────────────────────────────────────────────
 const DEFAULT_CAPACITY_LIMIT = 20;
 const CIRCUMFERENCE = 2 * Math.PI * 36; // r=36
 
@@ -39,7 +40,7 @@ function getRiskMeta(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   return { label: 'Normal Capacity', cls: 'badge-success', level: 'normal' };
 }
 
-// -- Occupancy color ---------------------------------------------------
+// ── Occupancy color ───────────────────────────────────────────────────
 function ringColor(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   const pct = count / capacityLimit;
   if (pct >= 0.8) return '#ef4444';
@@ -47,7 +48,7 @@ function ringColor(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   return '#10b981';
 }
 
-// -- SVG Radial Ring ---------------------------------------------------
+// ── SVG Radial Ring ───────────────────────────────────────────────────
 function RadialRing({ count = 0, capacityLimit = DEFAULT_CAPACITY_LIMIT }) {
   const pct    = Math.min(count / capacityLimit, 1);
   const offset = CIRCUMFERENCE * (1 - pct);
@@ -87,7 +88,7 @@ function RadialRing({ count = 0, capacityLimit = DEFAULT_CAPACITY_LIMIT }) {
   );
 }
 
-// -- Gate card ---------------------------------------------------------
+// ── Gate card ─────────────────────────────────────────────────────────
 function GateCard({ gate, onClick }) {
   const name     = gate.Name     || gate.name     || '—';
   const location = gate.Location || gate.location || '—';
@@ -137,13 +138,13 @@ function GateCard({ gate, onClick }) {
   );
 }
 
-// -- Zod schemas -------------------------------------------------------
+// ── Zod schemas ───────────────────────────────────────────────────────
 const gateSchema = z.object({
   name:     z.string().min(2, 'Name required').max(80),
   location: z.string().min(2, 'Location required').max(100),
 });
 
-// -- Visit history table columns ---------------------------------------
+// ── Visit history table columns ───────────────────────────────────────
 const historyColumns = [
   { header: 'Type',       id: 'type',  cell: ({ row: { original: v } }) => <span className="badge badge-primary text-[10px]">{v.Type || v.type || 'Person'}</span> },
   { header: 'Subject',    id: 'subj',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.subject || v.Subject || '—'}</span> },
@@ -151,7 +152,7 @@ const historyColumns = [
   { header: 'Status',     id: 'stat',  cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
 ];
 
-// -- Main page ---------------------------------------------------------
+// ── Main page ─────────────────────────────────────────────────────────
 export default function GatesPage() {
   const { hasRole } = useAuth();
   const isSA        = hasRole('SuperAdmin');
@@ -342,23 +343,24 @@ export default function GatesPage() {
         </motion.div>
       )}
 
-      {/* -- Detail Panel (slide from right) ----------------------- */}
-      <AnimatePresence>
-        {panelOpen && selected && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              variants={backdropVariants} initial="initial" animate="animate" exit="exit"
-              onClick={() => setPanelOpen(false)}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            />
-            {/* Panel */}
-            <motion.div
-              variants={slideInRight} initial="initial" animate="animate" exit="exit"
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm
-                         bg-[hsl(228_40%_7%)] border-l border-white/[0.08]
-                         flex flex-col overflow-hidden"
-            >
+      {/* ── Detail Panel (slide from right) ─────────────────────── */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {panelOpen && selected && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                variants={backdropVariants} initial="initial" animate="animate" exit="exit"
+                onClick={() => setPanelOpen(false)}
+                className="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm"
+              />
+              {/* Panel */}
+              <motion.div
+                variants={slideInRight} initial="initial" animate="animate" exit="exit"
+                className="fixed inset-y-0 right-0 z-[130] w-full max-w-sm
+                           bg-[hsl(228_40%_7%)] border-l border-white/[0.08]
+                           flex flex-col overflow-hidden"
+              >
               {/* Panel header */}
               <div className="flex items-center justify-between p-5 border-b border-white/[0.08]">
                 <div>
@@ -452,10 +454,12 @@ export default function GatesPage() {
                   )}
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Add Gate Modal */}
       <Dialog.Root open={showAdd} onOpenChange={setShowAdd}>

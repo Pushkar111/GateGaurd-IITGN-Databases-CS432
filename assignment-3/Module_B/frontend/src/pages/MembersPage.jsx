@@ -27,7 +27,7 @@ import {
   pageVariants, staggerContainer, staggerItem, cardHover, scaleIn, backdropVariants,
 } from '@/lib/motion';
 
-// -- Zod schema ---------------------------------------------------------
+// ── Zod schema ─────────────────────────────────────────────────────────
 const memberSchema = z.object({
   name:          z.string().min(2, 'Name must be at least 2 chars').max(100),
   email:         z.string().email('Invalid email address'),
@@ -37,7 +37,7 @@ const memberSchema = z.object({
   department:    z.string().max(100).optional().or(z.literal('')),
 });
 
-// -- Avatar color from name hash ---------------------------------------
+// ── Avatar color from name hash ───────────────────────────────────────
 const AVATAR_GRADIENTS = [
   'from-indigo-500 to-purple-600',
   'from-emerald-500 to-teal-600',
@@ -135,7 +135,7 @@ function MemberCard({ member, onEdit, onDelete, canEdit, canDelete }) {
   );
 }
 
-// -- Card skeleton -----------------------------------------------------
+// ── Card skeleton ─────────────────────────────────────────────────────
 function CardSkeleton() {
   return (
     <div className="glass-card p-5 space-y-3">
@@ -153,7 +153,7 @@ function CardSkeleton() {
   );
 }
 
-// -- Add/Edit modal ----------------------------------------------------
+// ── Add/Edit modal ────────────────────────────────────────────────────
 function MemberModal({ open, onOpenChange, editMember, memberTypes, onSuccess }) {
   const isEdit = Boolean(editMember);
   const {
@@ -293,7 +293,7 @@ function MemberModal({ open, onOpenChange, editMember, memberTypes, onSuccess })
   );
 }
 
-// -- Table columns definition ------------------------------------------
+// ── Table columns definition ──────────────────────────────────────────
 function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
   return [
     { header: '#',          accessorKey: 'MemberID',      size: 50,  cell: (c) => <span className="text-white/30 tabular-nums">{c.getValue() || c.row.original.memberid}</span> },
@@ -327,12 +327,12 @@ function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
   ];
 }
 
-// -- Main page component -----------------------------------------------
+// ── Main page component ───────────────────────────────────────────────
 export default function MembersPage() {
   const navigate              = useNavigate();
   const { hasRole }           = useAuth();
-  const canEdit               = hasRole('Admin', 'SuperAdmin');
-  const canDelete             = hasRole('SuperAdmin');
+  const canEdit               = hasRole('Guard', 'Admin', 'SuperAdmin');
+  const canDelete             = hasRole('Guard', 'Admin', 'SuperAdmin');
 
   const [members,      setMembers]      = useState([]);
   const [total,        setTotal]        = useState(0);

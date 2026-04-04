@@ -19,7 +19,7 @@ import EmptyState    from '@/components/shared/EmptyState';
 import { cn, formatDate } from '@/lib/utils';
 import { pageVariants, scaleIn, backdropVariants, fadeInUp } from '@/lib/motion';
 
-// -- Password strength -------------------------------------------------
+// ── Password strength ─────────────────────────────────────────────────
 const getStrength = (p = '') =>
   [p.length >= 8, /[A-Z]/.test(p), /[0-9]/.test(p), /[^A-Za-z0-9]/.test(p)].filter(Boolean).length;
 
@@ -45,7 +45,7 @@ function PasswordStrengthMeter({ password }) {
   );
 }
 
-// -- Zod schemas -------------------------------------------------------
+// ── Zod schemas ───────────────────────────────────────────────────────
 const createSchema = z.object({
   username: z.string().min(3, 'Min 3 chars').max(50),
   password: z.string().min(8, 'Min 8 chars'),
@@ -57,7 +57,7 @@ const editSchema = z.object({
   password: z.string().min(8, 'Min 8 chars if provided').or(z.literal('')).optional(),
 });
 
-// -- Password field with eye toggle ------------------------------------
+// ── Password field with eye toggle ────────────────────────────────────
 function PasswordField({ register, name, label = 'Password', watch }) {
   const [show, setShow] = useState(false);
   const val = watch ? watch(name) : '';
@@ -77,7 +77,7 @@ function PasswordField({ register, name, label = 'Password', watch }) {
   );
 }
 
-// -- Create User Modal -------------------------------------------------
+// ── Create User Modal ─────────────────────────────────────────────────
 function CreateUserModal({ open, onOpenChange, roles, onSuccess, isSuperAdmin }) {
   const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(createSchema),
@@ -156,7 +156,7 @@ function CreateUserModal({ open, onOpenChange, roles, onSuccess, isSuperAdmin })
   );
 }
 
-// -- Edit User Modal ---------------------------------------------------
+// ── Edit User Modal ───────────────────────────────────────────────────
 function EditUserModal({ open, onOpenChange, editUser, roles, onSuccess }) {
   const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(editSchema),
@@ -233,7 +233,7 @@ function EditUserModal({ open, onOpenChange, editUser, roles, onSuccess }) {
   );
 }
 
-// -- Main page ---------------------------------------------------------
+// ── Main page ─────────────────────────────────────────────────────────
 export default function UsersPage() {
   const { user: currentUser, hasRole } = useAuth();
   const isSA = hasRole('SuperAdmin');
@@ -403,7 +403,7 @@ export default function UsersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/[0.07]">
-                {['#', 'Username', 'Role', 'Created', 'Actions'].map((h) => (
+                {['#', 'Username', 'Role', 'Created', ...(isSA ? ['Actions'] : [])].map((h) => (
                   <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold text-white/30 uppercase tracking-widest">{h}</th>
                 ))}
               </tr>
@@ -430,15 +430,13 @@ export default function UsersPage() {
                       <RoleBadge role={role} />
                     </td>
                     <td className="px-4 py-3 text-white/40 text-xs">{created ? formatDate(created, 'dd MMM yyyy') : '—'}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        {isSA && (
+                    {isSA && (
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1">
                           <button onClick={() => setEditUser(u)}
                             className="p-1.5 rounded-lg hover:bg-indigo-500/15 text-white/30 hover:text-indigo-400 transition-colors">
                             <Pencil size={13} />
                           </button>
-                        )}
-                        {isSA && (
                           <Tooltip.Provider delayDuration={200}>
                             <Tooltip.Root>
                               <Tooltip.Trigger asChild>
@@ -466,9 +464,9 @@ export default function UsersPage() {
                               )}
                             </Tooltip.Root>
                           </Tooltip.Provider>
-                        )}
-                      </div>
-                    </td>
+                        </div>
+                      </td>
+                    )}
                   </motion.tr>
                 );
               })}

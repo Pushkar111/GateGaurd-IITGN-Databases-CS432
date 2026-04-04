@@ -16,12 +16,17 @@ import { cn, getInitials, formatDate } from '@/lib/utils';
 import { pageVariants, fadeInUp, staggerContainer, staggerItem } from '@/lib/motion';
 import { AnimatePresence } from 'framer-motion';
 
-// -- Floating label auth-input wrapper ---------------------------------
+// ── Themed input wrapper ──────────────────────────────────────────────
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
-    <div className="space-y-1">
-      <div className="auth-input-wrapper">
-        {Icon && <span className="auth-input-icon"><Icon size={18}/></span>}
+    <div className="space-y-1.5">
+      <label className="text-xs font-medium text-white/50">{label}</label>
+      <div className="relative">
+        {Icon && (
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/35 pointer-events-none">
+            <Icon size={15} />
+          </span>
+        )}
         <input
           {...(register ? register(name) : {})}
           name={name}
@@ -29,15 +34,19 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
           value={value}
           onChange={onChange}
           autoFocus={autoFocus}
-          className="auth-input peer"
-          placeholder=" "
-          style={showToggle ? { paddingRight: 44 } : {}}
+          className={cn(
+            'input-field',
+            Icon && 'pl-10',
+            showToggle !== undefined && 'pr-10'
+          )}
+          placeholder={label}
         />
-        <label className="absolute left-11 top-1/2 -translate-y-1/2 text-[15px] text-white/30 pointer-events-none transition-all duration-200 peer-focus:text-xs peer-focus:top-2 peer-focus:-translate-y-0 peer-focus:text-indigo-400 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:top-2 peer-[:not(:placeholder-shown)]:-translate-y-0">
-          {label}
-        </label>
         {showToggle !== undefined && (
-          <button type="button" onClick={onToggleShow} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 p-1">
+          <button
+            type="button"
+            onClick={onToggleShow}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-white/35 hover:text-white/70 p-1"
+          >
             {type === 'password' ? <Eye size={18} /> : <EyeOff size={18} />}
           </button>
         )}
@@ -53,7 +62,7 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// -- Avatar gradients --------------------------------------------------
+// ── Avatar gradients ──────────────────────────────────────────────────
 const GRADS = [
   'from-indigo-500 to-purple-600', 'from-emerald-500 to-teal-600',
   'from-amber-500 to-orange-600',  'from-rose-500 to-pink-600',
@@ -64,7 +73,7 @@ function avatarGrad(name = '') {
   return GRADS[h % GRADS.length];
 }
 
-// -- Password strength -------------------------------------------------
+// ── Password strength ─────────────────────────────────────────────────
 function getStrength(pw = '') {
   let score = 0;
   if (pw.length >= 8)           score++;
@@ -95,7 +104,7 @@ function LiquidStrengthMeter({ score }) {
   );
 }
 
-// -- Relative time helper ----------------------------------------------
+// ── Relative time helper ──────────────────────────────────────────────
 function formatRelativeTime(dateStr) {
   const d = new Date(dateStr);
   const diff = (Date.now() - d.getTime()) / 1000;
@@ -105,13 +114,13 @@ function formatRelativeTime(dateStr) {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-// -- Browser/Device guesser from UA -----------------------------------
+// ── Browser/Device guesser from UA ───────────────────────────────────
 function guessDevice(ua = '') {
   if (/mobile|android|iphone/i.test(ua)) return <Smartphone size={13}/>;
   return <Monitor size={13}/>;
 }
 
-// -- Login History section ---------------------------------------------
+// ── Login History section ─────────────────────────────────────────────
 function LoginHistory() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -212,7 +221,7 @@ function LoginHistory() {
   );
 }
 
-// -- Main page ---------------------------------------------------------
+// ── Main page ─────────────────────────────────────────────────────────
 export default function ProfilePage() {
   const { user, markPasswordUpdated } = useAuth();
 
@@ -221,7 +230,7 @@ export default function ProfilePage() {
   const createdAt = user?.CreatedAt || user?.createdat;
   const userId    = user?.UserID    || user?.userid    || user?.id;
 
-  // Change Password state (upgraded to auth-input style)
+  // Change Password state
   const [currentPw, setCurrentPw] = useState('');
   const [newPw,     setNewPw]     = useState('');
   const [confirmPw, setConfirmPw] = useState('');
@@ -307,15 +316,15 @@ export default function ProfilePage() {
           </div>
         </motion.div>
 
-        {/* Change password — upgraded with auth-input style + liquid fill strength meter */}
+        {/* Change password */}
         <motion.div variants={staggerItem} className="glass-card p-5">
           <div className="flex items-center gap-2 mb-4">
             <Key size={15} className="text-indigo-400" />
             <h3 className="text-sm font-semibold text-white/70">Change Password</h3>
           </div>
-          <form onSubmit={handleChangePassword} className="space-y-3">
+          <form onSubmit={handleChangePassword} className="space-y-4">
             {/* Current password */}
-            <div className="mt-3">
+            <div>
               <FloatingInput
                 label="Current password"
                 icon={Key}
@@ -328,7 +337,7 @@ export default function ProfilePage() {
             </div>
 
             {/* New password */}
-            <div className="mt-3">
+            <div>
               <FloatingInput
                 label="New password"
                 icon={Key}
@@ -342,7 +351,7 @@ export default function ProfilePage() {
             </div>
 
             {/* Confirm password */}
-            <div className="mt-4">
+            <div>
               <FloatingInput
                 label="Confirm password"
                 icon={Key}
@@ -352,11 +361,19 @@ export default function ProfilePage() {
                 showToggle={true}
                 onToggleShow={() => setShowConf(!showConf)}
               />
-              {pwsMatch   && <div style={{ fontSize:12, color:'#10b981', display:'flex', alignItems:'center', gap:4, marginTop:4 }}><Check size={12}/>Passwords match</div>}
-              {pwsNoMatch && <div style={{ fontSize:12, color:'#ef4444', display:'flex', alignItems:'center', gap:4, marginTop:4 }}><X size={12}/>Passwords don't match</div>}
+              {pwsMatch && (
+                <div className="text-xs text-emerald-400 flex items-center gap-1 mt-1">
+                  <Check size={12} />Passwords match
+                </div>
+              )}
+              {pwsNoMatch && (
+                <div className="text-xs text-red-400 flex items-center gap-1 mt-1">
+                  <X size={12} />Passwords do not match
+                </div>
+              )}
             </div>
 
-            <button type="submit" disabled={!canSave || pwLoading} className="auth-btn" style={{ marginTop:8 }}>
+            <button type="submit" disabled={!canSave || pwLoading} className="btn-primary w-full">
               {pwLoading ? <><Loader2 size={15} className="animate-spin"/>Changing...</> : 'Change Password'}
             </button>
           </form>
@@ -396,14 +413,14 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className="pt-2 space-y-1 border-t border-white/[0.06]">
-              <p>📍 IIT Gandhinagar</p>
-              <p>📚 CS432 — Database Systems</p>
-              <p>📅 Assignment 2 — Module B</p>
+              <p>IIT Gandhinagar</p>
+              <p>CS432 - Database Systems</p>
+              <p>Assignment 2 - Module B</p>
             </div>
           </div>
         </motion.div>
 
-        {/* -- Login History --------------------------------------- */}
+        {/* ── Login History ─────────────────────────────────────── */}
         <LoginHistory/>
       </motion.div>
     </motion.div>
