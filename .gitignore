@@ -38,3 +38,6 @@ __pycache__
 *.aux
 *.log
 *.out
+
+# excalidraw files
+*.excalidraw
