@@ -2,8 +2,10 @@
 const vehicleModel     = require('../models/vehicle.model');
 const vehicleTypeModel = require('../models/vehicleType.model');
 const memberModel      = require('../models/member.model');
+const { getClient }    = require('../config/db');
 const AppError         = require('../utils/AppError');
 const { parsePagination, buildPagination } = require('../utils/helpers');
+const { ROLES }        = require('../utils/constants');
 
 async function getAll(queryParams = {}) {
   const { page, limit, offset } = parsePagination(queryParams);
@@ -57,16 +59,65 @@ async function update(id, data) {
   return vehicleModel.findById(updated.VehicleID);
 }
 
-async function deleteVehicle(id) {
-  const existing = await vehicleModel.findById(Number(id));
+function canCascadeDelete(actor) {
+  return actor?.role === ROLES.GUARD || actor?.role === ROLES.SUPERADMIN;
+}
+
+async function deleteVehicle(id, actor) {
+  const vehicleId = Number(id);
+  const existing = await vehicleModel.findById(vehicleId);
   if (!existing) throw new AppError(`Vehicle with ID ${id} not found.`, 404);
+
+  if (!canCascadeDelete(actor)) {
+    try {
+      await vehicleModel.delete(vehicleId);
+    } catch (err) {
+      if (err.code === '23503') throw new AppError('Cannot delete vehicle — it has existing visit records.', 409);
+      throw err;
+    }
+    return { deleted: true, vehicleId };
+  }
+
+  const client = await getClient();
   try {
-    await vehicleModel.delete(Number(id));
+    await client.query('BEGIN');
+
+    const personVisitDelete = await client.query(
+      'DELETE FROM personvisit WHERE vehicleid = $1',
+      [vehicleId]
+    );
+    const vehicleVisitDelete = await client.query(
+      'DELETE FROM vehiclevisit WHERE vehicleid = $1',
+      [vehicleId]
+    );
+
+    const { rows: deletedRows } = await client.query(
+      'DELETE FROM vehicle WHERE vehicleid = $1 RETURNING vehicleid',
+      [vehicleId]
+    );
+
+    if (!deletedRows[0]) {
+      throw new AppError(`Vehicle with ID ${id} not found.`, 404);
+    }
+
+    await client.query('COMMIT');
+
+    return {
+      deleted: true,
+      vehicleId,
+      cascade: {
+        enabledForRole: actor?.role || null,
+        deletedPersonVisits: personVisitDelete.rowCount || 0,
+        deletedVehicleVisits: vehicleVisitDelete.rowCount || 0,
+      },
+    };
   } catch (err) {
+    await client.query('ROLLBACK');
     if (err.code === '23503') throw new AppError('Cannot delete vehicle — it has existing visit records.', 409);
     throw err;
+  } finally {
+    client.release();
   }
-  return { deleted: true, vehicleId: Number(id) };
 }
 
 async function getTypes() {

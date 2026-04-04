@@ -27,14 +27,14 @@ async function getStats() {
 }
 
 /**
- * Visit trend — last 7 days, grouped by date.
+ * Visit trend — last 15 days, grouped by date.
  */
 async function getVisitTrend() {
   const [personTrend, vehicleTrend] = await Promise.all([
     query(
       `SELECT DATE(EntryTime)::text AS date, COUNT(*)::int AS personVisits
          FROM PersonVisit
-        WHERE EntryTime >= NOW() - INTERVAL '7 days'
+        WHERE EntryTime >= NOW() - INTERVAL '15 days'
         GROUP BY DATE(EntryTime)
         ORDER BY date`,
       []
@@ -42,7 +42,7 @@ async function getVisitTrend() {
     query(
       `SELECT DATE(EntryTime)::text AS date, COUNT(*)::int AS vehicleVisits
          FROM VehicleVisit
-        WHERE EntryTime >= NOW() - INTERVAL '7 days'
+        WHERE EntryTime >= NOW() - INTERVAL '15 days'
         GROUP BY DATE(EntryTime)
         ORDER BY date`,
       []

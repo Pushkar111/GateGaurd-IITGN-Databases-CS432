@@ -4,6 +4,19 @@
 
 const env = require('./env');
 
+function isNgrokOrigin(origin) {
+  try {
+    const { hostname } = new URL(origin);
+    return (
+      hostname.endsWith('.ngrok-free.app') ||
+      hostname.endsWith('.ngrok.io') ||
+      hostname.endsWith('.ngrok.app')
+    );
+  } catch {
+    return false;
+  }
+}
+
 const corsOptions = {
   origin: (origin, callback) => {
     // allow requests with no origin (like curl, Postman, mobile apps in dev)
@@ -19,7 +32,9 @@ const corsOptions = {
         'http://localhost:3000',
         'http://127.0.0.1:5173',
       ];
-      if (localOrigins.includes(origin)) return callback(null, true);
+      if (localOrigins.includes(origin) || isNgrokOrigin(origin)) {
+        return callback(null, true);
+      }
     }
 
     callback(new Error(`CORS: origin '${origin}' is not allowed`));
