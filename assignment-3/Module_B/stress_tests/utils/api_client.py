@@ -16,7 +16,7 @@ from typing import Optional
 
 BASE_URL     = os.getenv("GATEGUARD_API_URL", "http://localhost:5000/api")
 DEFAULT_USER = os.getenv("TEST_USERNAME", "admin")
-DEFAULT_PASS = os.getenv("TEST_PASSWORD", "admin123")
+DEFAULT_PASS = os.getenv("TEST_PASSWORD", "Admin@123")
 
 
 class APIClient:
