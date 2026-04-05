@@ -19,14 +19,21 @@ Course context:
 - CS432 Databases
 - IIT Gandhinagar
 - Semester II, 2025-26
-- Assignment 2, Module B
+- Assignment 2 (Module A + Module B) and Assignment 3 (Module A + Module B)
 
 ## Deliverables Index
 
+**Assignment 2**
 - Module A report notebook: [assignment-2/Module_A/report.ipynb](assignment-2/Module_A/report.ipynb)
 - Module B optimization report: [assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf](assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf)
-- Module A demo video link: [Video Link](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing)
-- Module B demo video link: [Video Link](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing)
+- Module A demo video: [Watch on Google Drive](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing)
+- Module B demo video: [Watch on Google Drive](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing)
+
+**Assignment 3**
+- Module A transaction engine: [assignment-3/Module_A/test_transactions.ipynb](assignment-3/Module_A/test_transactions.ipynb)
+- Module B stress test suite: [assignment-3/Module_B/stress_tests/](assignment-3/Module_B/stress_tests/)
+- Full report (PDF): [assignment-3/GateGuard_Assignment3_Report.pdf](assignment-3/GateGuard_Assignment3_Report.pdf)
+- Assignment 3 demo video: [Watch on YouTube](https://youtu.be/oKl7505LjB8)
 
 ---
 
@@ -155,6 +162,35 @@ IITGN-Databases-GateGuard/
 |               |-- lib/
 |               |-- pages/
 |               |-- styles/
+|-- assignment-3/
+    |-- Module_A/
+    |   |-- database/
+    |   |   |-- wal.py             # Write-Ahead Log engine with fsync
+    |   |   |-- transaction.py     # TransactionManager + LIFO Undo Stack
+    |   |   |-- recovery.py        # Crash recovery via WAL REDO
+    |   |   |-- consistency.py     # B+ Tree structural invariant checker
+    |   |   |-- bplustree.py       # B+ Tree order-4 (from Assignment 2)
+    |   |   |-- db_manager.py
+    |   |   |-- table.py
+    |   |-- logs/
+    |   |   |-- test_log.jsonl     # Real WAL records written during tests
+    |   |-- test_transactions.ipynb  # 5-cell ACID proof notebook
+    |-- Module_B/
+    |   |-- backend/               # Node.js + PostgreSQL API (from A2)
+    |   |-- stress_tests/
+    |       |-- race_condition_test.py      # 50-thread concurrent race test
+    |       |-- failure_simulation_test.py  # 4 failure scenario tests
+    |       |-- locust_gateguard.py         # Locust load test file
+    |       |-- load_profile_runner.py
+    |       |-- utils/
+    |       |   |-- api_client.py
+    |       |   |-- db_check.py
+    |       |-- results/
+    |           |-- race_results.json       # 50-thread raw results
+    |           |-- failure_results.json    # all 4 passed: true
+    |-- GateGuard_Assignment3_Report.pdf
+    |-- GateGuard_Assignment3_Report.tex
+    |-- screenshots/
 ~~~
 
 ---
@@ -513,17 +549,56 @@ What can be improved next:
 
 ## 16) Submission Links
 
-- Module A demo: [Video Link](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing)
-- Module B demo: [Video Link](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing)
+### Assignment 2
 
-Recommended demo flow:
-- Environment setup and startup
-- Auth and password reset flow
-- Guard versus Admin versus SuperAdmin behavior
-- User request approval cycle
-- Visit entry and exit operations
-- Audit visibility and benchmark report
+| Module | Video | Report |
+|---|---|---|
+| Module A (B+ Tree DBMS) | [Watch on Google Drive](https://drive.google.com/file/d/1M1kOq_RaadSPwgeEWFKPklp_ofboC86h/view?usp=sharing) | [report.ipynb](assignment-2/Module_A/report.ipynb) |
+| Module B (API + RBAC + Indexing) | [Watch on Google Drive](https://drive.google.com/file/d/1ZYdkB-B-roHZbspme7DJIoVP3XuJP0oG/view?usp=sharing) | [GateGuard_Assignment2_ModuleB.pdf](assignment-2/Module_B/GateGuard_Assignment2_ModuleB.pdf) |
+
+### Assignment 3
+
+| Deliverable | Link |
+|---|---|
+| Demo Video | [Watch on YouTube](https://youtu.be/oKl7505LjB8) |
+| Full Report (PDF) | [GateGuard_Assignment3_Report.pdf](assignment-3/GateGuard_Assignment3_Report.pdf) |
+| Module A: ACID Transaction Notebook | [test_transactions.ipynb](assignment-3/Module_A/test_transactions.ipynb) |
+| Module A: WAL Log (real output from notebook run) | [test_log.jsonl](assignment-3/Module_A/logs/test_log.jsonl) |
+| Module B: Race Condition Test | [race_condition_test.py](assignment-3/Module_B/stress_tests/race_condition_test.py) |
+| Module B: Failure Simulation Test | [failure_simulation_test.py](assignment-3/Module_B/stress_tests/failure_simulation_test.py) |
+| Module B: Race Test Results | [race_results.json](assignment-3/Module_B/stress_tests/results/race_results.json) |
+| Module B: Failure Test Results | [failure_results.json](assignment-3/Module_B/stress_tests/results/failure_results.json) |
 
 ---
 
-If you are reviewing this as a faculty or evaluator, start with sections 5, 7, 8, and 12 for the fastest technical confidence path.
+## 17) Assignment 3 Technical Highlights
+
+### What was built from scratch (Module A)
+
+- **Write-Ahead Log (WAL):** Every operation is written to disk with `os.fsync()` before the B+ Tree is modified. Crash-safe by design.
+- **TransactionManager:** Supports `BEGIN`, `COMMIT`, and `ROLLBACK` across multiple B+ Trees using a LIFO Undo Stack.
+- **RecoveryManager:** On startup, scans the WAL log and replays committed transactions into memory. Uncommitted transactions are ignored.
+- **ConsistencyChecker:** Verifies structural integrity of all 10 B+ Trees after every test run.
+- **Multi-relation atomicity:** Proven across 3 tables (Member, PersonVisit, GateOccupancy) in a single transaction.
+
+### What was stress tested (Module B)
+
+- **Race condition fixed** in `personVisit.service.js` using `SELECT ... FOR UPDATE`.
+- **50-thread concurrent test:** Exactly 1 entry created, 49 correctly rejected, zero data corruption.
+- **4 failure scenarios:** All pass. Database unchanged in every error case.
+- **Locust load test:** 50 concurrent users, ~28-30 RPS sustained, zero 5xx errors.
+
+### Git branch strategy
+
+| Branch | Purpose |
+|---|---|
+| `chore/a3-baseline` | Final merged baseline |
+| `feat/a3-module-a-transactions` | WAL + Transaction + Recovery engine |
+| `test/a3-module-a-notebook` | Jupyter notebook + WAL log output |
+| `fix/a3-module-b-race-condition` | SELECT FOR UPDATE patch |
+| `test/a3-module-b-harness` | All stress test scripts + results |
+| `feat/a3-updated-requirements` | 3-table notebook update |
+
+---
+
+If you are reviewing this as a faculty or evaluator, start with sections 5, 7, 8, and 12 for Assignment 2 context, and section 17 for the Assignment 3 summary.
