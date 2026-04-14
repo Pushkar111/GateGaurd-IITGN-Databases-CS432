@@ -1,0 +1,2864 @@
+{
+  "info": {
+    "_postman_id": "35362a4f-703c-4590-85fe-d23e0e0c8e72",
+    "name": "GateGuard API — CS432 IIT Gandhinagar",
+    "description": "GateGuard API collection for CS432 Databases, Assignment 2 Module B, IIT Gandhinagar.\n\nStack: Node.js 18, Express 4, PostgreSQL 14, JWT auth.\n\nHow to get started:\n1. Set BASE_URL to http://localhost:5000 in collection variables.\n2. Run Health Check to confirm the server is running.\n3. Run Login — the test script saves ACCESS_TOKEN and REFRESH_TOKEN automatically.\n4. Every other request picks up the token from collection variables.\n\nCollection variables:\nBASE_URL — the server address, default http://localhost:5000\nACCESS_TOKEN — set by Login and Refresh Token\nREFRESH_TOKEN — set by Login and Refresh Token\nGUARD_TOKEN — set by Login as Guard (in RBAC Tests folder)\nMEMBER_ID — set by Create Member and Get Member\nVEHICLE_ID — set by Create Vehicle\nGATE_ID — set by Get Gate\nVISIT_ID — set by Record Person Entry\nVV_VISIT_ID — set by Record Vehicle Entry\nUSER_ID — set by Login\nRESET_TOKEN — set by Forgot Password (needed for Verify OTP and Reset Password)\n\nRBAC summary:\nGuard: read everything, record entries and exits.\nAdmin: all of the above plus create/update members, vehicles, gates, manage users, view audit logs.\nSuperAdmin: everything including deletes and direct user creation.\n\nEvery POST, PUT, DELETE goes to both logs/audit.log (Winston) and the AuditLog PostgreSQL table with OldValue and NewValue as JSONB. If you write directly to the DB without going through the API, there will be no audit record — that's how you tell it was unauthorised.\n\nAll responses use the same shape:\nsuccess true: { success: true, data: {...}, pagination: {...} }\nerror: { success: false, error: { message: '...', fields: {} } }\n\nFolder order matches a typical testing workflow — Health first, Auth second (get your token), then Members/Vehicles/Gates to set up data, then Visits to use it, then Dashboard/Audit to inspect results, and finally RBAC Tests to verify access control.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "ACCESS_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "REFRESH_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "GUARD_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "MEMBER_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "VEHICLE_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "GATE_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "VISIT_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "VV_VISIT_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "USER_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "ROLE_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "MEMBER_TYPE_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "VEHICLE_TYPE_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "GATE_OCCUPANCY_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "AUDIT_ID",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "RESET_TOKEN",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "REQUEST_ID",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{ACCESS_TOKEN}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Health",
+      "description": "Health check and welcome. No auth needed. Run these first.",
+      "item": [
+        {
+          "name": "Welcome",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": []
+            },
+            "description": "Root endpoint. Returns the API name and version. No auth needed."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/health",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "health"
+              ]
+            },
+            "description": "Basic health check. Returns healthy and the current server timestamp. Hit this first to make sure the server is up before running anything else."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const r = pm.response.json();",
+                  "pm.test('Status healthy', () => pm.expect(r.data.status).to.eq('healthy'));",
+                  "console.log('✅ Server healthy at:', r.data.timestamp);"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "_postman_id": "6cfdf69c-10a4-466d-b980-34ca7aadc019"
+    },
+    {
+      "name": "Auth",
+      "description": "Login, logout, token refresh, password reset via OTP, and user registration. Tokens are saved automatically by test scripts.",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in with username and password. Returns a short-lived access token (15 min) and a long-lived refresh token (7 days). The test script saves both to collection variables so you don't have to copy-paste them.\n\nAfter 5 wrong passwords the account gets locked for 30 min. When that happens the response comes back 423 with a lockedUntil timestamp — the frontend uses that to show a countdown.\n\nAll three demo accounts use the same password: admin123.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"superadmin\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "200 Success — SuperAdmin",
+              "originalRequest": {},
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"data\": {\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"refreshToken\": \"a3f8c2d1e4b5...\",\n    \"user\": {\n      \"userId\": 1,\n      \"username\": \"superadmin\",\n      \"role\": \"SuperAdmin\",\n      \"memberId\": null\n    }\n  }\n}",
+              "_postman_id": "676d34e4-5630-4fda-8af5-a586f6ff07a5"
+            },
+            {
+              "name": "401 Invalid credentials",
+              "originalRequest": {},
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"message\": \"Invalid credentials\",\n    \"failedAttempts\": 3,\n    \"maxAttempts\": 5\n  }\n}",
+              "_postman_id": "e89855c3-a397-4438-9070-6dfe9a0a1e54"
+            },
+            {
+              "name": "423 Account locked",
+              "originalRequest": {},
+              "status": "Locked",
+              "code": 423,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"message\": \"Account locked until 2026-03-21T05:30:00.000Z\",\n    \"lockedUntil\": \"2026-03-21T05:30:00.000Z\"\n  }\n}",
+              "_postman_id": "9530c046-8111-4b18-b055-00828cfaf5ce"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (pm.response.code === 200 && r.data) {",
+                  "  pm.collectionVariables.set('ACCESS_TOKEN',  r.data.accessToken);",
+                  "  pm.collectionVariables.set('REFRESH_TOKEN', r.data.refreshToken);",
+                  "  pm.collectionVariables.set('USER_ID', String(r.data.user.userId));",
+                  "  console.log('Logged in. Role:', r.data.user.role);",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has accessToken', () => pm.expect(r.data.accessToken).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/refresh",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "Gets a fresh access token without logging in again. The old refresh token is immediately invalidated and a new one is returned — that way even if someone sniffs the refresh token, replaying it after rotation fails.\n\nThe test script overwrites both ACCESS_TOKEN and REFRESH_TOKEN automatically.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (pm.response.code === 200 && r.data) {",
+                  "  pm.collectionVariables.set('ACCESS_TOKEN',  r.data.accessToken);",
+                  "  pm.collectionVariables.set('REFRESH_TOKEN', r.data.refreshToken);",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/me",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Returns whoever is currently logged in based on the JWT. The middleware re-queries the DB on every call so stale JWT claims (like a role change) get caught here rather than on the next mutation."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/logout",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Logs out by writing the access token to the tokenblacklist table and revoking the refresh token. Even though the JWT is technically valid for up to 15 min, the blacklist check inside authenticate() will reject it immediately.\n\nSend the refresh token in the body so it gets cleaned up server-side too.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{REFRESH_TOKEN}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('ACCESS_TOKEN', '');",
+                  "pm.collectionVariables.set('REFRESH_TOKEN', '');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/forgot-password",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "Kicks off the OTP password reset flow. Always returns 200 regardless of whether the email exists — that's intentional, prevents someone from scanning which emails are registered.\n\nIf the email is found, a 6-digit OTP and a resetToken are generated and stored with a 15-minute expiry. The OTP goes to the user's email via Nodemailer. The resetToken comes back in the response — hold onto it for the next two steps.\n\nDuring testing you can read the OTP directly from the DB:\nSELECT otp FROM passwordresettoken ORDER BY createdat DESC LIMIT 1;",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"superadmin@iitgn.ac.in\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "if (r.data && r.data.resetToken) {",
+                  "  pm.collectionVariables.set('RESET_TOKEN', r.data.resetToken);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/verify-otp",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "verify-otp"
+              ]
+            },
+            "description": "Checks that the resetToken and OTP are a valid pair. Four things have to be true: the token exists, hasn't been used, hasn't expired, and the 6 digits match. Any of those fails and you get 400.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resetToken\": \"{{RESET_TOKEN}}\",\n  \"otp\": \"483921\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/reset-password",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ]
+            },
+            "description": "Finishes the password reset. Hashes the new password with bcrypt (12 rounds), marks the OTP as used so it can't be replayed, and revokes every existing refresh token for that user — forces a logout on all devices. A confirmation email goes out via Nodemailer.\n\nThe server re-validates the OTP here rather than trusting that you already called verify-otp.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"resetToken\": \"{{RESET_TOKEN}}\",\n  \"otp\": \"483921\",\n  \"newPassword\": \"NewSecure@123\",\n  \"confirmPassword\": \"NewSecure@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/change-password",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "change-password"
+              ]
+            },
+            "description": "Changes the password for the currently logged-in user. You have to supply the current password — no bypassing it. On success, all other active sessions are killed by revoking their refresh tokens. Also clears the mustChangePassword flag if it was set (e.g. on first login).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"admin123\",\n  \"newPassword\": \"NewSecure@123\",\n  \"confirmPassword\": \"NewSecure@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login-history",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login-history"
+              ]
+            },
+            "description": "Returns the last 10 login attempts for the current user — IP address, browser/agent string, timestamp, and whether it succeeded or not."
+          },
+          "response": []
+        },
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/register",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "SuperAdmin-only endpoint to create a user account directly. Password needs at least 8 chars with one uppercase, one lowercase, and one number. Role IDs: 1 = SuperAdmin, 2 = Admin, 3 = Guard.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"newguard01\",\n  \"password\": \"Guard@12345\",\n  \"roleId\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "cf426f54-e506-4b15-9235-3ae0d187f4f0"
+    },
+    {
+      "name": "Members",
+      "description": "CRUD on campus members. Read is open to all authenticated users. Create and update need Admin or above. Delete is SuperAdmin only.",
+      "item": [
+        {
+          "name": "List Members",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Results per page (max 100)"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search name or email (ILIKE prefix)"
+                },
+                {
+                  "key": "typeId",
+                  "value": "",
+                  "description": "Filter by member type ID"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdat",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "Sort direction: asc | desc"
+                }
+              ]
+            },
+            "description": "Paginated member list with type info joined in. Supports search by name or email (case-insensitive ILIKE), filter by typeId, and sorting.\n\nNote on search performance: the idx_member_name_lower expression index helps with prefix searches (e.g. 'raj%') but can't help with a leading wildcard ('%raj%'). That limitation is documented in the assignment report."
+          },
+          "response": []
+        },
+        {
+          "name": "List Member Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members/types",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members",
+                "types"
+              ]
+            },
+            "description": "All rows from the membertype table — Faculty, Student, Staff, Visitor, etc. Useful for populating dropdowns in the UI."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Member",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members/{{MEMBER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            },
+            "description": "Single member record including their type name, last 5 visits, and registered vehicles. Set MEMBER_ID in the collection variables or edit the URL directly."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "if (r.data && r.data.member) {",
+                  "  pm.collectionVariables.set('MEMBER_ID', String(r.data.member.memberid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            },
+            "description": "Creates a member record. Admin or SuperAdmin only.\n\nRequired: name, email (must be unique), contactNumber, typeId.\nOptional: age (1-120), department.\n\nEvery successful create writes to both logs/audit.log and the AuditLog table with the full new record in NewValue JSONB.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Rajesh Kumar\",\n  \"email\": \"rajesh.kumar@iitgn.ac.in\",\n  \"contactNumber\": \"+91-9876543210\",\n  \"typeId\": 1,\n  \"age\": 42,\n  \"department\": \"Computer Science\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (r.data && r.data.member) {",
+                  "  pm.collectionVariables.set('MEMBER_ID', String(r.data.member.memberid));",
+                  "  console.log('✅ Member created, ID:', r.data.member.memberid);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Member",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members/{{MEMBER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            },
+            "description": "Partial update — only include the fields you actually want to change. Joi rejects the request if you send an empty object. The old values get captured before the UPDATE and stored in AuditLog.OldValue so you can see exactly what changed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"AI & Data Science\",\n  \"age\": 43\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members/{{MEMBER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only.\n\nPersonVisit rows referencing this member have personid set to NULL (ON DELETE SET NULL). Vehicles this member owns will block the delete if ON DELETE RESTRICT is in place — delete the vehicles first. The deleted record goes into AuditLog.OldValue."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "eea462ce-6436-44e2-b371-83c91553344e"
+    },
+    {
+      "name": "Vehicles",
+      "description": "CRUD on registered vehicles. Same access rules as Members.",
+      "item": [
+        {
+          "name": "List Vehicles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicles",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicles"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Results per page"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "License plate search (ILIKE)"
+                },
+                {
+                  "key": "typeId",
+                  "value": "",
+                  "description": "Filter by vehicle type ID"
+                },
+                {
+                  "key": "ownerId",
+                  "value": "",
+                  "description": "Filter by owner member ID"
+                }
+              ]
+            },
+            "description": "Paginated list of vehicles with owner and type details. Search by license plate is case-insensitive."
+          },
+          "response": []
+        },
+        {
+          "name": "List Vehicle Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-types",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-types"
+              ]
+            },
+            "description": "All rows from the vehicletype table. Used for dropdowns."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vehicle",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicles/{{VEHICLE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicles"
+              ]
+            },
+            "description": "Single vehicle with owner member details and vehicle type."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.vehicle) {",
+                  "  pm.collectionVariables.set('VEHICLE_ID', String(r.data.vehicle.vehicleid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Vehicle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicles",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicles"
+              ]
+            },
+            "description": "Creates a vehicle linked to a member. Admin or SuperAdmin only.\n\nregistrationNumber gets uppercased automatically and must be unique. ownerId must point to an existing member.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrationNumber\": \"GJ01AB1234\",\n  \"ownerId\": \"{{MEMBER_ID}}\",\n  \"typeId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (r.data && r.data.vehicle) {",
+                  "  pm.collectionVariables.set('VEHICLE_ID', String(r.data.vehicle.vehicleid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Vehicle",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicles/{{VEHICLE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicles"
+              ]
+            },
+            "description": "Partial update. At least one field required. Admin or SuperAdmin only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"registrationNumber\": \"GJ01AB9999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Vehicle",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicles/{{VEHICLE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicles"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only. Blocked if active vehicle visits exist."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "a9e02496-e222-4e5b-9fe2-dc685cc134c8"
+    },
+    {
+      "name": "Gates",
+      "description": "Manage campus gates and their occupancy counts.",
+      "item": [
+        {
+          "name": "List Gates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gates",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gates"
+              ]
+            },
+            "description": "All gates with occupancy counts joined in from gateoccupancy table."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gate",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gates/{{GATE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gates"
+              ]
+            },
+            "description": "Single gate with its occupancy row."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.gate) {",
+                  "  pm.collectionVariables.set('GATE_ID', String(r.data.gate.gateid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Gate",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gates",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gates"
+              ]
+            },
+            "description": "Creates a campus gate. SuperAdmin only. Status must be Active or Inactive.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"North Gate\",\n  \"location\": \"Academic Block North Entry\",\n  \"status\": \"Active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Gate",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gates/{{GATE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gates"
+              ]
+            },
+            "description": "Partial update on gate info. Admin or SuperAdmin only.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Inactive\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Gate",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gates/{{GATE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gates"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only. Will fail with FK error if any visit record references this gate — visits must be cleaned up first."
+          },
+          "response": []
+        },
+        {
+          "name": "List Gate Occupancy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gate-occupancy",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gate-occupancy"
+              ]
+            },
+            "description": "Current occupancy count for all gates."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Gate Occupancy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/gate-occupancy/{{GATE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "gate-occupancy"
+              ]
+            },
+            "description": "Updates the people count at a gate. Admin or SuperAdmin only.\n\noccupancyCount is required and can't go below 0. capacityLimit and emergencyOverride are optional. incidentNote gets stored in the audit record.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"occupancyCount\": 45,\n  \"capacityLimit\": 100,\n  \"emergencyOverride\": false,\n  \"incidentNote\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "7d1cbfd3-be25-46b6-8bd0-d520c731ab26"
+    },
+    {
+      "name": "Person Visits",
+      "description": "Record people coming in and going out. Guards can do this.",
+      "item": [
+        {
+          "name": "List Person Visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Results per page"
+                },
+                {
+                  "key": "active",
+                  "value": "",
+                  "description": "true = active visits only (exittime IS NULL)"
+                },
+                {
+                  "key": "memberId",
+                  "value": "",
+                  "description": "Filter by member ID"
+                },
+                {
+                  "key": "gateId",
+                  "value": "",
+                  "description": "Filter by gate ID"
+                },
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "Start date (ISO 8601) e.g. 2026-03-01T00:00:00Z"
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "End date (ISO 8601) e.g. 2026-03-22T23:59:59Z"
+                }
+              ]
+            },
+            "description": "Paginated person visits with member and gate names joined in. Use active=true to get only visits where exittime is NULL (the partial index on that column brought the query from 8ms to 6ms on the benchmark dataset).\n\nThe entrytime index (idx_person_visit_entry_time) is what made the sorted listing drop from 15ms to 0.1ms — it pre-sorts the rows so the ORDER BY doesn't need an in-memory sort."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Person Visit",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits/{{VISIT_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits"
+              ]
+            },
+            "description": "Single visit record with member, entry gate, exit gate, and vehicle info."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.visit) {",
+                  "  pm.collectionVariables.set('VISIT_ID', String(r.data.visit.visitid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Record Person Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits/entry",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits",
+                "entry"
+              ]
+            },
+            "description": "Records when someone walks in. Any authenticated user can do this, including Guard.\n\nmemberId and entryGateId are required. vehicleId is optional — include it if the person drove in.\n\nSets entrytime to NOW() and leaves exittime NULL.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": \"{{MEMBER_ID}}\",\n  \"entryGateId\": \"{{GATE_ID}}\",\n  \"vehicleId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (r.data && r.data.visit) {",
+                  "  pm.collectionVariables.set('VISIT_ID', String(r.data.visit.visitid));",
+                  "  console.log('✅ Entry recorded, VisitID:', r.data.visit.visitid);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Record Person Exit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits/{{VISIT_ID}}/exit",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits",
+                "exit"
+              ]
+            },
+            "description": "Records when someone leaves. Any authenticated user, including Guard.\n\nSets exittime = NOW() and exitgateid. The DB enforces exittime >= entrytime via CHECK constraint.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exitGateId\": \"{{GATE_ID}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Person Visit",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits/{{VISIT_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "ad52e134-3a6f-48b9-b479-64e9b67619ad"
+    },
+    {
+      "name": "Vehicle Visits",
+      "description": "Record vehicles coming in and going out. Guards can do this.",
+      "item": [
+        {
+          "name": "List Vehicle Visits",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-visits",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-visits"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Results per page"
+                },
+                {
+                  "key": "active",
+                  "value": "",
+                  "description": "true = active visits only (exittime IS NULL)"
+                },
+                {
+                  "key": "vehicleId",
+                  "value": "",
+                  "description": "Filter by vehicle ID"
+                },
+                {
+                  "key": "gateId",
+                  "value": "",
+                  "description": "Filter by gate ID"
+                }
+              ]
+            },
+            "description": "Paginated vehicle visits. Same index story as person visits — the partial index on exittime IS NULL brought active-only queries from 6ms to 5ms."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vehicle Visit",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-visits/{{VV_VISIT_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-visits"
+              ]
+            },
+            "description": "Single vehicle visit with vehicle, owner, and gate details."
+          },
+          "response": []
+        },
+        {
+          "name": "Record Vehicle Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-visits/entry",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-visits",
+                "entry"
+              ]
+            },
+            "description": "Records when a vehicle drives in. Any authenticated user including Guard.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehicleId\": \"{{VEHICLE_ID}}\",\n  \"entryGateId\": \"{{GATE_ID}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "if (r.data && r.data.visit) {",
+                  "  pm.collectionVariables.set('VV_VISIT_ID', String(r.data.visit.vvvisitid));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Record Vehicle Exit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-visits/{{VV_VISIT_ID}}/exit",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-visits",
+                "exit"
+              ]
+            },
+            "description": "Records when a vehicle leaves. Any authenticated user including Guard.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exitGateId\": \"{{GATE_ID}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Vehicle Visit",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-visits/{{VV_VISIT_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-visits"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "5cb8d360-1eec-43c7-9d9e-44b0ec87eb41"
+    },
+    {
+      "name": "Dashboard",
+      "description": "Aggregate stats, recent events, and daily trends for the dashboard UI.",
+      "item": [
+        {
+          "name": "Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/dashboard/stats",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "stats"
+              ]
+            },
+            "description": "Summary numbers for the dashboard: total members, total vehicles, active person visits, active vehicle visits, and gate occupancy. All in one call."
+          },
+          "response": []
+        },
+        {
+          "name": "Recent Activity",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/dashboard/recent-activity",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "recent-activity"
+              ]
+            },
+            "description": "Last 10 events across both person and vehicle visits, merged and sorted by most recent. Used for the activity feed on the dashboard."
+          },
+          "response": []
+        },
+        {
+          "name": "Visit Trend",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/dashboard/visit-trend",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "dashboard",
+                "visit-trend"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "7",
+                  "description": "Number of past days (default 7)"
+                }
+              ]
+            },
+            "description": "Daily visit counts for the past N days. Defaults to 7. Powers the area chart on the dashboard."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "f19745b2-16d0-4510-91c5-46b645ac59ad"
+    },
+    {
+      "name": "Users",
+      "description": "User account management with an approval workflow for Admin-created accounts.",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "All user accounts with role info. Admin or SuperAdmin only. Password hash is never included in any response from this API."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/{{USER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Single user account with role. Admin or SuperAdmin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Creates a user. Behaviour depends on who's calling:\nSuperAdmin creates the account immediately and it's active straight away.\nAdmin creates a pending request that SuperAdmin has to approve.\n\nPassword needs 8+ chars, at least one uppercase, lowercase, and number. Role IDs: 1 = SuperAdmin, 2 = Admin, 3 = Guard.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"guard02\",\n  \"password\": \"Guard@12345\",\n  \"roleId\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Pending Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/requests/pending",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "requests",
+                "pending"
+              ]
+            },
+            "description": "Lists user creation requests from Admins that are waiting on SuperAdmin approval. SuperAdmin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/requests/{{REQUEST_ID}}/approve",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "requests",
+                "approve"
+              ]
+            },
+            "description": "Approves the pending request and creates the user account. SuperAdmin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Reject Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/requests/{{REQUEST_ID}}/reject",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "requests",
+                "reject"
+              ]
+            },
+            "description": "Rejects the pending request. SuperAdmin only."
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/{{USER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Updates a user. What you can change depends on your role:\nSuperAdmin can change username, password, and roleId for anyone.\nAdmin and Guard can only change their own password.\n\nAt least one field must be in the body.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users/{{USER_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Hard delete. SuperAdmin only. The service blocks you from deleting your own account."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "01060f70-12c4-49be-801c-da84f46914af"
+    },
+    {
+      "name": "Roles",
+      "description": "Read-only. Lists the three roles: Guard, Admin, SuperAdmin.",
+      "item": [
+        {
+          "name": "List Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/roles",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ]
+            },
+            "description": "All roles in the role table (Guard, Admin, SuperAdmin). Read-only — roles can't be created or deleted through the API."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Role",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/roles/{{ROLE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "roles"
+              ]
+            },
+            "description": "Single role by ID."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "c927107d-6644-43c2-88f2-17c36fb7c27f"
+    },
+    {
+      "name": "Member Types",
+      "description": "Read-only reference data for member type dropdowns.",
+      "item": [
+        {
+          "name": "List Member Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/member-types",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "member-types"
+              ]
+            },
+            "description": "All rows from the membertype table — Faculty, Student, Staff, Visitor, etc. Useful for populating dropdowns in the UI."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Member Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/member-types/{{MEMBER_TYPE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "member-types"
+              ]
+            },
+            "description": "Single member type by ID."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "958404ef-6a0b-47f1-ae96-3fd5e48cdb26"
+    },
+    {
+      "name": "Vehicle Types",
+      "description": "Read-only reference data for vehicle type dropdowns.",
+      "item": [
+        {
+          "name": "List Vehicle Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-types",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-types"
+              ]
+            },
+            "description": "All rows from the vehicletype table. Used for dropdowns."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vehicle Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/vehicle-types/{{VEHICLE_TYPE_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "vehicle-types"
+              ]
+            },
+            "description": "Single vehicle type by ID."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "f54c9964-3764-466d-8451-ace221e30567"
+    },
+    {
+      "name": "Audit Logs",
+      "description": "Read-only audit trail. Admin or SuperAdmin only. Every mutation in the system ends up here.",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/audit",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Results per page"
+                },
+                {
+                  "key": "action",
+                  "value": "",
+                  "description": "Filter: CREATE | READ | UPDATE | DELETE"
+                },
+                {
+                  "key": "userId",
+                  "value": "",
+                  "description": "Filter by user ID"
+                },
+                {
+                  "key": "tableName",
+                  "value": "",
+                  "description": "Filter by table name e.g. Member"
+                },
+                {
+                  "key": "dateFrom",
+                  "value": "",
+                  "description": "Start date (ISO 8601)"
+                },
+                {
+                  "key": "dateTo",
+                  "value": "",
+                  "description": "End date (ISO 8601)"
+                }
+              ]
+            },
+            "description": "Paginated audit log. Admin or SuperAdmin only. These records can never be modified through the API — no POST, PUT, or DELETE on this endpoint.\n\nFilter by action (CREATE/READ/UPDATE/DELETE), userId, tableName, or date range. Each record has OldValue and NewValue as JSONB — you can query the exact diff with standard SQL directly in psql.\n\nThe composite index on (userid, action, createdat DESC) means filtered+sorted queries don't need a full table scan."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Audit Log",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/audit/{{AUDIT_ID}}",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "audit"
+              ]
+            },
+            "description": "Single audit log record. Useful for inspecting the exact OldValue and NewValue JSONB for a specific mutation."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "d68bb1f7-f6e9-411e-b196-0ab8c7902b4b"
+    },
+    {
+      "name": "RBAC Tests",
+      "description": "Concrete tests that prove role enforcement is working. Runs as Guard and checks which requests get through and which get blocked.",
+      "item": [
+        {
+          "name": "Login as Guard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/login",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Logs in as the guard demo account. The test script saves the token to GUARD_TOKEN so the next few requests can use it to demonstrate RBAC.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"guard\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "if (r.data) pm.collectionVariables.set('GUARD_TOKEN', r.data.accessToken);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Guard - Delete Member (should 403)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{GUARD_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/members/1",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "members",
+                "1"
+              ]
+            },
+            "description": "Guard tries to delete a member. Should get 403.\n\nThe authorize(ROLES.SUPERADMIN) middleware runs before any controller code and rejects the request as soon as it sees the Guard role. The test asserts the 403 so you can run it and confirm RBAC is wired correctly."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Guard correctly blocked with 403', () => pm.response.to.have.status(403));",
+                  "const r = pm.response.json();",
+                  "pm.test('Error message present', () => pm.expect(r.error.message).to.include('Access denied'));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "403 Forbidden — Guard role insufficient",
+              "originalRequest": {},
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"message\": \"Access denied. Required: SuperAdmin. Your role: Guard\"\n  }\n}",
+              "_postman_id": "72d914fb-ddf1-4d27-8cf7-17e8e4b346ba"
+            }
+          ]
+        },
+        {
+          "name": "Guard - Get Users (should 403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{GUARD_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/users",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Guard tries to list users. Should get 403. Admin+ is required for this endpoint. Same middleware check, different route."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Guard blocked from users list with 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "Guard - Record Entry (should 201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{GUARD_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/person-visits/entry",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "person-visits",
+                "entry"
+              ]
+            },
+            "description": "Guard records a person entry. Should succeed with 201.\n\nThis is the positive RBAC test — Guard has exactly the permissions needed for day-to-day gate duty, nothing more.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"memberId\": 1,\n  \"entryGateId\": 1,\n  \"vehicleId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Guard allowed to record entry — status 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Expired Token (should 401)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiJ9.EXPIRED.TOKEN",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/auth/me",
+              "host": [
+                "{{BASE_URL}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Sends a clearly invalid token. Should get 401.\n\nThe authenticate() middleware calls jwt.verify() which throws on an expired or malformed token, and the error handler returns 401 before any route logic runs."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Expired token returns 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "response": [
+            {
+              "name": "401 Token expired or revoked",
+              "originalRequest": {},
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"error\": {\n    \"message\": \"Your session has expired. Please login again.\"\n  }\n}",
+              "_postman_id": "608ec9e9-0c31-4c48-a62b-63f454dfcbd8"
+            }
+          ]
+        }
+      ],
+      "_postman_id": "9e10f78d-f780-417b-adca-b2dda2d7d373"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{"txn_id":"txn-test_atomicity-a1fe6838","type":"BEGIN","ts":"2026-04-12T11:16:25.634302+00:00","seq":1}
+{"txn_id":"txn-test_atomicity-a1fe6838","type":"INSERT","table":"Member","key":999,"new_val":{"MemberID":999,"Name":"Test User","Email":"test@iitgn.ac.in","ContactNumber":"1234567890","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":2}
+{"txn_id":"txn-test_atomicity-a1fe6838","type":"ABORT","ts":"2026-04-12T11:16:25.636810+00:00","seq":3}
+{"txn_id":"txn-test_durability-28bca229","type":"BEGIN","ts":"2026-04-12T11:16:25.649101+00:00","seq":4}
+{"txn_id":"txn-test_durability-28bca229","type":"INSERT","table":"Member","key":1,"new_val":{"MemberID":1,"Name":"Pushkar Modi","Email":"pushkar@iitgn.ac.in","ContactNumber":"0000000000","Image":null,"Age":22,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":5}
+{"txn_id":"txn-test_durability-28bca229","type":"INSERT","table":"PersonVisit","key":1,"new_val":{"VisitID":1,"MemberID":1,"EntryGateID":1,"ExitGateID":null,"EntryTime":"2026-03-26T08:00:00","ExitTime":null,"VehicleID":null},"seq":6}
+{"txn_id":"txn-test_durability-28bca229","type":"INSERT","table":"GateOccupancy","key":1,"new_val":{"OccupancyID":1,"GateID":1,"Timestamp":"2026-03-26T08:00:00","PersonCount":1,"VehicleCount":0},"seq":7}
+{"txn_id":"txn-test_durability-28bca229","type":"COMMIT","ts":"2026-04-12T11:16:25.652290+00:00","seq":8}
+{"txn_id":"txn-multi_fail-7dbc9930","type":"BEGIN","ts":"2026-04-12T11:16:25.663666+00:00","seq":9}
+{"txn_id":"txn-multi_fail-7dbc9930","type":"INSERT","table":"Member","key":200,"new_val":{"MemberID":200,"Name":"Temp User","Email":"temp@iitgn.ac.in","ContactNumber":"111","Image":null,"Age":21,"Department":"EE","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":10}
+{"txn_id":"txn-multi_fail-7dbc9930","type":"INSERT","table":"PersonVisit","key":200,"new_val":{"VisitID":200,"MemberID":200,"EntryGateID":2,"ExitGateID":null,"EntryTime":"2026-03-26T09:00:00","ExitTime":null,"VehicleID":null},"seq":11}
+{"txn_id":"txn-multi_fail-7dbc9930","type":"INSERT","table":"GateOccupancy","key":200,"new_val":{"OccupancyID":200,"GateID":2,"Timestamp":"2026-03-26T09:00:00","PersonCount":50,"VehicleCount":0},"seq":12}
+{"txn_id":"txn-multi_fail-7dbc9930","type":"ABORT","ts":"2026-04-12T11:16:25.665664+00:00","seq":13}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"BEGIN","ts":"2026-04-12T11:16:25.674988+00:00","seq":14}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"INSERT","table":"Member","key":10,"new_val":{"MemberID":10,"Name":"Student_10","Email":"s10@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":15}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"INSERT","table":"Member","key":11,"new_val":{"MemberID":11,"Name":"Student_11","Email":"s11@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":16}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"INSERT","table":"Member","key":12,"new_val":{"MemberID":12,"Name":"Student_12","Email":"s12@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":17}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"INSERT","table":"Member","key":13,"new_val":{"MemberID":13,"Name":"Student_13","Email":"s13@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":18}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"INSERT","table":"Member","key":14,"new_val":{"MemberID":14,"Name":"Student_14","Email":"s14@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":19}
+{"txn_id":"txn-bulk_mix-ccf806b5","type":"COMMIT","ts":"2026-04-12T11:16:25.679279+00:00","seq":20}
+{"txn_id":"txn-bulk_upd-fff2f2a7","type":"BEGIN","ts":"2026-04-12T11:16:25.679279+00:00","seq":21}
+{"txn_id":"txn-bulk_upd-fff2f2a7","type":"UPDATE","table":"Member","key":10,"old_val":{"MemberID":10,"Name":"Student_10","Email":"s10@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"new_val":{"MemberID":10,"Name":"Student_10","Email":"s10@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":21,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":22}
+{"txn_id":"txn-bulk_upd-fff2f2a7","type":"DELETE","table":"Member","key":14,"old_val":{"MemberID":14,"Name":"Student_14","Email":"s14@iitgn.ac.in","ContactNumber":"999","Image":null,"Age":20,"Department":"CS","TypeID":1,"CreatedAt":"2026-03-26","UpdatedAt":"2026-03-26"},"seq":23}
+{"txn_id":"txn-bulk_upd-fff2f2a7","type":"COMMIT","ts":"2026-04-12T11:16:25.681823+00:00","seq":24}
+{"txn_id":"txn-ref_setup-f34febd9","type":"BEGIN","ts":"2026-04-12T11:16:25.687438+00:00","seq":25}
+{"txn_id":"txn-ref_setup-f34febd9","type":"INSERT","table":"Member","key":300,"new_val":{"MemberID":300,"Name":"Krina Paghadar","Email":"krina@iitgn.ac.in","ContactNumber":"9898989898","Image":null,"Age":21,"Department":"CS","TypeID":1,"CreatedAt":"2026-04-12","UpdatedAt":"2026-04-12"},"seq":26}
+{"txn_id":"txn-ref_setup-f34febd9","type":"INSERT","table":"PersonVisit","key":300,"new_val":{"VisitID":300,"MemberID":300,"EntryGateID":1,"ExitGateID":null,"EntryTime":"2026-04-12T10:00:00","ExitTime":null,"VehicleID":null},"seq":27}
+{"txn_id":"txn-ref_setup-f34febd9","type":"COMMIT","ts":"2026-04-12T11:16:25.693343+00:00","seq":28}
+{"txn_id":"txn-isolation_a-f4fa15bf","type":"BEGIN","ts":"2026-04-12T11:16:25.706618+00:00","seq":29}
+{"txn_id":"txn-isolation_a-f4fa15bf","type":"INSERT","table":"Member","key":500,"new_val":{"MemberID":500,"Name":"Thread A User","Email":"thread.a@iitgn.ac.in","ContactNumber":"5000001","Image":null,"Age":22,"Department":"CS","TypeID":1,"CreatedAt":"2026-04-12","UpdatedAt":"2026-04-12"},"seq":30}
+{"txn_id":"txn-isolation_a-f4fa15bf","type":"COMMIT","ts":"2026-04-12T11:16:25.759496+00:00","seq":31}
