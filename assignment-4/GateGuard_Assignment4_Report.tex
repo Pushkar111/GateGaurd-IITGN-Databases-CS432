@@ -1,0 +1,418 @@
+﻿% ============================================================================
+% GateGuard: Assignment 4 Report
+% CS432 Databases | IIT Gandhinagar | Semester II 2025--2026
+% Team Lumos
+% ============================================================================
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc,decorations.pathreplacing,backgrounds,shadows,fit,matrix}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{float}
+\usepackage[titles]{tocloft}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{textcomp}
+\usepackage{needspace}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{microtype}
+\usepackage{fontawesome5}
+\usepackage{hyperref}
+\definecolor{iitgnblue}{RGB}{0,51,102}
+\definecolor{iitgngold}{RGB}{204,153,0}
+\definecolor{sectioncolor}{RGB}{0,70,130}
+\definecolor{subseccolor}{RGB}{0,100,160}
+\definecolor{codegreen}{RGB}{0,128,0}
+\definecolor{codegray}{RGB}{128,128,128}
+\definecolor{codeblue}{RGB}{0,0,180}
+\definecolor{backcolour}{RGB}{248,248,252}
+\definecolor{tablealt}{RGB}{240,245,255}
+\definecolor{warnamber}{RGB}{180,100,0}
+\hypersetup{colorlinks=true,linkcolor=iitgnblue,citecolor=iitgnblue,urlcolor=iitgnblue,bookmarksopen=true,pdfauthor={Team Lumos},pdftitle={GateGuard: Assignment 4},pdfsubject={CS432 Database Systems}}
+\lstdefinestyle{sqlstyle}{language=SQL,backgroundcolor=\color{backcolour},commentstyle=\color{codegray}\itshape,keywordstyle=\color{codeblue}\bfseries,stringstyle=\color{codegreen},basicstyle=\ttfamily\small,breaklines=true,keepspaces=true,numbers=left,numberstyle=\tiny\color{codegray},frame=single,rulecolor=\color{iitgnblue!40},tabsize=2}
+\lstdefinestyle{pystyle}{language=Python,backgroundcolor=\color{backcolour},commentstyle=\color{codegray}\itshape,keywordstyle=\color{codeblue}\bfseries,stringstyle=\color{codegreen},basicstyle=\ttfamily\small,breaklines=true,keepspaces=true,numbers=left,numberstyle=\tiny\color{codegray},frame=single,rulecolor=\color{iitgnblue!40},tabsize=2}
+\lstdefinestyle{jsstyle}{language=JavaScript,backgroundcolor=\color{backcolour},commentstyle=\color{codegray}\itshape,keywordstyle=\color{codeblue}\bfseries,stringstyle=\color{codegreen},basicstyle=\ttfamily\small,breaklines=true,keepspaces=true,numbers=left,numberstyle=\tiny\color{codegray},frame=single,rulecolor=\color{iitgnblue!40},tabsize=2}
+\titleformat{\section}{\Large\bfseries\color{sectioncolor}}{{\thesection}}{1em}{}[\titlerule]
+\titleformat{\subsection}{\large\bfseries\color{subseccolor}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{iitgnblue}}{\thesubsubsection}{1em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{iitgnblue} GateGuard -- Assignment 4: Horizontal Sharding}
+\fancyhead[R]{\small\color{iitgnblue} Team Lumos | CS432}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\newtcolorbox{infobox}[1][]{colback=tablealt,colframe=iitgnblue!60,boxrule=0.6pt,arc=4pt,left=6pt,right=6pt,top=4pt,bottom=4pt,fonttitle=\bfseries\color{iitgnblue},#1}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{1cm}
+{\Huge\bfseries\color{iitgnblue} GateGuard\\[0.3em]
+\Large\color{iitgngold} Assignment 4: Horizontal Database Sharding}
+\vspace{1.5cm}
+
+\includegraphics[width=0.25\textwidth]{../../../Final_IITGN_Logo_symmetric.png}
+
+\vspace{1cm}
+{\large\bfseries Indian Institute of Technology Gandhinagar\\[0.3em]
+CS432 -- Database Systems | Semester II, 2025--2026}
+
+\vspace{1.5cm}
+\begin{tcolorbox}[colback=tablealt,colframe=iitgnblue,arc=6pt,boxrule=0.8pt,width=0.85\textwidth]
+\centering
+{\large\bfseries Team Lumos}\\[0.5em]
+\begin{tabular}{ll}
+Pushkar Patel    & 23110238 \\
+Ayush Maheshwari & 23110051 \\
+Parv Patel       & 23110216 \\
+\end{tabular}
+\end{tcolorbox}
+
+\vspace{1.2cm}
+\begin{tabular}{ll}
+\faGithub\quad \textbf{Repository:} &
+  \href{https://github.com/Pushkar111/GateGaurd-IITGN-Databases-CS432}{\texttt{Pushkar111/GateGaurd-IITGN-Databases-CS432}} \\[0.5em]
+\faYoutube\quad \textbf{Demo Video:} &
+  \href{https://youtu.be/placeholder}{Assignment 4 Demo Video (YouTube)} \\
+\end{tabular}
+
+\vfill
+{\small Submitted: April 2026}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Introduction and Prior Work}
+
+GateGuard is a campus access-control system built for IIT Gandhinagar. It tracks member entry and exit through physical gates, recording each visit in a PostgreSQL database backed by a Node.js REST API and a React frontend.
+
+\subsection{Assignment 1 -- Schema and Seed Data}
+We designed the relational schema from the problem specification. Core tables are \texttt{Member}, \texttt{Gate}, \texttt{PersonVisit}, and \texttt{Vehicle}. 5,000 members and over 50,000 person visits were seeded with procedurally generated realistic data.
+
+\subsection{Assignment 2 -- B+ Tree Index and REST API}
+A B+ Tree index was implemented from scratch in Python and integrated with a Node.js/Express REST API exposing member management, visit recording, gate management, and vehicle tracking endpoints.
+
+\subsection{Assignment 3 -- ACID Transactions}
+A Write-Ahead Log (WAL), transaction manager with LIFO undo stacks, and a consistency checker were implemented. The race condition in the entry-recording endpoint was fixed using \texttt{SELECT FOR UPDATE} inside an explicit PostgreSQL transaction. Concurrent isolation was verified with a multi-threaded notebook test.
+
+\subsection{Assignment 4 -- Horizontal Sharding (this report)}
+This assignment adds horizontal sharding to the GateGuard data layer. Rows are distributed across three logical shards using a hash on the member identifier. The same application logic runs unchanged at the HTTP layer; only the data access layer is shard-aware.
+
+\section{SubTask 1: Shard Key Selection and Justification}
+
+\subsection{Candidate Keys Evaluated}
+
+\begin{center}
+\begin{tabular}{>{\bfseries}l p{4.2cm} p{4.2cm}}
+\toprule
+Candidate & Strengths & Weaknesses \\
+\midrule
+\rowcolor{tablealt}
+\texttt{memberid} & High cardinality (5,000 values). Every \texttt{PersonVisit} row carries \texttt{personid} = \texttt{memberid}. Stable SERIAL key, never changes. & Needs scatter-gather for email login and admin reports. \\
+\texttt{entrytime} & Good cardinality for range queries. & Monotonically increasing -- new inserts always hit the same shard. \\
+\rowcolor{tablealt}
+\texttt{gateid} & Groups visits by physical gate. & Only 4 distinct values. At minimum one shard receives zero rows. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Selected Key and Hash Function}
+
+\[ \text{shard\_id} = \text{memberid} \;\bmod\; 3 \]
+
+\texttt{memberid} was selected because it satisfies all three criteria for a good shard key: high cardinality, query alignment (every hot-path API call filters by it), and stability (SERIAL integers never change after assignment).
+
+\subsection{Verified Distribution on Live Data}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Shard & Member rows & PersonVisit rows & Share \\
+\midrule
+\rowcolor{tablealt}
+shard\_0 & 1,666 & 16,664 & 33.32\% \\
+shard\_1 & 1,667 & 16,673 & 33.34\% \\
+\rowcolor{tablealt}
+shard\_2 & 1,667 & 16,677 & 33.34\% \\
+\midrule
+\textbf{Total} & \textbf{5,000} & \textbf{50,014} & \textbf{100\%} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The maximum imbalance is one row per shard pair -- mathematically unavoidable with hash-mod on a non-multiple-of-3 dataset and negligible in practice.
+
+\section{SubTask 2: Data Partitioning Implementation}
+
+\subsection{Shard Architecture}
+
+Three Docker containers each run an independent PostgreSQL 17 instance:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Container & Host Port & Database \\
+\midrule
+\rowcolor{tablealt}
+\texttt{gateguard-shard-0} & 5433 & \texttt{gateguard\_shard\_0} \\
+\texttt{gateguard-shard-1} & 5434 & \texttt{gateguard\_shard\_1} \\
+\rowcolor{tablealt}
+\texttt{gateguard-shard-2} & 5435 & \texttt{gateguard\_shard\_2} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The original database (port 5432) is kept intact and used as the source during migration and as the primary member authority for SERIAL id generation.
+
+\subsection{Script 01: Creating Shard Tables}
+
+\texttt{LIKE ... INCLUDING ALL} copies column definitions, constraints, and defaults. Foreign keys are excluded by design -- shards are shared-nothing nodes with no cross-shard referential enforcement.
+
+\begin{lstlisting}[style=sqlstyle, caption={01\_create\_shards.sql}]
+CREATE TABLE IF NOT EXISTS shard_0_member (LIKE member INCLUDING ALL);
+CREATE TABLE IF NOT EXISTS shard_1_member (LIKE member INCLUDING ALL);
+CREATE TABLE IF NOT EXISTS shard_2_member (LIKE member INCLUDING ALL);
+
+CREATE TABLE IF NOT EXISTS shard_0_personvisit (LIKE personvisit INCLUDING ALL);
+CREATE TABLE IF NOT EXISTS shard_1_personvisit (LIKE personvisit INCLUDING ALL);
+CREATE TABLE IF NOT EXISTS shard_2_personvisit (LIKE personvisit INCLUDING ALL);
+\end{lstlisting}
+
+\subsection{Script 02: Migrating Data}
+
+\begin{lstlisting}[style=sqlstyle, caption={02\_migrate\_data.sql}]
+INSERT INTO shard_0_member SELECT * FROM member WHERE memberid % 3 = 0;
+INSERT INTO shard_1_member SELECT * FROM member WHERE memberid % 3 = 1;
+INSERT INTO shard_2_member SELECT * FROM member WHERE memberid % 3 = 2;
+
+INSERT INTO shard_0_personvisit SELECT * FROM personvisit WHERE personid % 3 = 0;
+INSERT INTO shard_1_personvisit SELECT * FROM personvisit WHERE personid % 3 = 1;
+INSERT INTO shard_2_personvisit SELECT * FROM personvisit WHERE personid % 3 = 2;
+\end{lstlisting}
+
+PostgreSQL confirmed the expected row counts:
+\begin{verbatim}
+INSERT 0 1666   INSERT 0 1667   INSERT 0 1667    (member shards)
+INSERT 0 16664  INSERT 0 16673  INSERT 0 16677   (visit shards)
+\end{verbatim}
+
+\subsection{Script 03: Verifying Migration Integrity}
+
+Three checks run sequentially: (1) sum of shard row counts equals original table count, (2) \texttt{INNER JOIN} between every shard pair returns zero rows, (3) per-shard percentage is within 0.02 percentage points of 33.33\%. All three checks passed on live data.
+
+\subsection{Script 04: Adding Indexes}
+
+18 indexes cover all access patterns on the 6 shard tables. Member shards are indexed on \texttt{memberid}, \texttt{email}, and \texttt{typeid}. Visit shards are indexed on \texttt{personid}, \texttt{entrytime}, and \texttt{exittime}.
+
+\section{SubTask 3: Query Routing Implementation}
+
+\subsection{Python Router (Module\_A)}
+
+\begin{lstlisting}[style=pystyle, caption={shard\_router.py -- core hash functions}]
+NUM_SHARDS = 3
+
+def get_shard_id(member_id: int) -> int:
+    return member_id % NUM_SHARDS
+
+def member_table(member_id: int) -> str:
+    return f"shard_{get_shard_id(member_id)}_member"
+
+def visit_table(member_id: int) -> str:
+    return f"shard_{get_shard_id(member_id)}_personvisit"
+\end{lstlisting}
+
+\subsubsection{Single-Shard Path -- O(1)}
+
+For \texttt{memberid = 42}: $42 \bmod 3 = 0$, so only \texttt{shard\_0\_member} is queried. Shards 1 and 2 receive zero network traffic.
+
+\begin{lstlisting}[style=pystyle, caption={shard\_router.py -- O(1) point lookup}]
+def lookup_member(member_id: int) -> dict:
+    shard_id = get_shard_id(member_id)
+    table    = member_table(member_id)
+    cur      = get_shard_cursor(shard_id)
+    cur.execute(f"SELECT * FROM {table} WHERE memberid = %s", (member_id,))
+    return cur.fetchone()
+\end{lstlisting}
+
+\subsubsection{Scatter-Gather Path}
+
+\begin{lstlisting}[style=pystyle, caption={shard\_router.py -- scatter-gather range query}]
+def scatter_gather_visits(start_dt: str, end_dt: str) -> list:
+    results = []
+    for i, table in enumerate(all_visit_tables()):
+        cur = get_shard_cursor(i)
+        cur.execute(
+            f"SELECT * FROM {table} WHERE entrytime BETWEEN %s AND %s",
+            (start_dt, end_dt)
+        )
+        results.extend(cur.fetchall())
+    return sorted(results, key=lambda r: r["entrytime"])
+\end{lstlisting}
+
+\subsection{JavaScript Router (Module\_B)}
+
+\begin{lstlisting}[style=jsstyle, caption={shardRouter.js}]
+const NUM_SHARDS = parseInt(process.env.NUM_SHARDS || '3', 10);
+
+function getShard(memberId) {
+  // parseInt guard -- query params arrive as strings
+  return parseInt(memberId, 10) % NUM_SHARDS;
+}
+
+function memberTable(memberId) { return `shard_${getShard(memberId)}_member`; }
+function visitTable(memberId)  { return `shard_${getShard(memberId)}_personvisit`; }
+
+module.exports = { getShard, memberTable, visitTable, allVisitTables, allMemberTables };
+\end{lstlisting}
+
+The \texttt{parseInt} guard is required because Express query parameters arrive as strings. Applying modulo to a string produces \texttt{NaN}, which would silently route every request to \texttt{shard\_NaN\_member}.
+
+\subsection{Entry Recording with Preserved Race-Condition Fix}
+
+The \texttt{SELECT FOR UPDATE} fix from Assignment 3 is unchanged. The only delta is that the open-visit check and the insert target the shard table:
+
+\begin{lstlisting}[style=jsstyle, caption={personVisit.service.js -- shard-aware recordEntry (key lines)}]
+const table = visitTable(data.memberId);  // e.g. "shard_1_personvisit"
+await client.query('BEGIN');
+await client.query(
+  'SELECT memberid FROM member WHERE memberid = $1 FOR UPDATE', [data.memberId]
+);
+const { rows: active } = await client.query(
+  `SELECT visitid FROM ${table} WHERE personid = $1 AND exittime IS NULL LIMIT 1`,
+  [data.memberId]
+);
+if (active.length > 0) throw new AppError('Active visit already exists', 400);
+await client.query(
+  `INSERT INTO ${table} (personid, entrygateid, vehicleid, entrytime)
+   VALUES ($1, $2, $3, NOW())`, [data.memberId, data.entryGateId, vehicleId]
+);
+await client.query('COMMIT');
+\end{lstlisting}
+
+\subsection{Routing Decision Table}
+
+\begin{center}
+\begin{tabular}{p{4.8cm} l l}
+\toprule
+Operation & Path & Shards touched \\
+\midrule
+\rowcolor{tablealt}
+GET /api/members/:id & Single-shard O(1) & 1 \\
+POST /api/person-visits (entry) & Single-shard O(1) & 1 \\
+\rowcolor{tablealt}
+PUT /api/person-visits/:id (exit) & Single-shard O(1) & 1 \\
+GET /api/person-visits?memberId=x & Single-shard O(1) & 1 \\
+\rowcolor{tablealt}
+GET /api/members (admin list) & Scatter-gather & 3 \\
+GET /api/person-visits (no memberId) & Scatter-gather & 3 \\
+\rowcolor{tablealt}
+Dashboard active count & Scatter-gather SUM & 3 \\
+Login email lookup & Scatter-gather (early stop) & 1--3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{SubTask 4: Scalability Trade-offs Analysis}
+
+\subsection{Horizontal vs. Vertical Scaling}
+
+Vertical scaling upgrades a single server. It is simple but has a hardware ceiling and creates a single point of failure. Horizontal sharding adds servers. Each shard owns a subset of data and can fail independently, providing graceful degradation unavailable in a single-server setup.
+
+\begin{infobox}[title={Graceful degradation example}]
+If \texttt{shard\_2} were unavailable, only members with $\text{memberid} \bmod 3 = 2$ would be affected. All other members would continue normally. A single PostgreSQL instance provides no such isolation.
+\end{infobox}
+
+\subsection{CAP Theorem Positioning}
+
+Our shared-nothing PostgreSQL setup is a CP system during network partitions. Each shard is independently consistent. Cross-shard operations sacrifice Consistency slightly -- a write committed on shard\_1 may not be visible in a scatter-gather read that began before the write flushed. This is the documented consistency window.
+
+\subsection{Known Trade-offs}
+
+\subsubsection{Resharding Cost}
+
+With 3 shards: $\text{id} \bmod 3$. Adding a 4th: $\text{id} \bmod 4$. Approximately 75\% of all rows must relocate. AWS explicitly identifies this as the principal weakness of hash-mod sharding \cite{aws-sharding}. Consistent hashing reduces movement to $\frac{1}{N+1}$ but adds lookup-table complexity.
+
+\subsubsection{Data Skew}
+
+Member count is balanced (33.33\% per shard). However, visit frequency is not uniform. Members who visit campus frequently generate far more rows on one shard than infrequent members, creating a write hotspot even when counts look balanced. AWS calls this the ``frequency'' dimension of shard skew \cite{aws-sharding}.
+
+\subsubsection{Scatter-Gather Consistency Window}
+
+There is no global transaction coordinator. PingCAP describes the resulting read-your-own-write window \cite{pingcap-sharding}: a write committed on shard\_1 on one thread may not be visible in a scatter-gather read that started on a different thread and is currently reading shard\_0. Real systems use distributed commit protocols (e.g., Google Spanner TrueTime) to eliminate this.
+
+\subsubsection{No Global Secondary Index}
+
+Email-based login requires knowing the shard for a given email. We use scatter-gather (check all three shards) rather than maintaining a Global Secondary Index (GSI). A GSI would require 2-phase commit on every member write to keep it in sync, and introduces stale-index risk on partial failures. For a three-shard system the scatter cost is acceptable.
+
+\subsubsection{Scale Appropriateness}
+
+Our 5,000-member, 50,014-visit dataset does not require sharding. A single PostgreSQL instance handles tens of millions of rows efficiently with proper indexing. The benefit of sharding becomes significant only above approximately 10 million rows or when write throughput saturates a single node. This assignment proves the mechanism works correctly.
+
+\subsection{Path Performance Comparison}
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Metric & Single-shard path & Scatter-gather path \\
+\midrule
+\rowcolor{tablealt}
+DB connections per request & 1 & $N$ (3) \\
+Query latency & O(1) & O(N), bounded by slowest shard \\
+\rowcolor{tablealt}
+Consistency & Strong (per-shard ACID) & Eventual (consistency window) \\
+Failure impact & Affects one shard's members & May return partial results \\
+\rowcolor{tablealt}
+Pagination & Straightforward & Requires over-fetch and in-memory sort \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Observations and Conclusion}
+
+The hash-mod strategy on \texttt{memberid} produced a near-perfect 33.32\%/33.34\%/33.34\% distribution across 50,014 visits with zero overlap between shards. All three verification checks passed. The \texttt{SELECT FOR UPDATE} race-condition fix from Assignment 3 required only a one-line table-name change to operate correctly in the sharded context, demonstrating that a well-separated service layer is easy to extend.
+
+\textbf{Limitations:}
+\begin{itemize}[leftmargin=1.5em]
+  \item No distributed commit protocol -- each shard is independently ACID but cross-shard operations have a consistency window.
+  \item Resharding to $N+1$ shards requires migrating approximately 75\% of data.
+  \item Email-based login always incurs a 3-shard scatter penalty.
+  \item The current dataset size does not benefit from sharding in practice.
+\end{itemize}
+
+We implemented sharding across all three layers of the GateGuard stack: SQL migration scripts, a Python shard router with connection pooling, and a Node.js service layer with transparent hash-based routing. The proof notebook demonstrates all four subtasks using live data from the PostgreSQL instance.
+
+\begin{thebibliography}{9}
+\bibitem{aws-sharding}
+  Amazon Web Services.
+  \textit{What is Database Sharding?}
+  \url{https://aws.amazon.com/what-is/database-sharding/}
+\bibitem{pingcap-sharding}
+  PingCAP.
+  \textit{Database Sharding Defined.}
+  \url{https://www.pingcap.com/blog/database-sharding-defined/}
+\end{thebibliography}
+
+\end{document}
