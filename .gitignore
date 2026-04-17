@@ -4,7 +4,7 @@
 
 # Ignore LaTeX source files
 *.tex
-!assignment-4/*.tex
+!assignment-4/GateGuard_Assignment4_Report.tex
 
 # Ignore PlantUML / WSD diagram source files
 *.wsd
