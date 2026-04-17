@@ -1,4 +1,4 @@
-﻿% ============================================================================
+% ============================================================================
 % GateGuard: Assignment 4 Report
 % CS432 Databases | IIT Gandhinagar | Semester II 2025--2026
 % Team Lumos
@@ -1141,305 +1141,271 @@ Our router has two modes. If memberid is known, we compute one shard and execute
 \end{tcolorbox}
 
 % ============================================================================
-% Figure 10: Routing decision flow
-% Clean two-lane layout with shared response contract
+% Figure 10: Routing decision flow (orthogonal YES/NO, margin spine, bottom ``direct row'')
+% Restored from iterative layout (chat history); not the alternate 22x14 design
 % ============================================================================
 
 \begin{figure}[H]
 \centering
-\resizebox{0.99\textwidth}{!}{%
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\makebox[\linewidth][c]{%
+\resizebox{1.12\linewidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  font=\sffamily\small,
+  >={Latex[length=2.8mm,width=1.7mm]},
+  every pin edge/.style={<-, line width=0.5pt},
+]
 
 \colorlet{FP}{iitgngold}
 \colorlet{GP}{iitgnblue}
 \colorlet{OK}{successgreen}
 
 \tikzset{
-  lane/.style={rounded corners=6pt, line width=0.75pt},
-  lanehead/.style={font=\scriptsize\bfseries\color{white}},
-  lanelabel/.style={
-    rounded corners=9pt,
-    inner xsep=7pt,
-    inner ysep=3pt,
-    font=\scriptsize\bfseries,
-    line width=0.9pt
+  hdrbar/.style={
+    minimum width=18.6cm, minimum height=0.78cm,
+    fill=GP, draw=GP!90!black, line width=0.6pt, rounded corners=4pt,
+    text=white, font=\bfseries\small, align=center
   },
-  box/.style={
-    rectangle,
-    rounded corners=5pt,
-    draw=#1!72!black,
-    fill=#1!10,
-    line width=0.9pt,
-    align=center,
-    drop shadow={shadow xshift=0.9pt,shadow yshift=-0.9pt,fill=#1!25!black,opacity=0.18}
-  },
-  box/.default=GP,
   reqbox/.style={
-    rectangle,
-    rounded corners=5pt,
-    draw=GP!82,
-    fill=GP!78,
-    text=white,
-    line width=0.9pt,
-    align=center,
-    font=\small\bfseries,
-    drop shadow={shadow xshift=0.9pt,shadow yshift=-0.9pt,fill=GP!28!black,opacity=0.18}
+    rectangle, rounded corners=5pt, minimum width=2.4cm, minimum height=1.55cm,
+    draw=GP!82, fill=GP!78, text=white, line width=0.75pt, align=center,
+    font=\bfseries\small, drop shadow={shadow xshift=0.6pt,shadow yshift=-0.6pt,fill=black,opacity=0.12}
   },
   decision/.style={
     diamond,
-    aspect=2.4,
-    draw=GP!80, fill=GP!9,
-    line width=1.3pt, align=center,
-    inner sep=3pt,
-    text width=2.6cm,
-    font=\small\bfseries\color{GP},
-    drop shadow={shadow xshift=1.0pt,shadow yshift=-1.0pt,fill=GP!30!black,opacity=0.15}
+    aspect=3.4,
+    draw=GP!78,
+    fill=white,
+    line width=0.7pt,
+    inner sep=0pt,
+    outer sep=1.5pt,
+    text width=1.05cm,
+    align=center,
+    font=\tiny\bfseries\color{GP},
+    minimum size=0.95cm
+  },
+  boxfp/.style={
+    rectangle, rounded corners=5pt, minimum width=3.85cm, minimum height=2.05cm,
+    draw=FP!70!black, fill=FP!10, line width=0.75pt, align=center, inner sep=5pt
+  },
+  boxgp/.style={
+    rectangle, rounded corners=5pt, minimum width=3.35cm, minimum height=1.75cm,
+    draw=GP!58, fill=white, line width=0.7pt, align=center, inner sep=5pt
   },
   db/.style={
-    cylinder, shape border rotate=90,
+    cylinder, shape border rotate=90, aspect=0.22,
     cylinder uses custom fill,
-    cylinder body fill=#1!12,
-    cylinder end fill=#1!28,
-    draw=#1!68!black,
-    minimum width=2.15cm, minimum height=1.30cm,
-    line width=0.85pt,
-    align=center,
-    font=\scriptsize\bfseries\color{#1!75!black}
+    cylinder body fill=GP!10, cylinder end fill=GP!22,
+    draw=GP!62, minimum width=1.5cm, minimum height=1.05cm,
+    font=\scriptsize\bfseries\color{GP}, align=center
   },
-  db/.default=GP,
-  merge/.style={
-    rectangle,
-    rounded corners=5pt,
-    draw=GP!65, fill=GP!8,
-    line width=1.0pt, align=center,
-    drop shadow={shadow xshift=0.9pt,shadow yshift=-0.9pt,fill=GP!25!black,opacity=0.15}
+  mergebox/.style={
+    rectangle, rounded corners=5pt, minimum width=3.45cm, minimum height=1.25cm,
+    draw=GP!55, fill=GP!7, line width=0.7pt, align=center, inner sep=5pt
   },
-  response/.style={
-    rectangle,
-    rounded corners=6pt,
-    draw=OK!70!black, fill=OK!11,
-    line width=1.3pt, align=center,
-    drop shadow={shadow xshift=1.1pt,shadow yshift=-1.1pt,fill=OK!30!black,opacity=0.20}
+  unifiedbox/.style={
+    rectangle, rounded corners=6pt, minimum width=17.2cm, minimum height=1.45cm,
+    draw=OK!65!black, fill=OK!12, line width=1.05pt, align=center,
+    text width=16.4cm, inner sep=6pt,
+    drop shadow={shadow xshift=0.8pt,shadow yshift=-0.8pt,fill=OK!40!black,opacity=0.15}
+  },
+  stepbadge/.style={
+    circle,
+    draw=iitgnblue!75!black,
+    fill=white,
+    line width=0.7pt,
+    inner sep=1.5pt,
+    font=\scriptsize\bfseries,
+    text=black,
+    minimum size=5.5mm,
+    drop shadow={shadow xshift=0.35pt,shadow yshift=-0.35pt,fill=black,opacity=0.12}
   },
   chip/.style={
-    rounded corners=7pt,
-    inner xsep=5pt,
-    inner ysep=2pt,
-    font=\scriptsize\bfseries,
-    line width=0.65pt
+    rounded corners=3pt, inner xsep=5pt, inner ysep=2pt,
+    font=\scriptsize\bfseries, line width=0.45pt
   },
-  step/.style={
-    circle,
-    draw=#1!70!black,
-    fill=#1!18,
-    line width=0.75pt,
-    inner sep=1.5pt,
-    font=\scriptsize\bfseries\color{#1!80!black},
-    minimum size=0.55cm
+  arr/.style={line width=0.95pt, draw=#1},
+  snip/.style={
+    rectangle, rounded corners=3pt, draw=GP!28, fill=backcolour,
+    font=\ttfamily\footnotesize, align=left, inner sep=4pt
   },
-  step/.default=GP,
-  snippet/.style={
-    rectangle,
-    rounded corners=4pt,
-    draw=GP!30,
-    fill=backcolour,
-    line width=0.6pt,
-    align=left,
-    font=\tiny\ttfamily\color{GP!76}
-  },
-  basearr/.style={
-    -{Latex[length=3.2mm,width=1.9mm]},
-    line width=1.2pt,
-    draw=GP!76
-  },
-  farr/.style={
-    -{Latex[length=3.5mm,width=2.0mm]},
-    line width=1.45pt, draw=FP!85!black
-  },
-  garr/.style={
-    -{Latex[length=3.2mm,width=1.9mm]},
-    line width=1.2pt, draw=GP!68, dashed
-  },
-  oarr/.style={
-    -{Latex[length=3.0mm,width=1.8mm]},
-    line width=1.15pt, draw=OK!70!black
-  },
-  slabel/.style={font=\tiny\color{codegray}}
 }
 
-\fill[white] (0,0) rectangle (22,14);
-\shade[left color=GP!5, right color=FP!4, opacity=0.55]
-      (0,0) rectangle (22,14);
-\draw[draw=GP!28, line width=0.9pt, rounded corners=9pt]
-  (0.12,0.12) rectangle (21.88,13.88);
+\coordinate (canvasSW) at (0,-1.62);
+\coordinate (canvasNE) at (19.4,18.65);
 
-\fill[GP!86, rounded corners=6pt] (0.22,12.82) rectangle (21.78,13.72);
-\node[font=\normalsize\bfseries\color{white}, anchor=west] at (0.55,13.28)
-  {Routing Decision Engine};
-\node[chip, draw=FP!60!white, fill=FP!28!GP, text=FP!15!white,
-      anchor=west] at (6.0,13.28)
-  {\texttt{shard\_router.py}~~(Python)};
-\node[font=\scriptsize\color{FP!30!white}, anchor=west] at (11.25,13.28) {\textbullet};
-\node[chip, draw=FP!50!white, fill=FP!20!GP, text=FP!15!white,
-      anchor=west] at (11.7,13.28)
-  {\texttt{shardRouter.js}~~(JavaScript)};
-\node[chip, draw=FP!75!black, fill=FP!25, text=FP!85!black,
-      anchor=east, font=\small\bfseries\ttfamily] at (21.5,13.28)
-  {shard\_id = memberid \% NUM\_SHARDS};
+\begin{scope}[on background layer]
+  \shade[left color=GP!4, right color=FP!5] (canvasSW) rectangle (canvasNE);
+  \draw[GP!22, line width=0.75pt, rounded corners=10pt] ($(canvasSW)+(0.08,0.08)$) rectangle ($(canvasNE)+(-0.08,-0.08)$);
+\end{scope}
 
-\fill[FP!7, rounded corners=6pt] (1.20,7.45) rectangle (21.65,12.55);
-\draw[FP!55!black, line width=0.75pt, rounded corners=6pt]
-  (1.20,7.45) rectangle (21.65,12.55);
+\node[hdrbar] (hdr) at (9.7,17.55) {%
+  \mbox{\faIcon{route}}\;\textbf{Routing Decision Engine}%
+  \quad\textcolor{FP!40!white}{\textbullet}\quad
+  \textcolor{white!92}{\texttt{shard\_router.py} (Python)}%
+  \quad\textcolor{FP!40!white}{\textbullet}\quad
+  \textcolor{white!92}{\texttt{shardRouter.js} (JS)}%
+};
 
-\fill[FP!78!black, rounded corners=4pt] (1.35,11.80) rectangle (21.45,12.42);
-\node[font=\scriptsize\bfseries\color{white}, anchor=west] at (2.35,12.30)
-  {FAST PATH - memberid known $\Rightarrow$ O(1) single-shard query};
+\begin{scope}[on background layer]
+  \filldraw[fill=FP!9, draw=FP!55!black, line width=0.55pt, rounded corners=7pt]
+    (0.32,8.55) rectangle (19.35,16.42);
+  \filldraw[fill=GP!6, draw=GP!40, line width=0.55pt, rounded corners=7pt]
+    (0.32,2.35) rectangle (19.35,8.35);
+\end{scope}
 
-\fill[GP!6, rounded corners=6pt] (1.20,1.75) rectangle (21.65,7.05);
-\draw[GP!45, line width=0.75pt, rounded corners=6pt]
-  (1.20,1.75) rectangle (21.65,7.05);
+\node[font=\scriptsize\bfseries\color{FP!90!black}, anchor=west] at (0.48,16.12)
+  {\faIcon{bolt}\;FAST PATH:\ \textbf{memberid known},\ $O(1)$ single shard};
+\node[font=\scriptsize\bfseries\color{GP!80!black}, anchor=west] at (0.48,8.05)
+  {\faIcon{network-wired}\;GLOBAL PATH:\ \textbf{memberid unknown},\ $O(N)$ scatter/gather};
 
-\fill[GP!74, rounded corners=4pt] (1.35,6.25) rectangle (21.45,6.90);
-\node[font=\scriptsize\bfseries\color{white}, anchor=west] at (2.35,6.78)
-  {GLOBAL PATH - memberid unknown $\Rightarrow$ O(N) scatter-gather across all shards};
+\node[font=\tiny\itshape\color{codegray!80}, anchor=east] at (19.15,8.45)
+  {two swimlanes (no cross-lane query)};
 
-\draw[codegray!38, line width=0.55pt, dashed] (1.25,7.25) -- (21.60,7.25);
-\node[font=\tiny\color{codegray!65}, fill=white, inner xsep=4pt, inner ysep=1pt]
-  at (11.7,7.25) {routing decision boundary};
+\node[reqbox] (req) at (1.85,14.82) {%
+  \mbox{\footnotesize\faIcon{paper-plane}}\;\textbf{Incoming}\\[3pt]
+  {\ttfamily\tiny\color{white!88} GET /member/\{id\}}\\[1pt]
+  {\ttfamily\tiny\color{white!88} GET /visits}
+};
+\node[stepbadge] at ($(req.north west)+(-0.24,0.26)$) {1};
 
-\node[step=GP] at (3.30,11.92) {1};
-\node[reqbox, minimum width=2.70cm, minimum height=2.35cm] (req) at (3.30,9.45)
-  {\textbf{Incoming}\\[2pt]\textbf{Request}\\[5pt]
-   {\tiny\ttfamily\color{white!80} GET /member/\{id\}}\\[1pt]
-   {\tiny\ttfamily\color{white!80} GET /visits}};
-\node[step=GP] at (8.05,11.92) {2};
-\node[decision] (router) at (7.95,9.55)
-  {\textbf{HASH}\\[1pt]\textbf{ROUTER}\\[2pt]{\small\ttfamily id \% 3}};
+\node[decision, scale=0.82, transform shape] (router) at (1.85,12.49) {%
+  \textbf{HASH}\\[-2pt]\textbf{ROUTER}\\[1pt]
+  {\ttfamily\tiny id \% 3}
+};
+\node[stepbadge] at ($(router.north west)+(-0.22,0.4)$) {2};
 
-\draw[basearr] (req.east) -- node[slabel, above]{route} (router.west);
+\draw[arr=GP!70, shorten <=2pt, shorten >=2pt]
+  (req.south) -- node[midway, right, font=\tiny\color{codegray}, inner sep=2pt] {route}
+  (router.north);
 
-\node[chip, draw=GP!50, fill=white, text=GP!75,
-      font=\scriptsize\bfseries] at (7.95,11.10)
-  {memberid available?};
-\draw[GP!35, line width=0.45pt, dashed] (7.95,10.86) -- (7.95,10.60);
+\coordinate (split) at (4.78,12.49);
+\draw[arr=GP!72, line width=0.48pt, shorten <=2pt, shorten >=1pt] (router.east) -- (split);
 
-\node[chip, draw=FP!75!black, fill=FP!22, text=FP!85!black] at (10.90,10.92) {YES};
-\draw[FP!60!black, line width=0.4pt, dashed] (11.00,10.88) -- (11.00,10.52);
-\node[chip, draw=GP!60, fill=GP!14, text=GP!75] at (10.90,8.02) {NO};
-\draw[GP!40, line width=0.4pt, dashed] (10.90,7.80) -- (10.90,7.42);
+\node[boxfp] (hashcomp) at (8.65,14.12) {%
+  \textbf{Hash compute}\\[4pt]
+  {\ttfamily\normalsize shard\_id = memberid \% 3}\\[5pt]
+  {\scriptsize\color{codegray}one arithmetic op \textbullet\ deterministic mapping}
+};
+\node[chip, draw=FP!70!black, fill=FP!22, text=FP!85!black, font=\scriptsize\bfseries]
+  at ($(hashcomp.south)+(0,-0.35)$) {$O(1)$};
 
-\draw[farr] (router.north) -- ++(0,1.20) -|
-  node[near start, right, slabel, text=FP!80!black]{\scriptsize YES}
-  (10.55,10.85);
+\node[boxfp, minimum width=4.35cm, minimum height=2.05cm, outer sep=0pt] (shardtgt) at (15.55,14.12) {%
+  \textbf{Target \texttt{shard\_k}}\\[4pt]
+  {\scriptsize port \texttt{5433 + k} (single PostgreSQL node)}\\[4pt]
+  {\scriptsize indexed lookup}\\[3pt]
+  {\ttfamily\footnotesize\textcolor{FP!80!black}{SELECT * FROM member WHERE id = ?}}
+};
 
-\draw[garr] (router.south) -- ++(0,-1.22) -|
-  node[near start, right, slabel, text=GP!75]{\scriptsize NO}
-  (10.60,6.62);
+\node[stepbadge] at ($(hashcomp.north west)+(-0.15,0.4)$) {3A};
+\node[stepbadge] at ($(shardtgt.north west)+(-0.15,0.4)$) {4A};
 
-\node[step=FP] at (12.90,11.92) {3A};
-\node[box=FP, minimum width=3.90cm, minimum height=1.95cm] (hashcomp) at (12.90,10.12)
-  {\textbf{Hash Compute}\\[4pt]
-   {\footnotesize\ttfamily shard\_id = memberid \% 3}\\[2pt]
-   {\scriptsize one arithmetic operation}\\[2pt]
-   {\scriptsize\color{codegray} deterministic, collision-free}};
-\node[chip, draw=FP!72!black, fill=FP!25, text=FP!85!black,
-      font=\small\bfseries] at (12.90,8.85) {O(1)};
+\coordinate (yesTurn) at (4.78,14.12);
+\draw[arr=FP!85!black, line width=1.05pt]
+  (split) -- node[midway, right, font=\scriptsize\bfseries, text=FP!90!black, inner sep=2pt] {YES}
+  (yesTurn);
+\draw[arr=FP!85!black, line width=1.05pt, shorten <=0pt, shorten >=0pt]
+  (yesTurn) -- (hashcomp.west);
 
-\draw[farr] (10.55,10.85) -- (hashcomp.west);
-\node[step=FP] at (17.30,11.92) {4A};
-\node[box=FP, minimum width=3.90cm, minimum height=2.05cm] (shardtgt) at (17.30,10.12)
-  {\textbf{Target shard\_k}\\[4pt]
-   {\scriptsize port \texttt{5433 + k} (single node)}\\[2pt]
-   {\scriptsize single destination, indexed SQL}\\[3pt]
-   {\tiny\color{FP!72!black}\texttt{SELECT * FROM member WHERE id=?}}};
-\draw[farr] (hashcomp.east) --
-  node[slabel, above]{\scriptsize single-shard query}
+\draw[arr=FP!85!black, line width=1.05pt, shorten >=1pt]
+  (hashcomp.east) -- node[midway, below, font=\tiny, color=codegray, inner sep=3pt, yshift=-1pt] {single shard}
   (shardtgt.west);
-\node[step=GP] at (12.80,6.42) {3B};
-\node[box=GP, minimum width=3.70cm, minimum height=1.90cm] (fanout) at (12.80,5.00)
-  {\textbf{Fan-out Broadcast}\\[4pt]
-   {\small query all 3 shards}\\[2pt]
-   {\scriptsize collect partial results}\\[2pt]
-   {\scriptsize\color{codegray} concurrent execution}};
-\node[chip, draw=GP!65, fill=GP!16, text=GP!75,
-  font=\small\bfseries] at (12.80,3.92) {O(N)};
-\draw[garr] (10.60,6.62) -- (fanout.west);
 
-\node[step=GP] at (17.90,6.42) {4B};
-\node[db=GP] (sh0) at (15.60,5.00) {\textbf{shard\_0}\\{\tiny port 5433}};
-\node[db=GP] (sh1) at (17.90,5.00) {\textbf{shard\_1}\\{\tiny port 5434}};
-\node[db=GP] (sh2) at (20.20,5.00) {\textbf{shard\_2}\\{\tiny port 5435}};
+\node[boxgp] (fanout) at (8.65,5.95) {%
+  \textbf{Fan-out broadcast}\\[4pt]
+  {\small query all 3 shards in parallel}\\[3pt]
+  {\scriptsize\color{codegray}collect partial result sets}
+};
+\node[chip, draw=GP!55, fill=GP!12, text=GP, font=\scriptsize\bfseries]
+  at ($(fanout.south)+(0,-0.35)$) {$O(N)$};
+\node[stepbadge] at ($(fanout.north west)+(-0.18,0.4)$) {3B};
 
-\draw[garr] (fanout.east) -- (sh0.west);
-\draw[garr] (fanout.east) -- ++(0.85,0) |- (sh1.west);
-\draw[garr] (fanout.east) -- ++(0.85,0) |- (sh2.west);
-\draw[GP!48, line width=0.55pt, rounded corners=3pt]
-  (14.30,3.92) rectangle (21.05,6.05);
-\node[font=\tiny\bfseries\color{GP!60}] at (17.70,6.20) {3 PostgreSQL shard nodes};
+\coordinate (noTurn) at (4.78,5.95);
+\draw[arr=GP!58, dashed, line width=0.95pt]
+  (split) -- node[midway, right, font=\scriptsize\bfseries, text=GP, inner sep=2pt] {NO}
+  (noTurn);
+\draw[arr=GP!58, dashed, line width=0.95pt]
+  (noTurn) -- (fanout.west);
 
-\node[step=GP] at (17.90,2.25) {5B};
-\node[merge, minimum width=3.35cm, minimum height=2.00cm] (merge) at (17.90,2.95)
-  {\textbf{Merge \& Aggregate}\\[4pt]
-   {\scriptsize sort $+$ deduplicate}\\[1pt]
-   {\scriptsize paginate results}\\[2pt]
-   {\tiny\color{codegray} fan-in from all 3 nodes}};
+\node[db] (sh0) at (12.35,5.95) {\textbf{shard\_0}\\{\tiny 5433}};
+\node[db] (sh1) at (14.55,5.95) {\textbf{shard\_1}\\{\tiny 5434}};
+\node[db] (sh2) at (16.75,5.95) {\textbf{shard\_2}\\{\tiny 5435}};
 
-\draw[oarr] (sh0.south) -- ++(0,-0.45) -| (merge.north);
-\draw[oarr] (sh1.south) -- ++(0,-0.45) |- (merge.west);
-\draw[oarr] (sh2.south) -- ++(0,-0.45) -| (merge.north);
+\draw[arr=GP!55, dashed] (fanout.east) -- ++(0.5,0) |- (sh0.west);
+\draw[arr=GP!55, dashed] (fanout.east) -- ++(0.5,0) |- (sh1.west);
+\draw[arr=GP!55, dashed] (fanout.east) -- ++(0.5,0) |- (sh2.west);
 
-\node[step=OK] at (20.55,11.92) {6};
-\node[response, minimum width=2.30cm, minimum height=5.75cm] (resp) at (20.55,8.85)
-  {\textbf{Unified}\\[2pt]\textbf{Response}\\[8pt]
-   {\scriptsize one API}\\[1pt]
-   {\scriptsize contract}\\[6pt]
-   {\tiny\color{OK!60!black} client sees}\\
-   {\tiny\color{OK!60!black} identical}\\
-   {\tiny\color{OK!60!black} schema}};
-\draw[oarr] (shardtgt.east) -- ++(0.35,0) |- (resp.north);
-\node[slabel, text=OK!65!black] at (19.35,11.22) {\scriptsize direct result};
+\node[font=\tiny\bfseries\color{GP!58}, anchor=south] at ($(sh1.north)+(0,0.48)$)
+  {\faIcon{database}\;three PostgreSQL nodes};
 
-\draw[oarr] (merge.east) -- ++(0.30,0) |- (resp.south);
-\node[slabel, text=OK!65!black] at (19.35,6.20) {\scriptsize merged};
+\node[mergebox] (merge) at (14.55,4.15) {%
+  \textbf{Merge \& aggregate}\\[3pt]
+  {\scriptsize sort, dedupe, paginate}
+};
+\node[stepbadge] at ($(merge.north west)+(-0.42,-0.22)$) {5B};
 
-\fill[GP!5, rounded corners=5pt] (0.22,0.22) rectangle (21.78,1.68);
-\draw[GP!22, line width=0.5pt, rounded corners=5pt]
-  (0.22,0.22) rectangle (21.78,1.68);
+\draw[arr=OK!55!black, line width=0.85pt]
+  (sh0.south) -- ++(0,-0.45) -| (merge.north);
+\draw[arr=OK!55!black, line width=0.85pt]
+  (sh1.south) -- ++(0,-0.45) |- (merge.north);
+\draw[arr=OK!55!black, line width=0.85pt]
+  (sh2.south) -- ++(0,-0.45) -| (merge.north);
 
-\node[font=\scriptsize\bfseries\color{GP!70}, anchor=west] at (0.45,1.42)
-  {Python};
-\node[snippet, anchor=north west, text width=3.5cm] at (0.42,1.28)
+\node[unifiedbox, anchor=north] (unified) at (9.7,2.20) {%
+  \textbf{Unified API response}\quad
+  {\scriptsize\color{codegray}(same JSON schema for both paths)}\\[4pt]
+  {\small One contract \textbullet\ identical columns \textbullet\ routing is opaque to the client (any shard may answer).}
+};
+\node[stepbadge] at ($(unified.north west)+(-0.18,0.45)$) {6};
+
+\coordinate (directRowStart) at ($(shardtgt.south)+(0,-0.22)$);
+\path let \p{dr}=(directRowStart) in coordinate (directRowKnee) at (18.55,\y{dr});
+\path let \p{ue}=(unified.east) in coordinate (spineJoin) at (18.55,\y{ue});
+\draw[draw=OK!65!black, line width=1.05pt, shorten <=0pt, shorten >=0pt]
+  (shardtgt.south) -- (directRowStart);
+\draw[arr=OK!65!black, line width=1.05pt, shorten <=0pt, shorten >=0pt]
+  (directRowStart) -- node[midway, below, font=\tiny, text=OK!70!black, inner sep=2pt, yshift=-1pt] {direct row}
+  (directRowKnee);
+\draw[arr=OK!65!black, line width=1.05pt] (directRowKnee) -- (spineJoin);
+\draw[arr=OK!65!black, line width=1.05pt] (spineJoin) -- ($(unified.east)+(-0.04,0)$);
+
+\coordinate (UMerge) at ($(unified.north)!0.38!(unified.north east)$);
+\coordinate (mergeKnee) at ($(merge.south)+(0,-0.38)$);
+\draw[arr=OK!65!black, line width=1.05pt] (merge.south) -- (mergeKnee);
+\draw[arr=OK!65!black, line width=1.05pt]
+  (mergeKnee) -- (mergeKnee -| UMerge) --
+  node[midway, below, font=\tiny, text=OK!70!black, inner sep=2pt, yshift=-1pt] {merged rows}
+  (UMerge);
+
+\coordinate (footerBandTop) at ($(unified.south)+(0,-0.22)$);
+
+\node[font=\scriptsize\bfseries\color{GP!72}, anchor=north west] at ($(footerBandTop)+(-9.28,-0.10)$) {Python};
+\node[snip, text width=4.0cm, anchor=north west] at ($(footerBandTop)+(-9.28,-0.24)$)
   {def get\_shard\_id(mid):\\
    \quad return mid \% NUM\_SHARDS};
-\node[font=\scriptsize\bfseries\color{GP!70}, anchor=west] at (4.50,1.42)
-  {JavaScript};
-\node[snippet, anchor=north west, text width=3.8cm] at (4.48,1.28)
+\node[font=\scriptsize\bfseries\color{GP!72}, anchor=north west] at ($(footerBandTop)+(-4.75,-0.10)$) {JavaScript};
+\node[snip, text width=4.25cm, anchor=north west] at ($(footerBandTop)+(-4.75,-0.24)$)
   {const getShard = (id) =>\\
    \quad id \% NUM\_SHARDS;};
-\draw[GP!18, line width=0.45pt] (8.90,0.30) -- (8.90,1.60);
-\node[chip, draw=FP!70!black, fill=FP!18, text=FP!80!black,
-      font=\small\bfseries\ttfamily] at (10.80,0.95)
-  {shard\_id = id \% 3};
-\node[font=\tiny\color{GP!60}, anchor=west] at (9.50,1.48) {Examples:};
-\foreach \mid/\sid/\x in {1/1/9.55, 3/0/11.20, 5000/2/12.95}{
-  \node[chip, draw=GP!40, fill=GP!8, text=GP!70, font=\tiny\bfseries,
-        anchor=west] at (\x,0.50)
-    {\texttt{id \mid}$\to$\texttt{shard \sid}};
-}
-\draw[GP!18, line width=0.45pt] (15.60,0.30) -- (15.60,1.60);
-\node[font=\tiny\bfseries\color{GP!65}, anchor=west] at (15.75,1.48) {Complexity};
-\node[chip, draw=FP!72!black, fill=FP!20, text=FP!80!black,
-      font=\scriptsize\bfseries, anchor=west] at (15.75,1.10)
-  {O(1) - single-shard (fast path)};
-\node[chip, draw=GP!65, fill=GP!12, text=GP!75,
-      font=\scriptsize\bfseries, anchor=west] at (15.75,0.55)
-  {O(N) - all shards (global path)};
+\node[font=\scriptsize\bfseries\color{FP!80!black}, anchor=north west] at ($(footerBandTop)+(0.42,-0.10)$) {Core rule};
+\node[chip, draw=FP!65!black, fill=FP!16, text=FP!90!black, font=\ttfamily\footnotesize, anchor=north west,
+      text width=3.6cm, align=left]
+  at ($(footerBandTop)+(0.42,-0.50)$)
+  {\textbf{shard\_id = id \% NUM\_SHARDS}};
+\node[font=\scriptsize\bfseries\color{GP!62}, anchor=north west] at ($(footerBandTop)+(5.05,-0.10)$) {Examples};
+\node[chip, draw=GP!38, fill=white, text=GP, font=\footnotesize\bfseries, anchor=north west] at ($(footerBandTop)+(5.05,-0.50)$)
+  {\texttt{id=1} $\to$ \texttt{shard 1}};
+\node[chip, draw=GP!38, fill=white, text=GP, font=\footnotesize\bfseries, anchor=north west] at ($(footerBandTop)+(5.05,-0.88)$)
+  {\texttt{id=5000} $\to$ \texttt{shard 2}};
+\node[chip, draw=GP!38, fill=white, text=GP, font=\footnotesize\bfseries, anchor=north west] at ($(footerBandTop)+(5.05,-1.26)$)
+  {\texttt{id=3} $\to$ \texttt{shard 0}};
 
-\node[font=\tiny\bfseries\color{OK!65!black}, anchor=east] at (21.55,0.95)
-  {\textit{Both paths return identical API contract}};
+\node[font=\tiny\itshape\color{OK!65!black}, align=center] at ($(footerBandTop)+(0,-1.88)$)
+  {same API surface for both modes};
 
 \end{tikzpicture}%
-}
+}%
+}%
 \caption{Routing decision flow used by both Python and JavaScript routers}
 \label{fig:routing_decision_flow}
 \end{figure}
