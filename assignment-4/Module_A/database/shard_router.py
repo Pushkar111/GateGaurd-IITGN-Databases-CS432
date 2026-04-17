@@ -47,10 +47,11 @@ def insert_visit(member_id: int, entry_gate_id: int) -> dict:
     Checks for an already-open visit first using SELECT FOR UPDATE
     to preserve the race-condition safety from Assignment 3.
     """
+    import psycopg2.extras
     shard_id = get_shard_id(member_id)
     table    = visit_table(member_id)
     conn     = get_shard_connection(shard_id)
-    cur      = conn.cursor()
+    cur      = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(
         f"SELECT visitid FROM {table} WHERE personid = %s AND exittime IS NULL FOR UPDATE",
         (member_id,)
