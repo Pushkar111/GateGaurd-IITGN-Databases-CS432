@@ -1566,7 +1566,7 @@ Only one shard was queried.
 \subsubsection{Insert routing demo}
 
 Cell 6 inserts a test visit for memberid = 10 and then checks all three shards by visitid. Expected result is exactly one row on shard 1 and zero rows on shard 0 and shard 2.
-
+ 
 \begin{lstlisting}[style=textoutput,caption={Cell 6 insert routing output}]
 Insert routing test for memberid=10
 Hash: 10 % 3 = 1
