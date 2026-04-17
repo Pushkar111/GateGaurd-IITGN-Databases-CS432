@@ -4,6 +4,7 @@
 
 # Ignore LaTeX source files
 *.tex
+!assignment-4/*.tex
 
 # Ignore PlantUML / WSD diagram source files
 *.wsd
@@ -25,6 +26,7 @@ dist
 # Ignore runtime logs for Module B backend
 assignment-2/Module_B/backend/logs/*.log
 assignment-3/Module_B/backend/logs/*.log
+assignment-4/Module_B/backend/logs/*.log
 
 # ignore zip files
 *.zip
@@ -41,3 +43,6 @@ __pycache__
 
 # excalidraw files
 *.excalidraw
+
+# pdf inside the intial documents
+Intial-Documentations/*.pdf
