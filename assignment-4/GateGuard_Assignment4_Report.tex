@@ -978,37 +978,192 @@ services:
 
 \subsection{Partitioning Execution Pipeline}
 
+% === Figure 6: four-script pipeline (mission-control layout, integrity gates) ===
 \begin{figure}[H]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[node distance=1.25cm]
-\node[ggcard, minimum width=3.8cm, minimum height=1.3cm] (s01)
-  {\textbf{01\_create\_shards.sql}\\\small clone \texttt{member} and \texttt{personvisit} tables};
-\node[ggcard, minimum width=3.8cm, minimum height=1.3cm, right=1.55cm of s01] (s02)
-  {\textbf{02\_migrate\_data.sql}\\\small route rows by $id \bmod 3$};
-\node[ggcard, minimum width=3.8cm, minimum height=1.3cm, right=1.55cm of s02] (s03)
-  {\textbf{03\_verify\_migration.sql}\\\small count + overlap + distribution checks};
-\node[ggemphasis, minimum width=3.9cm, minimum height=1.3cm, right=1.55cm of s03] (s04)
-  {\textbf{04\_add\_shard\_indexes.sql}\\\small point lookup + range scan optimization};
+\begin{tikzpicture}[
+  x=1cm, y=1cm,
+  >={Latex[length=3mm,width=2mm]},
+  font=\sffamily\small,
+  stage/.style={
+    rectangle, rounded corners=9pt,
+    minimum width=4.45cm, minimum height=2.08cm,
+    align=left, inner sep=8pt,
+    line width=1.05pt,
+    draw=iitgnblue!78!black,
+    fill=white,
+    drop shadow={shadow xshift=1.0pt, shadow yshift=-1.0pt, fill=iitgnblue!24, opacity=0.34}
+  },
+  core/.style={
+    regular polygon, regular polygon sides=6,
+    minimum size=2.9cm,
+    draw=iitgngold!84!black, line width=1.1pt,
+    fill=iitgngold!14,
+    align=center,
+    drop shadow={shadow xshift=0.7pt, shadow yshift=-0.7pt, fill=iitgngold!30, opacity=0.28}
+  },
+  gate/.style={
+    rectangle, rounded corners=7pt,
+    minimum width=3.05cm, minimum height=1.28cm,
+    draw=warnamber!82!black, line width=0.95pt,
+    fill=warnamber!11,
+    align=center
+  },
+  sidepanel/.style={
+    rectangle, rounded corners=6pt,
+    draw=iitgnblue!40, line width=0.65pt,
+    fill=tablezebraalt,
+    align=left,
+    inner sep=6pt
+  },
+  orbit/.style={
+    -{Latex[length=3mm,width=2mm]},
+    line width=1.18pt,
+    draw=iitgnblue!82
+  },
+  audit/.style={
+    -{Latex[length=2.7mm,width=1.8mm]},
+    line width=1.0pt,
+    dashed,
+    draw=warnamber!90!black
+  },
+  commit/.style={
+    -{Latex[length=3mm,width=2mm]},
+    line width=1.15pt,
+    draw=successgreen!66!black
+  },
+  badge/.style={
+    circle,
+    fill=iitgnblue!88,
+    text=white,
+    font=\scriptsize\bfseries,
+    minimum size=5.2mm,
+    inner sep=0pt
+  }
+]
 
-\draw[ggflow] (s01) -- (s02);
-\draw[ggflow] (s02) -- (s03);
-\draw[ggflow] (s03) -- (s04);
+\colorlet{PBlue}{iitgnblue}
+\colorlet{PGold}{iitgngold}
+\colorlet{POk}{successgreen}
 
-\node[gglegendfan, below=0.9cm of s02, align=center, text width=5.2cm] (q1)
-  {\textbf{Quality gate A}\\\scriptsize row totals match originals};
-\node[gglegendfan, below=0.9cm of s03, align=center, text width=5.2cm] (q2)
-  {\textbf{Quality gate B}\\\scriptsize pairwise overlap must be zero};
+% ---- atmospheric frame ----
+\begin{scope}[on background layer]
+  \shade[left color=PBlue!10, right color=PGold!9] (0,-1.4) rectangle (22.8,17.2);
+  \fill[white, opacity=0.97, rounded corners=12pt] (0.2,-1.2) rectangle (22.6,17.0);
+  \draw[rounded corners=12pt, line width=1.25pt, PBlue!60] (0.2,-1.2) rectangle (22.6,17.0);
+  \draw[rounded corners=10pt, line width=0.65pt, PGold!80!black, dash pattern=on 7pt off 4pt]
+    (0.45,-0.95) rectangle (22.35,16.75);
+\end{scope}
 
-\draw[ggwarnflow] (s02.south) -- (q1.north);
-\draw[ggwarnflow] (s03.south) -- (q2.north);
-
-\node[gglegendok, below=1.05cm of s04, text width=4.8cm, align=center]
-  {\textbf{Outcome}\\\scriptsize balanced, disjoint shard tables with query-ready indexes};
-\end{tikzpicture}
+\foreach \px/\py/\col in {0.70/16.58/PBlue,22.10/16.58/PGold,0.70/-0.70/POk,22.10/-0.70/PBlue}{
+  \fill[\col!22] (\px,\py) circle (0.14);
+  \draw[\col!78!black, line width=0.65pt] (\px,\py) circle (0.14);
+  \fill[\col!78!black] (\px,\py) circle (0.04);
 }
-\caption{Four-script partitioning pipeline with integrity gates}
-\label{fig:partition_pipeline}
+
+% ---- command header removed per request ----
+
+\node[sidepanel, anchor=north west, text width=5.5cm, font=\scriptsize] at (1.05,15.85)
+  {\textbf{Execution idea:}\ scripts run in an engineered loop around one control core, then converge through integrity gates.};
+\node[sidepanel, anchor=north east, text width=5.5cm, font=\scriptsize] at (21.75,15.85)
+  {\textbf{Guarantee objective:}\ balanced shard counts, zero overlap, and index-ready tables for low-latency reads.};
+
+% ---- central mission core and orbit rings ----
+\draw[PBlue!26, line width=0.75pt, dashed] (11.40,8.55) circle (7.35);
+\draw[PBlue!15, line width=0.6pt, dotted] (11.40,8.55) circle (6.45);
+
+\node[core] (core) at (11.40,8.55) {%
+  {\small\bfseries\color{PBlue!90!black}\faIcon{shield-alt}\ Integrity Core}\\[2pt]
+  {\scriptsize orchestrate $\rightarrow$ validate $\rightarrow$ certify}
+};
+
+% ---- four scripts arranged as orbital stages ----
+\node[stage] (s1) at (3.90,8.55) {%
+  {\footnotesize\bfseries\color{PBlue!90!black}\faIcon{database}\ 01\_INIT}\\[3pt]
+  {\scriptsize Create shard tables from source schema}\\[-1pt]
+  {\tiny\ttfamily LIKE ... INCLUDING ALL}
+};
+\node[stage] (s2) at (11.40,13.10) {%
+  {\footnotesize\bfseries\color{PBlue!90!black}\faIcon{exchange-alt}\ 02\_MIGRATE}\\[3pt]
+  {\scriptsize Route rows by modulo hashing}\\[-1pt]
+  {\tiny\ttfamily memberid \% 3 maps to shard\_k}
+};
+
+\node[stage] (s3) at (18.90,8.55) {%
+  {\footnotesize\bfseries\color{PBlue!90!black}\faIcon{search-plus}\ 03\_VERIFY}\\[3pt]
+  {\scriptsize Validate counts and disjointness}\\[-1pt]
+  {\tiny totals match \& overlap = 0}
+};
+\node[stage] (s4) at (11.40,4.10) {%
+  {\footnotesize\bfseries\color{PBlue!90!black}\faIcon{bolt}\ 04\_OPTIMIZE}\\[3pt]
+  {\scriptsize Build shard-local indexes}\\[-1pt]
+  {\tiny point lookup + range scan ready}
+};
+
+\node[badge] at ($(s1.north west)+(-0.2,0.2)$) {1};
+\node[badge] at ($(s2.north west)+(-0.2,0.2)$) {2};
+\node[badge] at ($(s3.north west)+(0.24,0.34)$) {3};
+\node[badge] at ($(s4.north west)+(-0.2,0.2)$) {4};
+
+% ---- orbit flow ----
+\draw[orbit] (s1.north east) to[out=24,in=205]
+  node[midway, above, font=\tiny\color{codegray}] {schema staged} (s2.west);
+\draw[orbit] (s2.east) to[out=-18,in=156]
+  node[midway, above, font=\tiny\color{codegray}] {rows partitioned} (s3.north west);
+\draw[orbit] (s3.south west) to[out=-155,in=28]
+  node[midway, below, font=\tiny\color{codegray}] {checks green} (s4.east);
+\draw[orbit, dashed, line width=0.9pt, draw=PBlue!56] (s4.west) to[out=156,in=-34]
+  node[midway, below, font=\tiny\color{codegray}] {repeatable runbook} (s1.south east);
+
+\draw[PBlue!35, dotted, line width=0.65pt] (s1.east) -- (core.west);
+\draw[PBlue!35, dotted, line width=0.65pt] (s2.south) -- (core.north);
+\draw[PBlue!35, dotted, line width=0.65pt] (s3.west) -- (core.east);
+\draw[PBlue!35, dotted, line width=0.65pt] (s4.north) -- (core.south);
+
+% ---- integrity gates ----
+\node[gate] (gateA) at (8.30,1.80) {%
+  {\scriptsize\bfseries\color{warnamber!88!black}\faIcon{search-plus}\ COUNT GATE}\\[-1pt]
+  {\tiny shard totals = source total}
+};
+\node[gate] (gateB) at (14.50,1.80) {%
+  {\scriptsize\bfseries\color{warnamber!88!black}\faIcon{fingerprint}\ OVERLAP GATE}\\[-1pt]
+  {\tiny pairwise intersection must be empty}
+};
+
+\coordinate (gateA_in) at ($(gateA.north)+(0,0.22)$);
+\coordinate (auditA_knee1) at ($(s2.south west)+(-1.75,0.00)$);
+\coordinate (auditA_knee2) at ($(auditA_knee1)+(0,-2.55)$);
+\draw[audit] (s2.south west) -- (auditA_knee1) -- (auditA_knee2)
+  |- node[pos=0.45, xshift=-6pt, fill=white, inner sep=0.7pt, font=\tiny\color{warnamber!88!black}] {audit} (gateA_in)
+  -- (gateA.north);
+\draw[audit] (s3.south) -- node[midway, right, font=\tiny\color{warnamber!88!black}] {audit} (gateB.north);
+
+% ---- certified output dock ----
+\node[
+  rectangle, rounded corners=10pt,
+  draw=POk!74!black, line width=1.15pt,
+  fill=POk!12,
+  minimum width=8.1cm, minimum height=1.08cm,
+  align=center,
+  drop shadow={shadow xshift=0.7pt, shadow yshift=-0.7pt, fill=POk!30, opacity=0.25}
+] (final) at (11.40,-0.18) {%
+  {\small\bfseries\color{POk!74!black}\faIcon{check-double}\ Certified shard dataset}\\[-1pt]
+  {\scriptsize balanced rows \textbullet\ disjoint ownership \textbullet\ index-ready state}
+};
+
+\coordinate (final_in_left) at ($(final.north)+(-2.25,0)$);
+\coordinate (final_in_right) at ($(final.north)+(2.25,0)$);
+
+\draw[commit] (s4.south) -- (final.north);
+\draw[commit] (gateA.south) to[out=-90,in=125] (final_in_left);
+\draw[commit] (gateB.south) to[out=-90,in=55] (final_in_right);
+
+
+\end{tikzpicture}%
+}%
+\caption{Four-script partitioning pipeline (schema $\rightarrow$ migrate $\rightarrow$ verify $\rightarrow$ optimize)}
+\label{fig:partition_pipeline_v2}
 \end{figure}
 
 \subsection{Script 01: Creating Shard Tables}
@@ -1470,27 +1625,211 @@ def all_visit_tables() -> list:
 \begin{figure}[H]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[x=1cm,y=1cm]
-\node[ggcard, minimum width=3.0cm] (a) at (0,0) {GET /members/42};
-\node[ggemphasis, minimum width=3.0cm] (b) at (3.6,0) {$42 \bmod 3 = 0$};
-\node[ggcard, minimum width=3.5cm] (c) at (7.6,0)
-  {Resolve table\\\texttt{shard\_0\_member}};
-\node[ggshard, minimum width=3.35cm, minimum height=1.0cm] (d) at (11.6,0)
-  {Indexed query on shard\_0};
-\node[ggcard, minimum width=2.8cm] (e) at (15.0,0) {Return row};
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,line cap=round,line join=round]
+\definecolor{CosVoid}{RGB}{10,15,30}
+\definecolor{CosIndigo}{RGB}{28,37,65}
+\definecolor{CosSteel}{RGB}{58,80,107}
+\definecolor{CosAqua}{RGB}{76,201,240}
+\definecolor{CosTeal}{RGB}{91,192,190}
+\definecolor{CosAmber}{RGB}{255,209,102}
+\definecolor{CosText}{RGB}{244,248,255}
+\definecolor{CosMuted}{RGB}{185,196,218}
+\definecolor{CosPanel}{RGB}{19,26,45}
+\definecolor{CosSlate}{RGB}{34,45,72}
 
-\draw[ggflow] (a) -- (b);
-\draw[ggflow] (b) -- (c);
-\draw[ggokflow] (c) -- (d);
-\draw[ggflow] (d) -- (e);
+\colorlet{cosmosA}{CosVoid}
+\colorlet{cosmosB}{CosIndigo}
+\colorlet{starGold}{CosAmber}
+\colorlet{starMint}{CosAqua}
+\colorlet{starTeal}{CosTeal}
+\colorlet{starTxt}{CosText}
+\colorlet{starDim}{CosMuted}
+\colorlet{starSteel}{CosSteel}
+\colorlet{starSlate}{CosSlate}
+\colorlet{cosmosPanel}{CosPanel}
 
-\node[ggghost, minimum width=2.7cm] (g1) at (10.5,-1.9) {shard 1 idle};
-\node[ggghost, minimum width=2.7cm] (g2) at (13.5,-1.9) {shard 2 idle};
-\draw[ggflowsoft] (c.south) -- ++(0,-0.45) -| (g1.north);
-\draw[ggflowsoft] (c.south) -- ++(0,-0.45) -| (g2.north);
+\tikzset{
+  c/panel/.style={rounded corners=13pt, line width=1.0pt, draw=starSteel!68},
+  c/tag/.style={
+    rounded corners=8pt,
+    draw=starSteel!80,
+    fill=starSlate!86!black,
+    text=starTxt,
+    inner xsep=7pt,
+    inner ysep=3pt,
+    font=\scriptsize\bfseries
+  },
+  c/node/.style={
+    circle,
+    draw=starSteel!74,
+    fill=starSteel!52!black,
+    line width=0.9pt,
+    text=starTxt,
+    font=\scriptsize\bfseries,
+    minimum size=1.62cm,
+    align=center
+  },
+  c/hub/.style={
+    circle,
+    draw=starGold!95!black,
+    fill=starGold!24!black,
+    line width=1.15pt,
+    text=starTxt,
+    font=\footnotesize\bfseries,
+    minimum size=2.62cm,
+    align=center
+  },
+  c/shard/.style={
+    regular polygon,
+    regular polygon sides=6,
+    minimum size=1.85cm,
+    draw=starMint!92,
+    fill=starMint!24!black,
+    line width=1.05pt,
+    text=starTxt,
+    font=\scriptsize\bfseries,
+    align=center
+  },
+  c/idle/.style={
+    regular polygon,
+    regular polygon sides=6,
+    minimum size=1.56cm,
+    draw=starSteel!70,
+    fill=starSlate!90!black,
+    line width=0.78pt,
+    text=starDim,
+    font=\scriptsize\bfseries,
+    align=center
+  },
+  c/glow/.style={line width=3.7pt, draw=starGold!38},
+  c/main/.style={-{Latex[length=3.4mm]}, line width=1.32pt, draw=starGold!98!white},
+  c/ok/.style={-{Latex[length=3.4mm]}, line width=1.50pt, draw=starMint!96},
+  c/bypass/.style={-{Latex[length=2.8mm]}, line width=0.92pt, draw=starDim!80, dashed},
+  c/trace/.style={font=\tiny\color{starDim}},
+  c/mainlabel/.style={
+    font=\scriptsize\bfseries\color{starTxt},
+    fill=cosmosPanel!94,
+    fill opacity=0.90,
+    text opacity=1,
+    rounded corners=2pt,
+    inner xsep=3pt,
+    inner ysep=1.3pt
+  },
+  c/dot/.style={circle, fill=starTxt, inner sep=0pt, minimum size=0.9mm},
+  c/step/.style={
+    circle,
+    draw=starGold!92,
+    fill=cosmosPanel!94,
+    text=starTxt,
+    line width=0.72pt,
+    minimum size=5.7mm,
+    inner sep=0pt,
+    font=\scriptsize\bfseries
+  }
+}
 
-\node[gglegendok, align=center, text width=8.7cm] at (7.7,-3.2)
-  {\scriptsize O(1) route: one hash, one shard connection, one indexed SQL execution.};
+\begin{scope}[on background layer]
+  \fill[rounded corners=13pt, fill=cosmosPanel] (0.22,-0.45) rectangle (19.55,9.58);
+  \begin{scope}
+    \clip[rounded corners=13pt] (0.22,-0.45) rectangle (19.55,9.58);
+    \shade[inner color=cosmosB!70, outer color=cosmosA] (9.05,4.95) circle (7.25);
+  \end{scope}
+  \draw[c/panel, draw=starGold!62] (0.22,-0.45) rectangle (19.55,9.58);
+  \draw[rounded corners=11pt, line width=0.72pt, draw=starSteel!52, dashed] (0.52,-0.15) rectangle (19.25,9.28);
+\end{scope}
+
+\foreach \x/\y/\o in {
+  1.15/8.85/0.55,
+  2.10/8.18/0.70,
+  3.22/9.02/0.60,
+  4.45/8.48/0.46,
+  5.84/8.86/0.58,
+  6.70/8.12/0.62,
+  8.52/8.98/0.72,
+  10.24/8.40/0.49,
+  11.62/8.90/0.64,
+  13.15/8.30/0.58,
+  14.82/8.92/0.52,
+  16.28/8.35/0.74,
+  17.30/8.92/0.56,
+  1.62/1.08/0.65,
+  3.35/1.44/0.48,
+  5.25/0.92/0.58,
+  7.02/1.48/0.72,
+  9.15/1.00/0.66,
+  11.18/1.45/0.54,
+  13.35/0.90/0.62,
+  15.22/1.35/0.70,
+  16.92/1.02/0.57
+}{
+  \fill[white, opacity=\o] (\x,\y) circle (0.36mm);
+}
+
+\node[c/tag, text=starTxt] at (2.70,9.18) {\faIcon{route}\ Constellation routing mode};
+\node[c/tag, draw=starTeal!78, fill=starTeal!26!black, text=starTxt] at (16.82,9.18)
+  {\faIcon{database}\ Targeted shard activation only};
+
+\node[c/node] (entry) at (1.92,5.55) {\faIcon{paper-plane}\\request};
+\node[c/node, minimum size=1.56cm] (decode) at (4.48,7.35) {\faIcon{code}\\decode};
+\node[c/node, minimum size=1.56cm] (token) at (6.28,5.45) {id\\42};
+
+\node[c/hub] (hub) at (9.15,5.35) {\faIcon{route}\\HASH\\CORE};
+\draw[starGold!78, line width=0.75pt, dashed] (hub.center) circle (1.95cm);
+\draw[starSteel!46, line width=0.58pt] (hub.center) circle (1.45cm);
+
+\node[c/tag, draw=starGold!76, fill=starGold!22!black, text=starTxt] (formula) at (9.15,2.95)
+  {\ttfamily 42 \% 3 = 0, so target = shard\_0};
+
+\node[c/node, minimum size=1.62cm] (resolve) at (12.30,7.55) {table\\map};
+\node[c/shard] (s0) at (15.08,5.35) {\faIcon{check-circle}\\shard\_0};
+\node[c/node, minimum size=1.58cm] (resp) at (17.05,2.92) {row\\return};
+
+\node[c/idle] (s1) at (11.72,1.52) {shard\_1\\sleep};
+\node[c/idle] (s2) at (15.28,1.62) {shard\_2\\sleep};
+
+\draw[c/glow] (entry.east) .. controls (2.95,6.18) and (3.55,6.80) .. (decode.west);
+\draw[c/main] (entry.east) .. controls (2.95,6.18) and (3.55,6.80) ..
+  node[midway, above, c/mainlabel] {ingress} (decode.west);
+
+\draw[c/glow] (decode.south east) .. controls (5.18,6.62) and (5.56,6.02) .. (token.north west);
+\draw[c/main] (decode.south east) .. controls (5.18,6.62) and (5.56,6.02) ..
+  node[midway, right, c/mainlabel] {extract id} (token.north west);
+
+\draw[c/glow] (token.east) to[out=-34,in=-146] (hub.west);
+\draw[c/main] (token.east) to[out=-34,in=-146]
+  node[pos=0.50, below, yshift=-2pt, c/mainlabel, align=center] {single\\hash} (hub.west);
+
+\draw[c/glow] (hub.north east) to[out=44,in=198] (resolve.west);
+\draw[c/main] (hub.north east) to[out=44,in=198]
+  node[pos=0.38, above, yshift=4pt, c/mainlabel, align=center] {resolve\\destination} (resolve.west);
+
+\draw[c/ok] (resolve.south east) .. controls (12.92,6.44) and (13.70,5.88) ..
+  node[midway, above, font=\tiny\color{starMint!72!white}] {activate only this shard} (s0.north west);
+\draw[c/ok] (s0.south east) .. controls (15.82,4.55) and (16.22,3.75) ..
+  node[midway, right, font=\tiny\color{starMint!72!white}] {indexed tuple} (resp.north west);
+
+\draw[c/bypass] (hub.south east) .. controls (10.18,4.05) and (10.82,2.88) ..
+  node[pos=0.58, left, c/trace] {no query} (s1.north);
+\draw[c/bypass] (hub.south east) .. controls (10.78,3.72) and (13.32,2.62) ..
+  node[pos=0.62, right, c/trace] {no query} (s2.north west);
+
+\node[c/dot] at (3.24,6.35) {};
+\node[c/dot] at (5.52,6.36) {};
+\node[c/dot, fill=starGold!90] at (7.72,5.45) {};
+\node[c/dot, fill=starGold!90] at (10.55,6.78) {};
+\node[c/dot, fill=starMint!88] at (13.82,5.95) {};
+\node[c/dot, fill=starMint!88] at (16.00,4.10) {};
+
+\node[c/step] at (1.04,6.52) {1};
+\node[c/step] at (3.95,8.25) {2};
+\node[c/step] at (6.95,6.48) {3};
+\node[c/step] at (10.88,8.05) {4};
+\node[c/step] at (14.02,6.82) {5};
+
+\node[c/tag, draw=starMint!74, fill=starMint!24!black, text=starTxt] at (4.95,0.08)
+  {O(1) path: one hash, one shard wake-up, one indexed read};
+\node[c/tag, draw=starSteel!62, fill=starSlate!90!black, text=starDim] at (14.65,0.08)
+  {Out-of-band shards remain dormant; fan-out is fully bypassed};
 \end{tikzpicture}
 }
 \caption{Single-shard routing path (O(1)) with explicit shard bypass}
@@ -1786,28 +2125,136 @@ Login by email lookup & No & Scatter-gather early-stop & 1 to 3 & Eventual \\
 \begin{figure}[H]
 \centering
 \resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[>=Latex]
-% Vertical panel
-\node[draw=criticalred!58,fill=criticalred!7,rounded corners=6pt,minimum width=6.1cm,minimum height=7.2cm] (leftpanel) at (-4.8,0) {};
-\node[font=\bfseries\color{criticalred}] at (-4.8,2.95) {Vertical Scaling (Scale Up)};
-\node[draw=criticalred!70,fill=white,rounded corners=4pt,minimum width=2.8cm,minimum height=4.0cm,align=center] (single) at (-4.8,0.35)
-  {Single\\PostgreSQL node};
-\draw[-{Latex[length=3mm]},thick,criticalred] (-3.15,0.35) -- (-1.8,1.95) node[midway,above,sloped]{\scriptsize bigger machine};
-\node[font=\Large\bfseries\color{criticalred}] at (-4.8,2.45) {\texttimes};
-\node[align=center,font=\scriptsize\color{codegray}] at (-4.8,-2.45)
-  {Bounded by hardware ceiling\\and one-node failure domain};
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
+\colorlet{scNight}{black!94}
+\colorlet{scNightB}{iitgnblue!72!black}
+\colorlet{scSteel}{tableline!78!black}
+\colorlet{scWarn}{criticalred!84!black}
+\colorlet{scWarnSoft}{criticalred!34!black}
+\colorlet{scGood}{successgreen!78!black}
+\colorlet{scGoodSoft}{successgreen!28!black}
+\colorlet{scFlow}{iitgnblue!78!white}
+\colorlet{scText}{white!96}
+\colorlet{scMute}{white!68}
 
-% Horizontal panel
-\node[draw=successgreen!58!black,fill=successgreen!6,rounded corners=6pt,minimum width=8.7cm,minimum height=7.2cm] (rightpanel) at (4.4,0) {};
-\node[font=\bfseries\color{successgreen!60!black}] at (4.4,2.95) {Horizontal Sharding (Scale Out)};
-\node[draw=successgreen!70!black,fill=white,rounded corners=4pt,minimum width=1.95cm,minimum height=1.35cm] (h0) at (1.8,0.9) {Shard 0};
-\node[draw=successgreen!70!black,fill=white,rounded corners=4pt,minimum width=1.95cm,minimum height=1.35cm] (h1) at (4.4,0.9) {Shard 1};
-\node[draw=successgreen!70!black,fill=white,rounded corners=4pt,minimum width=1.95cm,minimum height=1.35cm] (h2) at (7.0,0.9) {Shard 2};
-\draw[-{Latex[length=3mm]},thick,successgreen!70!black] (7.95,0.9) -- (9.25,0.9) node[midway,above]{\scriptsize add more shards};
-\draw[-{Latex[length=3mm]},thick,iitgnblue] (4.4,2.35) -- (4.4,1.65) node[midway,right]{\scriptsize router spreads load};
-\node[font=\Large\bfseries\color{successgreen!70!black}] at (4.4,-2.0) {\checkmark};
-\node[align=center,font=\scriptsize\color{codegray}] at (4.4,-2.45)
-  {Elastic capacity growth\\and better failure isolation};
+\tikzset{
+  sc/frame/.style={rounded corners=13pt, line width=1.05pt, draw=scSteel},
+  sc/panel/.style={rounded corners=9pt, line width=0.9pt, draw=scSteel!78},
+  sc/tag/.style={rounded corners=7pt, line width=0.8pt, draw=scSteel!75, fill=black!52, text=scText, font=\scriptsize\bfseries, inner xsep=6pt, inner ysep=3pt},
+  sc/call/.style={rounded corners=4pt, line width=0.65pt, draw=scSteel!74, fill=black!36, text=scText, font=\tiny, align=center, inner xsep=5pt, inner ysep=2pt},
+  sc/metric/.style={rounded corners=10pt, line width=0.75pt, draw=scSteel!82, fill=black!44, text=scText, font=\scriptsize\bfseries, inner xsep=5pt, inner ysep=2pt},
+  sc/main/.style={-{Latex[length=3.2mm]}, line width=1.25pt, draw=scFlow},
+  sc/warn/.style={-{Latex[length=3.2mm]}, line width=1.3pt, draw=scWarn},
+  sc/good/.style={-{Latex[length=3.2mm]}, line width=1.35pt, draw=scGood!92!white},
+  sc/ghost/.style={-{Latex[length=2.7mm]}, line width=0.9pt, draw=scMute!75, dashed},
+  sc/router/.style={circle, draw=scFlow!92, fill=scFlow!20!black, line width=0.9pt, minimum size=1.35cm, text=scText, font=\scriptsize\bfseries, align=center},
+  sc/shard/.style={rounded corners=4pt, draw=scGood!86, fill=scGoodSoft!38!black, line width=0.9pt, minimum width=2.15cm, minimum height=1.1cm, text=scText, font=\scriptsize\bfseries, align=center},
+  sc/single/.style={rounded corners=4pt, draw=scWarn!90, fill=scWarnSoft!26!black, line width=0.9pt, minimum width=2.7cm, minimum height=1.2cm, text=scText, font=\scriptsize\bfseries, align=center},
+  sc/lane/.style={rounded corners=5pt, draw=scGood!60, fill=scGoodSoft!20!black, line width=0.75pt},
+  sc/stresschip/.style={rounded corners=3pt, draw=scWarn!84, fill=scWarnSoft!20!black, text=scText, font=\tiny\bfseries, inner xsep=4pt, inner ysep=1.6pt}
+}
+
+\begin{scope}[on background layer]
+  \fill[rounded corners=13pt, fill=scNight] (0.20,-0.05) rectangle (19.35,9.20);
+  \begin{scope}
+    \clip[rounded corners=13pt] (0.20,-0.05) rectangle (19.35,9.20);
+    \shade[inner color=scNightB!62, outer color=scNight] (9.75,4.70) circle (7.8);
+    \shade[inner color=scWarn!22, outer color=transparent!0] (4.40,5.35) circle (3.9);
+    \shade[inner color=scGood!24, outer color=transparent!0] (14.60,4.55) circle (4.1);
+  \end{scope}
+  \draw[sc/frame, draw=scSteel!88] (0.20,-0.05) rectangle (19.35,9.20);
+  \draw[rounded corners=11pt, line width=0.72pt, draw=scSteel!60, dashed] (0.48,0.23) rectangle (19.07,8.92);
+\end{scope}
+
+\draw[sc/panel, draw=scWarn!66] (0.80,0.65) rectangle (9.10,8.55);
+\draw[sc/panel, draw=scGood!66] (9.70,0.65) rectangle (18.75,8.55);
+\draw[line width=0.8pt, draw=scSteel!75, dashed] (9.40,0.55) -- (9.40,8.65);
+
+\node[sc/tag, draw=scWarn!76, fill=scWarnSoft!16!black] at (4.95,8.72)
+  {\faIcon{bolt}\ Vertical scale-up: pressure concentrates};
+\node[sc/tag, draw=scGood!78, fill=scGoodSoft!15!black] at (14.22,8.72)
+  {\faIcon{network-wired}\ Horizontal shard scale-out: pressure distributes};
+\node[sc/tag, draw=scSteel!86, fill=black!48] at (9.40,9.02)
+  {\faIcon{route}\ Throughput architecture trade-off lens};
+
+% Left side: bottleneck funnel scene
+\node[sc/call, draw=scWarn!66, fill=black!38, text width=2.8cm] at (1.72,7.55)
+  {Ingress pressure\\single intake path};
+\draw[sc/warn] (2.65,7.45) -- (3.25,7.15);
+
+\path[draw=scWarn!88, fill=scWarnSoft!20!black, line width=1.0pt]
+  (1.40,7.35) -- (8.20,7.35) -- (6.85,4.95) -- (5.72,2.88) -- (3.88,2.88) -- (2.75,4.95) -- cycle;
+\path[draw=scWarn!70, fill=scWarn!10!black, line width=0.8pt]
+  (2.08,6.70) -- (7.52,6.70) -- (6.48,4.95) -- (5.60,3.40) -- (4.00,3.40) -- (3.12,4.95) -- cycle;
+
+\node[sc/single] (singlecore) at (4.80,1.82)
+  {\faIcon{database}\ Single PostgreSQL\\critical node};
+\draw[sc/warn] (4.80,2.86) -- (4.80,2.28);
+
+\draw[sc/warn] (2.10,7.92) -- (3.75,7.42);
+\draw[sc/warn] (4.80,7.92) -- (4.80,7.42);
+\draw[sc/warn] (7.50,7.92) -- (5.85,7.42);
+
+\draw[line width=0.95pt, draw=scWarn!88, dashed] (1.25,8.06) -- (8.35,8.06);
+\node[sc/call, draw=scWarn!74, fill=black!40] at (4.80,8.28) {Hardware ceiling};
+
+\node[sc/stresschip] at (1.95,4.28) {CPU 92\%};
+\node[sc/stresschip] at (1.95,3.76) {IO wait 31\%};
+\node[sc/stresschip] at (1.95,3.24) {Queue depth 4.8x};
+
+\node[sc/metric, draw=scWarn!78, fill=scWarnSoft!20!black] at (4.80,0.97)
+  {\texttimes\ SPOF + finite hardware envelope};
+\node[sc/call, draw=scWarn!70, fill=black!40, text width=2.75cm] at (7.45,2.08)
+  {Diminishing returns\\as machine size increases};
+\draw[sc/ghost] (6.35,2.18) -- (5.55,2.02);
+
+% Right side: parallel shard streams scene
+\node[sc/router] (router) at (11.10,7.06)
+  {\faIcon{route}\\Router};
+\node[sc/call, draw=scGood!72, fill=black!36, text width=2.7cm] at (12.85,7.95)
+  {Shard key routing\\fan-out by id mod N};
+\draw[sc/good] (12.00,7.60) -- (11.48,7.25);
+
+\draw[sc/lane] (10.45,6.10) rectangle (16.78,6.92);
+\draw[sc/lane] (10.45,4.50) rectangle (16.78,5.32);
+\draw[sc/lane] (10.45,2.90) rectangle (16.78,3.72);
+\draw[rounded corners=5pt, draw=scMute!72, line width=0.72pt, dashed, fill=black!20] (10.45,1.35) rectangle (16.78,2.12);
+
+\draw[sc/good] (11.30,6.51) -- (15.95,6.51);
+\draw[sc/good] (11.30,4.91) -- (15.95,4.91);
+\draw[sc/good] (11.30,3.31) -- (15.95,3.31);
+\draw[sc/ghost] (11.30,1.74) -- (15.95,1.74);
+
+\node[sc/shard] (sh0) at (17.65,6.51) {\faIcon{database}\ Shard 0};
+\node[sc/shard] (sh1) at (17.65,4.91) {\faIcon{database}\ Shard 1};
+\node[sc/shard] (sh2) at (17.65,3.31) {\faIcon{database}\ Shard 2};
+\node[rounded corners=4pt, draw=scMute!82, fill=black!26, line width=0.75pt, minimum width=2.15cm, minimum height=1.0cm, text=scMute, font=\scriptsize\bfseries, align=center]
+  (shx) at (17.65,1.74) {N+1 ghost\\expansion shard};
+
+\draw[sc/good] (12.00,6.88) -- (10.78,6.58);
+\draw[sc/good] (12.00,7.00) -- (10.78,4.99);
+\draw[sc/good] (12.00,7.12) -- (10.78,3.41);
+
+\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,6.95) {Lane A: 1x stream};
+\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,5.35) {Lane B: 1x stream};
+\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,3.75) {Lane C: 1x stream};
+\node[sc/call, draw=scMute!72, fill=black!32] at (13.55,2.12) {Elastic lane ready};
+
+\node[sc/metric, draw=scGood!86, fill=scGoodSoft!18!black] at (14.60,0.98)
+  {\faIcon{check-circle}\ Aggregate throughput scales with shard count};
+\node[sc/call, draw=scGood!72, fill=black!36, text width=2.8cm] at (18.28,5.90)
+  {Failure domain isolation\\limits blast radius};
+\draw[sc/ghost] (17.98,5.55) -- (17.86,5.12);
+
+% Comparative overlays and legend
+\node[sc/metric, draw=scSteel!86, fill=black!46, text width=11.4cm, align=center] at (9.45,0.22)
+  {\textbf{Comparison ribbon:} Scale-up pushes one box harder (risk and ceiling rise together), while scale-out adds parallel lanes where capacity and resilience grow as shards are added.};
+
+\node[sc/call, draw=scSteel!80, fill=black!36] at (3.25,0.22) {Risk profile: concentrated};
+\node[sc/call, draw=scSteel!80, fill=black!36] at (15.70,0.22) {Risk profile: distributed};
+
+\node[sc/tag, draw=scSteel!82, fill=black!42, text=scMute] at (9.45,8.36)
+  {\faIcon{bolt}\ red vectors = pressure concentration \qquad \faIcon{database}\ green lanes = parallel throughput \qquad dashed lane = future shard elasticity};
 \end{tikzpicture}
 }
 \caption{Vertical scale-up vs horizontal shard scale-out}
