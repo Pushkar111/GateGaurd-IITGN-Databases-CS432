@@ -1,5 +1,5 @@
 // src/components/layout/CommandPalette.jsx
-// Ctrl+K command palette — navigation + quick actions + data actions
+// Ctrl+K command palette - navigation + quick actions + data actions
 
 import { useEffect, useMemo, useState } from 'react';
 import { Command } from 'cmdk';

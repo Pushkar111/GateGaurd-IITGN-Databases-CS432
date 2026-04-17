@@ -1,5 +1,5 @@
 // src/pages/MemberDetailPage.jsx
-// Full member detail page — hero banner + Radix tabs (Overview, Visits, Vehicles, Activity)
+// Full member detail page - hero banner + Radix tabs (Overview, Visits, Vehicles, Activity)
 
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ function avatarGradient(name = '') {
   return AVATAR_GRADIENTS[h % AVATAR_GRADIENTS.length];
 }
 
-// -- Edit schema -------------------------------------------------------
+// Edit schema
 const editSchema = z.object({
   name:          z.string().min(2).max(100),
   email:         z.string().email(),
@@ -46,16 +46,16 @@ const editSchema = z.object({
   department:    z.string().max(100).optional().or(z.literal('')),
 });
 
-// -- Visit history columns ---------------------------------------------
+// Visit history columns
 const visitColumns = [
   { header: 'Entry Time',  id: 'entry',    cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
   { header: 'Exit Time',   id: 'exit',     cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{(v.ExitTime || v.exittime) ? formatDate(v.ExitTime || v.exittime) : <span className="badge badge-success text-[10px]">Active</span>}</span> },
   { header: 'Duration',    id: 'duration', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
-  { header: 'Entry Gate',  id: 'gate',     cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.EntryGateName || v.entrygatename || '—'}</span> },
+  { header: 'Entry Gate',  id: 'gate',     cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.EntryGateName || v.entrygatename || '-'}</span> },
   { header: 'Status',      id: 'status',   cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Completed</span> },
 ];
 
-// -- Hero skeleton -----------------------------------------------------
+// Hero skeleton
 function HeroSkeleton() {
   return (
     <div className="glass-card p-6 flex items-start gap-5">
@@ -71,7 +71,7 @@ function HeroSkeleton() {
   );
 }
 
-// -- Main component ----------------------------------------------------
+// Main component
 export default function MemberDetailPage() {
   const { id }       = useParams();
   const navigate     = useNavigate();

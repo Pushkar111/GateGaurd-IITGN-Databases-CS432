@@ -1,5 +1,5 @@
 /* ============================================================
-   GateGuard — Global Design System
+   GateGuard - Global Design System
    "The Command Center" dark theme
    ============================================================ */
 
@@ -451,7 +451,7 @@
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ============================================================
-   AUTH STYLES — Part 8 of Spec
+   AUTH STYLES - Part 8 of Spec
    ============================================================ */
 
 .simple-auth-page {
@@ -525,7 +525,7 @@
   background-size: 40px 40px;
 }
 
-/* Rotating border — @property with fallback for older browsers */
+/* Rotating border - @property with fallback for older browsers */
 @supports (background: conic-gradient(from 0deg, red, blue)) {
   @property --angle {
     syntax: '<angle>';

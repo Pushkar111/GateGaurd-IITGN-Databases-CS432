@@ -1,5 +1,5 @@
 // src/pages/LoginPage.jsx
-// "The Command Center Entry Gate" — full production login page
+// "The Command Center Entry Gate" - full production login page
 // ULTRA PRO MAX AUTH SYSTEM
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -71,13 +71,13 @@ function warmPostLoginChunks() {
   ]);
 }
 
-// -- Zod schema ---------------------------------------------------------
+// Zod schema
 const schema = z.object({
   username: z.string().min(2, 'Username must be at least 2 characters'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
-// -- Typewriter hook ----------------------------------------------------
+// Typewriter hook
 function useTypewriter(text, speed = 60) {
   const [displayed, setDisplayed] = useState('');
   const [done,      setDone]      = useState(false);
@@ -97,7 +97,7 @@ function useTypewriter(text, speed = 60) {
   return { displayed, done };
 }
 
-// -- Floating label auth-input wrapper ---------------------------------
+// Floating label auth-input wrapper
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
     <div className="space-y-1">
@@ -134,7 +134,7 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// -- Main Content -------------------------------------------------------
+// Main Content
 export default function LoginPage() {
   const { login }          = useAuth();
   const navigate           = useNavigate();

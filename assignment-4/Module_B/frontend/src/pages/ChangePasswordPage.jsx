@@ -1,6 +1,6 @@
 // src/pages/ChangePasswordPage.jsx
-// For mustChangePassword forced flow — standalone, cannot navigate away.
-// No AppLayout — full-screen auth UI with amber color scheme.
+// For mustChangePassword forced flow - standalone, cannot navigate away.
+// No AppLayout - full-screen auth UI with amber color scheme.
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight';
 
-// -- Floating label auth-input wrapper ---------------------------------
+// Floating label auth-input wrapper
 function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, error, autoFocus, name, register, showToggle, onToggleShow }) {
   return (
     <div className="space-y-1">
@@ -48,7 +48,7 @@ function FloatingInput({ label, icon: Icon, type = 'text', value, onChange, erro
   );
 }
 
-// -- Password strength helper ------------------------------------------
+// Password strength helper
 function getStrength(pw) {
   let score = 0;
   if (pw.length >= 8)           score++;
@@ -67,7 +67,7 @@ const STRENGTH_TIPS   = [
   'Excellent password!',
 ];
 
-// -- Liquid-fill Strength Meter ----------------------------------------
+// Liquid-fill Strength Meter
 function StrengthMeter({ score }) {
   if (score === 0) return null;
   const color = STRENGTH_COLORS[score - 1];
@@ -86,7 +86,7 @@ function StrengthMeter({ score }) {
   );
 }
 
-// -- Animated Success Checkmark ----------------------------------------
+// Animated Success Checkmark
 function SuccessCheckmark() {
   return (
     <div className="mx-auto mb-6" style={{ width:80, height:80 }}>
@@ -102,7 +102,7 @@ function SuccessCheckmark() {
   );
 }
 
-// -- MAIN PAGE ---------------------------------------------------------
+// MAIN PAGE
 export default function ChangePasswordPage() {
   const navigate = useNavigate();
   const { markPasswordUpdated } = useAuth();
@@ -140,7 +140,7 @@ export default function ChangePasswordPage() {
     }
   }
 
-  // Auth card — amber variant: override the ::before pseudo-element color via inline style trick
+  // Auth card - amber variant: override the ::before pseudo-element color via inline style trick
   // We use a wrapper div with amber conic gradient to simulate the amber rotating border
   return (
     <HeroHighlight containerClassName="bg-[#0d0d1a] dark:bg-[#0d0d1a]">

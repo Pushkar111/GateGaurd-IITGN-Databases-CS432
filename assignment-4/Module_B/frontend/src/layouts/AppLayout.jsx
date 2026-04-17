@@ -20,7 +20,7 @@ import ActionCenter from '@/components/action-center/ActionCenter';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
 import * as dashboardApi from '@/api/dashboard.api';
 
-// -- Tooltip-wrapped icon button ---------------------------------------
+// Tooltip-wrapped icon button
 function RailItem({ item, isActive }) {
   const Icon = item.icon;
   return (
@@ -65,14 +65,14 @@ const iconMap = {
   CircleUserRound,
 };
 
-// -- Main layout -------------------------------------------------------
+// Main layout
 export default function AppLayout() {
   const { user, logout, hasRole, mustChangePassword } = useAuth();
   const location                  = useLocation();
   const navigate                  = useNavigate();
   const pathname                  = location.pathname;
 
-  // mustChangePassword guard — redirect to /change-password if flag is set
+  // mustChangePassword guard - redirect to /change-password if flag is set
   const mustChangePw = mustChangePassword || user?.mustChangePassword || user?.MustChangePassword || user?.mustchangepassword || false;
   if (mustChangePw && pathname !== '/change-password') {
     return <Navigate to="/change-password" replace />;
@@ -97,7 +97,7 @@ export default function AppLayout() {
       .catch(() => {});
   }, []);
 
-  // -- Keyboard shortcuts -------------------------------------------
+  // Keyboard shortcuts
   useEffect(() => {
     const handler = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -114,7 +114,7 @@ export default function AppLayout() {
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
-  // -- Poll active visit counts --------------------------------------
+  // Poll active visit counts
   useEffect(() => {
     let mounted = true;
     const syncCounts = () => {
@@ -239,7 +239,7 @@ export default function AppLayout() {
             {getInitials(user?.Username || user?.username || '??')}
           </div>
 
-          {/* Role chip — visible md+ */}
+          {/* Role chip - visible md+ */}
           <div className="hidden md:flex items-center gap-1 px-2 py-0.5 rounded-full
                            bg-white/5 text-xs text-white/50 border border-white/10 ml-1">
             {user?.Role || user?.role || 'Guard'}
@@ -273,7 +273,7 @@ export default function AppLayout() {
           <RailItem key={item.to} item={item} isActive={isActive(item.to)} />
         ))}
 
-        {/* Settings — pinned bottom */}
+        {/* Settings - pinned bottom */}
         <div className="mt-auto">
           <RailItem item={bottomItemResolved} isActive={false} />
         </div>

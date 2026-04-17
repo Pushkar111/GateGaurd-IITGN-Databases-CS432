@@ -1,5 +1,5 @@
 // src/components/shared/StatCard.jsx
-// Animated glass stat card — used on Dashboard
+// Animated glass stat card - used on Dashboard
 // Props: title, value, icon, trend, trendLabel, color, loading
 
 import { motion } from 'framer-motion';

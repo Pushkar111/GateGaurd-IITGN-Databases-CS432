@@ -28,7 +28,7 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// -- Request interceptor -----------------------------------------------
+// Request interceptor
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem(STORAGE_ACCESS_KEY);
@@ -40,7 +40,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// -- Response interceptor: Silent Refresh ------------------------------
+// Response interceptor: Silent Refresh
 api.interceptors.response.use(
   (response) => response,
   async (error) => {

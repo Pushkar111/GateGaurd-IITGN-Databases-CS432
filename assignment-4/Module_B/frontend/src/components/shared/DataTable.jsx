@@ -14,7 +14,7 @@ import { ChevronUp, ChevronDown, ChevronsUpDown, Search, ChevronLeft, ChevronRig
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 
-// -- Skeleton rows ------------------------------------------------------
+// Skeleton rows
 function SkeletonRows({ colCount = 4, rowCount = 5 }) {
   return Array.from({ length: rowCount }).map((_, ri) => (
     <tr key={ri} className="border-b border-white/[0.04]">
@@ -27,7 +27,7 @@ function SkeletonRows({ colCount = 4, rowCount = 5 }) {
   ));
 }
 
-// -- Sort icon ---------------------------------------------------------
+// Sort icon
 function SortIcon({ sorted }) {
   if (sorted === 'asc')  return <ChevronUp size={13} className="text-indigo-400" />;
   if (sorted === 'desc') return <ChevronDown size={13} className="text-indigo-400" />;

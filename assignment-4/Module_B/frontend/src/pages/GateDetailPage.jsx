@@ -1,5 +1,5 @@
-﻿// src/pages/GateDetailPage.jsx
-// Gate detail — hero with occupancy progress bar, person + vehicle visit tabs
+// src/pages/GateDetailPage.jsx
+// Gate detail - hero with occupancy progress bar, person + vehicle visit tabs
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -36,10 +36,10 @@ const editSchema = z.object({
   status:   z.enum(['Active', 'Inactive']),
 });
 
-// -- Visit column builders ---------------------------------------------
+// Visit column builders
 function buildPersonCols(gateId) {
   return [
-  { header: 'Member',     id: 'mem',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs font-medium">{v.MemberName || v.membername || '—'}</span> },
+  { header: 'Member',     id: 'mem',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs font-medium">{v.MemberName || v.membername || '-'}</span> },
   {
     header: 'Direction', id: 'dir', cell: ({ row: { original: v } }) => {
       const entryGateId = v.EntryGateID || v.entrygateid;
@@ -57,8 +57,8 @@ function buildPersonCols(gateId) {
 }
 
 const vehicleCols = [
-  { header: 'Plate',    id: 'pl',   cell: ({ row: { original: v } }) => <span className="plate text-xs">{v.RegistrationNumber || v.registrationnumber || '—'}</span> },
-  { header: 'Model',    id: 'mod',  cell: ({ row: { original: v } }) => <span className="text-white/60 text-xs">{v.Model || v.model || '—'}</span> },
+  { header: 'Plate',    id: 'pl',   cell: ({ row: { original: v } }) => <span className="plate text-xs">{v.RegistrationNumber || v.registrationnumber || '-'}</span> },
+  { header: 'Model',    id: 'mod',  cell: ({ row: { original: v } }) => <span className="text-white/60 text-xs">{v.Model || v.model || '-'}</span> },
   { header: 'Time',     id: 'time', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
   { header: 'Duration', id: 'dur',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
   { header: 'Status',   id: 'st',   cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
@@ -183,8 +183,8 @@ export default function GateDetailPage() {
       action={<button onClick={() => navigate('/gates')} className="btn-primary text-sm">← Back to Gates</button>} /></div>
   );
 
-  const name     = gate.Name     || gate.name     || '—';
-  const location = gate.Location || gate.location || '—';
+  const name     = gate.Name     || gate.name     || '-';
+  const location = gate.Location || gate.location || '-';
   const status   = gate.Status   || gate.status   || 'Inactive';
   const isActive = status === 'Active';
   const pct      = Math.min(occupancy / MAX_CAP, 1);

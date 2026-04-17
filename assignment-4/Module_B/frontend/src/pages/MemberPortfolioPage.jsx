@@ -1,5 +1,5 @@
-﻿// src/pages/MemberPortfolioPage.jsx
-// The showpiece member portfolio — LinkedIn-meets-security-badge design
+// src/pages/MemberPortfolioPage.jsx
+// The showpiece member portfolio - LinkedIn-meets-security-badge design
 
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate }     from 'react-router-dom';
@@ -20,7 +20,7 @@ import EmptyState      from '@/components/shared/EmptyState';
 import { cn, getInitials, formatDate, formatRelativeTime, formatDuration } from '@/lib/utils';
 import { pageVariants, staggerContainer, staggerItem, fadeInUp } from '@/lib/motion';
 
-// -- Constants ---------------------------------------------------------
+// Constants
 const CIRCUMFERENCE = 2 * Math.PI * 28; // small rings r=28
 
 const RING_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#a855f7'];
@@ -38,7 +38,7 @@ function charHash(s = '') {
 }
 function memberGrad(name) { return GRAD_CLASSES[charHash(name) % GRAD_CLASSES.length]; }
 
-// -- Small SVG stat ring -----------------------------------------------
+// Small SVG stat ring
 function StatRing({ label, value, max = 100, color = '#6366f1' }) {
   const pct    = Math.min((value || 0) / (max || 1), 1);
   const offset = CIRCUMFERENCE * (1 - pct);
@@ -64,7 +64,7 @@ function StatRing({ label, value, max = 100, color = '#6366f1' }) {
   );
 }
 
-// -- Member type icon --------------------------------------------------
+// Member type icon
 function TypeIcon({ type }) {
   const t = (type || '').toLowerCase();
   if (t.includes('faculty') || t.includes('staff')) return <Briefcase size={16} className="text-indigo-400" />;
@@ -99,7 +99,7 @@ export default function MemberPortfolioPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
-  // Access control — admin/SA can see all, member can only see own
+  // Access control - admin/SA can see all, member can only see own
   const hasAccess = useMemo(() => {
     if (hasRole('Admin', 'SuperAdmin')) return true;
     const uid = user?.MemberID || user?.memberid || user?.memberId || user?.id;
@@ -122,7 +122,7 @@ export default function MemberPortfolioPage() {
     };
   }, [visits]);
 
-  // Visit timeline — counts per day for last 30 days
+  // Visit timeline - counts per day for last 30 days
   const chartData = useMemo(() => {
     const dayMap = {};
     const now = new Date();
@@ -166,7 +166,7 @@ export default function MemberPortfolioPage() {
       action={<button onClick={() => navigate('/members')} className="btn-primary text-sm">← Back to Members</button>} /></div>
   );
 
-  const name       = member.Name        || member.name        || '—';
+  const name       = member.Name        || member.name        || '-';
   const email      = member.Email       || member.email       || '';
   const phone      = member.ContactNumber || member.contactnumber || '';
   const dept       = member.Department  || member.department  || '';
@@ -235,7 +235,7 @@ export default function MemberPortfolioPage() {
         <div className={cn('grid gap-4 transition-all', { 'blur-sm pointer-events-none select-none': !hasAccess })}
           style={{ gridTemplateColumns: '1fr 1fr 1fr' }}>
 
-          {/* Visit Stats — col 1 */}
+          {/* Visit Stats - col 1 */}
           <div className="glass-card p-5 space-y-3">
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest">Visit Stats</p>
             <div className="space-y-2">
@@ -253,7 +253,7 @@ export default function MemberPortfolioPage() {
             </div>
           </div>
 
-          {/* Visit Timeline — col 2-3 */}
+          {/* Visit Timeline - col 2-3 */}
           <div className="glass-card p-5 col-span-2">
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Visit Activity (30 days)</p>
             <ResponsiveContainer width="100%" height={130}>
@@ -267,7 +267,7 @@ export default function MemberPortfolioPage() {
             </ResponsiveContainer>
           </div>
 
-          {/* Vehicles — col 1 */}
+          {/* Vehicles - col 1 */}
           <div className="glass-card p-5">
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Vehicles</p>
             {vehicles.length === 0
@@ -280,7 +280,7 @@ export default function MemberPortfolioPage() {
             }
           </div>
 
-          {/* Access Level — col 2 */}
+          {/* Access Level - col 2 */}
           <div className="glass-card p-5">
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Access Level</p>
             <div className="flex items-center gap-2 mb-2">
@@ -294,7 +294,7 @@ export default function MemberPortfolioPage() {
             </div>
           </div>
 
-          {/* Member ID card — col 3 */}
+          {/* Member ID card - col 3 */}
           <div className="glass-card p-5">
             <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-3">Member Info</p>
             <div className="space-y-2 text-xs">
@@ -304,11 +304,11 @@ export default function MemberPortfolioPage() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-white/40">Age</span>
-                <span className="text-white/70">{member.Age || member.age || '—'}</span>
+                <span className="text-white/70">{member.Age || member.age || '-'}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-white/40">Joined</span>
-                <span className="text-white/70">{createdAt ? formatDate(createdAt, 'dd MMM yyyy') : '—'}</span>
+                <span className="text-white/70">{createdAt ? formatDate(createdAt, 'dd MMM yyyy') : '-'}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-white/40">Days Active</span>
@@ -341,7 +341,7 @@ export default function MemberPortfolioPage() {
 
               {recentVisits.map((v, i) => {
                 const isActive = v.IsActive || v.isactive;
-                const gate     = v.EntryGateName || v.entrygatename || '—';
+                const gate     = v.EntryGateName || v.entrygatename || '-';
                 const exitGate = v.ExitGateName  || v.exitgatename;
                 const entryT   = v.EntryTime     || v.entrytime;
                 const exitT    = v.ExitTime      || v.exittime;

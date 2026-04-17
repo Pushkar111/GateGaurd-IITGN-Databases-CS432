@@ -4,8 +4,8 @@
 import { useState, useCallback } from 'react';
 
 /**
- * @param {number} initialPage  — starting page (default 1)
- * @param {number} initialLimit — page size (default 20)
+ * @param {number} initialPage  - starting page (default 1)
+ * @param {number} initialLimit - page size (default 20)
  */
 export function usePagination(initialPage = 1, initialLimit = 20) {
   const [page,  setPage]  = useState(initialPage);

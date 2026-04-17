@@ -1,5 +1,5 @@
 // src/App.jsx
-// Root component — RouterProvider + Toaster + global orb decorations
+// Root component - RouterProvider + Toaster + global orb decorations
 
 import { RouterProvider } from 'react-router-dom';
 import { Toaster } from 'sonner';
@@ -8,7 +8,7 @@ import router from './router';
 export default function App() {
   return (
     <div className="relative min-h-screen overflow-x-hidden">
-      {/* Ambient orbs — fixed position, CSS animations defined in globals.css */}
+      {/* Ambient orbs - fixed position, CSS animations defined in globals.css */}
       <div className="orb-1" aria-hidden="true" />
       <div className="orb-2" aria-hidden="true" />
 

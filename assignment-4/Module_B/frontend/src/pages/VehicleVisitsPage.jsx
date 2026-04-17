@@ -1,5 +1,5 @@
 // src/pages/VehicleVisitsPage.jsx
-// Vehicle visit management — same structure as PersonVisitsPage but vehicle-centric
+// Vehicle visit management - same structure as PersonVisitsPage but vehicle-centric
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -23,7 +23,7 @@ import { useSavedViews } from '@/hooks/useSavedViews';
 import { cn, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, backdropVariants, slideInRight } from '@/lib/motion';
 
-// -- Vehicle combobox --------------------------------------------------
+// Vehicle combobox
 function VehicleCombobox({ value, label, onChange, excludedIds = new Set() }) {
   const [open,    setOpen]    = useState(false);
   const [search,  setSearch]  = useState('');
@@ -82,7 +82,7 @@ function VehicleCombobox({ value, label, onChange, excludedIds = new Set() }) {
   );
 }
 
-// -- Sheet -------------------------------------------------------------
+// Sheet
 function Sheet({ open, onOpenChange, title, children }) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -110,7 +110,7 @@ function Sheet({ open, onOpenChange, title, children }) {
   );
 }
 
-// -- Table columns -----------------------------------------------------
+// Table columns
 function buildColumns(onDelete, canDelete) {
   return [
     { header: 'Vehicle', id: 'vehicle', cell: ({ row: { original: v } }) => <span className="plate text-xs">{v.RegistrationNumber || v.registrationnumber || '-'}</span> },
@@ -135,7 +135,7 @@ function buildColumns(onDelete, canDelete) {
   ].filter(Boolean);
 }
 
-// -- Main page ---------------------------------------------------------
+// Main page
 export default function VehicleVisitsPage() {
   const [searchParams]   = useSearchParams();
   const { hasRole }      = useAuth();

@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import { format, formatDistanceToNow, differenceInMinutes, differenceInHours } from 'date-fns';
 
 /**
- * Merge Tailwind classes safely — handles conflicts, conditional classes.
+ * Merge Tailwind classes safely - handles conflicts, conditional classes.
  * Usage: cn('text-base', isActive && 'text-primary', className)
  */
 export function cn(...inputs) {
@@ -16,7 +16,7 @@ export function cn(...inputs) {
 /**
  * Format a date string or Date object.
  * @param {string|Date} date
- * @param {string} fmt — date-fns format string (default: 'dd MMM yyyy, HH:mm')
+ * @param {string} fmt - date-fns format string (default: 'dd MMM yyyy, HH:mm')
  */
 export function formatDate(date, fmt = 'dd MMM yyyy, HH:mm') {
   if (!date) return '--';
