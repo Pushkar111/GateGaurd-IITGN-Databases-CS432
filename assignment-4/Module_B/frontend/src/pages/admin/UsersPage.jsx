@@ -1,5 +1,5 @@
-﻿// src/pages/admin/UsersPage.jsx
-// User management — Admin only, SuperAdmin gets full CRUD
+// src/pages/admin/UsersPage.jsx
+// User management - Admin only, SuperAdmin gets full CRUD
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,7 +19,7 @@ import EmptyState    from '@/components/shared/EmptyState';
 import { cn, formatDate } from '@/lib/utils';
 import { pageVariants, scaleIn, backdropVariants, fadeInUp } from '@/lib/motion';
 
-// ── Password strength ─────────────────────────────────────────────────
+// Password strength
 const getStrength = (p = '') =>
   [p.length >= 8, /[A-Z]/.test(p), /[0-9]/.test(p), /[^A-Za-z0-9]/.test(p)].filter(Boolean).length;
 
@@ -45,7 +45,7 @@ function PasswordStrengthMeter({ password }) {
   );
 }
 
-// ── Zod schemas ───────────────────────────────────────────────────────
+// Zod schemas
 const createSchema = z.object({
   username: z.string().min(3, 'Min 3 chars').max(50),
   password: z.string().min(8, 'Min 8 chars'),
@@ -57,7 +57,7 @@ const editSchema = z.object({
   password: z.string().min(8, 'Min 8 chars if provided').or(z.literal('')).optional(),
 });
 
-// ── Password field with eye toggle ────────────────────────────────────
+// Password field with eye toggle
 function PasswordField({ register, name, label = 'Password', watch }) {
   const [show, setShow] = useState(false);
   const val = watch ? watch(name) : '';
@@ -77,7 +77,7 @@ function PasswordField({ register, name, label = 'Password', watch }) {
   );
 }
 
-// ── Create User Modal ─────────────────────────────────────────────────
+// Create User Modal
 function CreateUserModal({ open, onOpenChange, roles, onSuccess, isSuperAdmin }) {
   const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(createSchema),
@@ -156,7 +156,7 @@ function CreateUserModal({ open, onOpenChange, roles, onSuccess, isSuperAdmin })
   );
 }
 
-// ── Edit User Modal ───────────────────────────────────────────────────
+// Edit User Modal
 function EditUserModal({ open, onOpenChange, editUser, roles, onSuccess }) {
   const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(editSchema),
@@ -233,7 +233,7 @@ function EditUserModal({ open, onOpenChange, editUser, roles, onSuccess }) {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────
+// Main page
 export default function UsersPage() {
   const { user: currentUser, hasRole } = useAuth();
   const isSA = hasRole('SuperAdmin');
@@ -357,8 +357,8 @@ export default function UsersPage() {
                   <tr key={r.requestId} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
                     <td className="px-4 py-3 font-mono text-white/80">{r.username}</td>
                     <td className="px-4 py-3"><RoleBadge role={r.roleName} /></td>
-                    <td className="px-4 py-3 text-white/60">{r.requestedByUsername || '—'}</td>
-                    <td className="px-4 py-3 text-white/40 text-xs">{r.createdAt ? formatDate(r.createdAt, 'dd MMM yyyy HH:mm') : '—'}</td>
+                    <td className="px-4 py-3 text-white/60">{r.requestedByUsername || '-'}</td>
+                    <td className="px-4 py-3 text-white/40 text-xs">{r.createdAt ? formatDate(r.createdAt, 'dd MMM yyyy HH:mm') : '-'}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
                         <button
@@ -411,8 +411,8 @@ export default function UsersPage() {
             <tbody>
               {users.map((u, i) => {
                 const uid    = u.UserID   || u.userid;
-                const uname  = u.Username || u.username || '—';
-                const role   = u.RoleName || u.rolename || '—';
+                const uname  = u.Username || u.username || '-';
+                const role   = u.RoleName || u.rolename || '-';
                 const created = u.CreatedAt || u.createdat;
                 const isSelf = uid === (currentUser?.UserID || currentUser?.userid || currentUser?.id);
                 return (
@@ -429,7 +429,7 @@ export default function UsersPage() {
                     <td className="px-4 py-3">
                       <RoleBadge role={role} />
                     </td>
-                    <td className="px-4 py-3 text-white/40 text-xs">{created ? formatDate(created, 'dd MMM yyyy') : '—'}</td>
+                    <td className="px-4 py-3 text-white/40 text-xs">{created ? formatDate(created, 'dd MMM yyyy') : '-'}</td>
                     {isSA && (
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-1">

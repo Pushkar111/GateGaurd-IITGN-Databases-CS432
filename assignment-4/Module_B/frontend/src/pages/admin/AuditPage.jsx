@@ -1,5 +1,5 @@
 // src/pages/admin/AuditPage.jsx
-// Audit logs — color-coded custom table + slide-in detail drawer + JSON diff viewer
+// Audit logs - color-coded custom table + slide-in detail drawer + JSON diff viewer
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -165,7 +165,7 @@ function DatePickerField({ value, onChange, placeholder = 'Select date' }) {
   );
 }
 
-// -- Action config -----------------------------------------------------
+// Action config
 const ACTION_COLOR = {
   CREATE: 'border-emerald-500',
   UPDATE: 'border-amber-500',
@@ -179,7 +179,7 @@ const ACTION_BADGE = {
   READ:   'badge-primary',
 };
 
-// -- JSON pretty printer -----------------------------------------------
+// JSON pretty printer
 function JsonBlock({ label, value, tint }) {
   const text = (() => {
     try {
@@ -198,7 +198,7 @@ function JsonBlock({ label, value, tint }) {
   );
 }
 
-// -- Main page ---------------------------------------------------------
+// Main page
 export default function AuditPage() {
   const [logs,         setLogs]         = useState([]);
   const [total,        setTotal]        = useState(0);
@@ -331,14 +331,14 @@ export default function AuditPage() {
                     <td className="px-3 py-2.5 text-white/50 whitespace-nowrap">
                       {timeValue ? formatRelativeTime(timeValue) : '--'}
                     </td>
-                    <td className="px-3 py-2.5 font-mono text-white/70">{username || (userIdValue ? `user#${userIdValue}` : '—')}</td>
-                    <td className="px-3 py-2.5"><RoleBadge role={roleValue || '—'} size="xs" /></td>
+                    <td className="px-3 py-2.5 font-mono text-white/70">{username || (userIdValue ? `user#${userIdValue}` : '-')}</td>
+                    <td className="px-3 py-2.5"><RoleBadge role={roleValue || '-'} size="xs" /></td>
                     <td className="px-3 py-2.5">
                       <span className={cn('badge text-[10px]', badgeCls)}>{action}</span>
                     </td>
-                    <td className="px-3 py-2.5 text-white/50 font-mono">{tableValue || '—'}</td>
-                    <td className="px-3 py-2.5 text-white/40 tabular-nums">{recordValue || '—'}</td>
-                    <td className="px-3 py-2.5 text-white/30 font-mono">{ipValue || '—'}</td>
+                    <td className="px-3 py-2.5 text-white/50 font-mono">{tableValue || '-'}</td>
+                    <td className="px-3 py-2.5 text-white/40 tabular-nums">{recordValue || '-'}</td>
+                    <td className="px-3 py-2.5 text-white/30 font-mono">{ipValue || '-'}</td>
                   </tr>
                 );
               })}

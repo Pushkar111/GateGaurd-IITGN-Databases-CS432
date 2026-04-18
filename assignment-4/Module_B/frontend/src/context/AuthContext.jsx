@@ -1,5 +1,5 @@
 // src/context/AuthContext.jsx
-// Application-wide auth state — token, user, login, logout, hasRole
+// Application-wide auth state - token, user, login, logout, hasRole
 // Wrapped around the entire app in main.jsx
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading,       setIsLoading]       = useState(true);
 
-  // -- Bootstrap: on mount, validate existing token --------------------
+  // Bootstrap: on mount, validate existing token
   useEffect(() => {
     const storedToken = localStorage.getItem(STORAGE_ACCESS_KEY);
     if (!storedToken) {
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true);
       })
       .catch(() => {
-        // token invalid / expired — clear everything
+        // token invalid / expired - clear everything
         localStorage.removeItem(STORAGE_ACCESS_KEY);
         localStorage.removeItem(STORAGE_REFRESH_KEY);
         localStorage.removeItem(STORAGE_USER_KEY);
@@ -51,7 +51,7 @@ export function AuthProvider({ children }) {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // -- Login ------------------------------------------------------------
+  // Login
   const login = useCallback(async (username, password) => {
     const res = await authApi.login({ username, password });
     
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
     return userData;
   }, []);
 
-  // -- Logout -----------------------------------------------------------
+  // Logout
   const logout = useCallback(async () => {
     const currentRefresh = localStorage.getItem(STORAGE_REFRESH_KEY);
 
@@ -111,7 +111,7 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
-  // -- Role check — supports multiple allowed roles ---------------------
+  // Role check - supports multiple allowed roles
   const hasRole = useCallback((...roles) => {
     if (!user) return false;
     const currentRole = (user.Role || user.role || user.RoleName || user.rolename || '').toLowerCase();

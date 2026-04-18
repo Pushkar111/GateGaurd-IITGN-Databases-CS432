@@ -1,5 +1,5 @@
 // server.js
-// Entry point — start the HTTP server
+// Entry point - start the HTTP server
 // Handles graceful shutdown on SIGTERM/SIGINT
 
 require('./src/config/env'); // validate env vars before anything else
@@ -30,7 +30,7 @@ const server = app.listen(env.PORT, () => {
 
 // graceful shutdown so DB connections close cleanly
 async function shutdown(signal) {
-  logger.info(`${signal} received — shutting down gracefully...`);
+  logger.info(`${signal} received - shutting down gracefully...`);
   server.close(async () => {
     try {
       await pool.end();
@@ -44,7 +44,7 @@ async function shutdown(signal) {
 
   // force exit after 10 seconds if graceful shutdown hasn't completed
   setTimeout(() => {
-    logger.warn('Graceful shutdown timed out — forcing exit');
+    logger.warn('Graceful shutdown timed out - forcing exit');
     process.exit(1);
   }, 10000);
 }

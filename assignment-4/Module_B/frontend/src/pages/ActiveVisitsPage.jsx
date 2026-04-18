@@ -1,5 +1,5 @@
-﻿// src/pages/ActiveVisitsPage.jsx
-// Live active visits monitor — person + vehicle combined, live duration timer
+// src/pages/ActiveVisitsPage.jsx
+// Live active visits monitor - person + vehicle combined, live duration timer
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate }  from 'react-router-dom';
@@ -17,10 +17,10 @@ import { useSavedViews } from '@/hooks/useSavedViews';
 import { cn, getInitials, formatDuration } from '@/lib/utils';
 import { pageVariants, staggerContainer, staggerItem } from '@/lib/motion';
 
-// -- 8 hour threshold for overstay -------------------------------------
+// 8 hour threshold for overstay
 const OVERSTAY_MS = 8 * 60 * 60 * 1000;
 
-// -- Quick-exit popover ------------------------------------------------
+// Quick-exit popover
 function QuickExitPopover({ visit, gates, onExit }) {
   const [open,         setOpen]         = useState(false);
   const [gateId,       setGateId]       = useState('');
@@ -63,7 +63,7 @@ function QuickExitPopover({ visit, gates, onExit }) {
   );
 }
 
-// -- Single visit card -------------------------------------------------
+// Single visit card
 function VisitCard({ visit, now, gates, onExit, onRemove }) {
   const isPerson   = visit._type === 'person';
   const entryTime  = visit.EntryTime || visit.entrytime;
@@ -71,12 +71,12 @@ function VisitCard({ visit, now, gates, onExit, onRemove }) {
   const isOverstay = entryTime && (now - new Date(entryTime)) > OVERSTAY_MS;
 
   const label     = isPerson
-    ? (visit.MemberName  || visit.membername  || '—')
-    : (visit.RegistrationNumber || visit.registrationnumber || '—');
+    ? (visit.MemberName  || visit.membername  || '-')
+    : (visit.RegistrationNumber || visit.registrationnumber || '-');
   const sublabel  = isPerson
     ? (visit.Department  || visit.department  || (visit.TypeName || visit.typename || ''))
     : (visit.Model       || visit.model       || '');
-  const gateName  = visit.EntryGateName || visit.entrygatename || '—';
+  const gateName  = visit.EntryGateName || visit.entrygatename || '-';
 
   return (
     <motion.div
@@ -134,7 +134,7 @@ function VisitCard({ visit, now, gates, onExit, onRemove }) {
   );
 }
 
-// -- Main page ---------------------------------------------------------
+// Main page
 export default function ActiveVisitsPage() {
   const [visits,     setVisits]     = useState([]);
   const [gates,      setGates]      = useState([]);
@@ -148,7 +148,7 @@ export default function ActiveVisitsPage() {
 
   const { views, byId, saveView, deleteView } = useSavedViews('gateguard.savedViews.activeVisits');
 
-  // Live clock — updates every second
+  // Live clock - updates every second
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
@@ -271,7 +271,7 @@ export default function ActiveVisitsPage() {
     >
       <PageHeader
         title="Active Visits Monitor"
-        subtitle={`${filteredVisits.length} visible — ${personCount} persons · ${vehicleCount} vehicles`}
+        subtitle={`${filteredVisits.length} visible - ${personCount} persons · ${vehicleCount} vehicles`}
         breadcrumb={[{ label: 'Visits' }, { label: 'Active Monitor' }]}
         actions={
           <button

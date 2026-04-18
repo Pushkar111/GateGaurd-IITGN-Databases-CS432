@@ -1,5 +1,5 @@
-﻿// src/pages/GatesPage.jsx
-// Gates & Occupancy — SVG radial rings, slide-in detail panel, CRUD
+// src/pages/GatesPage.jsx
+// Gates & Occupancy - SVG radial rings, slide-in detail panel, CRUD
 
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -25,7 +25,7 @@ import {
   backdropVariants, slideInRight, cardHover,
 } from '@/lib/motion';
 
-// ── Constants ─────────────────────────────────────────────────────────
+// Constants
 const DEFAULT_CAPACITY_LIMIT = 20;
 const CIRCUMFERENCE = 2 * Math.PI * 36; // r=36
 
@@ -40,7 +40,7 @@ function getRiskMeta(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   return { label: 'Normal Capacity', cls: 'badge-success', level: 'normal' };
 }
 
-// ── Occupancy color ───────────────────────────────────────────────────
+// Occupancy color
 function ringColor(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   const pct = count / capacityLimit;
   if (pct >= 0.8) return '#ef4444';
@@ -48,7 +48,7 @@ function ringColor(count, capacityLimit = DEFAULT_CAPACITY_LIMIT) {
   return '#10b981';
 }
 
-// ── SVG Radial Ring ───────────────────────────────────────────────────
+// SVG Radial Ring
 function RadialRing({ count = 0, capacityLimit = DEFAULT_CAPACITY_LIMIT }) {
   const pct    = Math.min(count / capacityLimit, 1);
   const offset = CIRCUMFERENCE * (1 - pct);
@@ -88,10 +88,10 @@ function RadialRing({ count = 0, capacityLimit = DEFAULT_CAPACITY_LIMIT }) {
   );
 }
 
-// ── Gate card ─────────────────────────────────────────────────────────
+// Gate card
 function GateCard({ gate, onClick }) {
-  const name     = gate.Name     || gate.name     || '—';
-  const location = gate.Location || gate.location || '—';
+  const name     = gate.Name     || gate.name     || '-';
+  const location = gate.Location || gate.location || '-';
   const count    = gate.OccupancyCount ?? gate.occupancycount ?? 0;
   const capacityLimit = Number(gate.CapacityLimit ?? gate.capacitylimit ?? DEFAULT_CAPACITY_LIMIT);
   const risk     = getRiskMeta(count, capacityLimit);
@@ -138,21 +138,21 @@ function GateCard({ gate, onClick }) {
   );
 }
 
-// ── Zod schemas ───────────────────────────────────────────────────────
+// Zod schemas
 const gateSchema = z.object({
   name:     z.string().min(2, 'Name required').max(80),
   location: z.string().min(2, 'Location required').max(100),
 });
 
-// ── Visit history table columns ───────────────────────────────────────
+// Visit history table columns
 const historyColumns = [
   { header: 'Type',       id: 'type',  cell: ({ row: { original: v } }) => <span className="badge badge-primary text-[10px]">{v.Type || v.type || 'Person'}</span> },
-  { header: 'Subject',    id: 'subj',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.subject || v.Subject || '—'}</span> },
+  { header: 'Subject',    id: 'subj',  cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.subject || v.Subject || '-'}</span> },
   { header: 'Entry Time', id: 'entry', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
   { header: 'Status',     id: 'stat',  cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
 ];
 
-// ── Main page ─────────────────────────────────────────────────────────
+// Main page
 export default function GatesPage() {
   const { hasRole } = useAuth();
   const isSA        = hasRole('SuperAdmin');
@@ -316,7 +316,7 @@ export default function GatesPage() {
       />
 
       <div className="text-xs text-white/40">
-        Last synced: {lastSyncedAt ? formatDate(lastSyncedAt, 'dd MMM yyyy, HH:mm:ss') : '—'}
+        Last synced: {lastSyncedAt ? formatDate(lastSyncedAt, 'dd MMM yyyy, HH:mm:ss') : '-'}
       </div>
 
       {/* Gate cards grid */}
@@ -343,7 +343,7 @@ export default function GatesPage() {
         </motion.div>
       )}
 
-      {/* ── Detail Panel (slide from right) ─────────────────────── */}
+      {/* -- Detail Panel (slide from right) ----------------------- */}
       {typeof document !== 'undefined' && createPortal(
         <AnimatePresence>
           {panelOpen && selected && (

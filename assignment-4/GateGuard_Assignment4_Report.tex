@@ -101,7 +101,7 @@
 % ======================== HEADER / FOOTER ========================
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\textcolor{iitgnblue}{\textbf{CS432} | Assignment 4 | Module A \& B}}
+\fancyhead[L]{\small\textcolor{iitgnblue}{\textbf{CS 432} | Assignment 4 | Module A \& B}}
 \fancyhead[R]{\small\textcolor{iitgnblue}{\textbf{GateGuard} | Team Lumos}}
 \fancyfoot[C]{\small\textcolor{codegray}{\thepage}}
 \fancyfoot[R]{\small\textcolor{codegray}{IIT Gandhinagar}}
@@ -349,10 +349,10 @@
   \node[opacity=0.07] at (current page.center){%
     \includegraphics[width=0.65\paperwidth]{Module_B/frontend/public/Final_IITGN_Logo_symmetric.png}};
 \end{tikzpicture}
-
 \begin{center}
-\vspace*{-1.4cm}
 
+\vspace*{-1.4cm}
+% GitHub button (same layout as Assignment 3 report)
 \href{https://github.com/Pushkar111/GateGaurd-IITGN-Databases-CS432}{%
   \colorbox{iitgnblue!90}{%
     \parbox{7.4cm}{\centering
@@ -364,6 +364,7 @@
   }%
 }
 \\[8pt]
+% Demo video CTA (same structure as Assignment 3 report)
 \demovideobutton{https://youtu.be/oKl7505LjB8}
 
 \vspace{0cm}
@@ -377,28 +378,29 @@
 
 \vspace{0.12cm}
 \textcolor{iitgnblue}{\rule{\textwidth}{2.5pt}}
-
 \vspace{0.5cm}
+
 {\Large\textbf{CS 432 $\to$ Databases}}\\[5pt]
 {\large Track-1 $\cdot$ Assignment 4 $\cdot$ Module A \& B}
 
 \vspace{0.5cm}
 \textcolor{iitgngold}{\rule{\textwidth}{1.5pt}}
-
 \vspace{0.35cm}
+
 {\Huge\bfseries\textcolor{iitgnblue}{GateGuard}}\\[6pt]
-{\Large Horizontal Database Sharding across Three PostgreSQL Nodes}\\[6pt]
-{\normalsize\textcolor{codegray}{Hash-Mod Partitioning \textbullet{} Python + JS Shard Routers \textbullet{} Scatter-Gather Aggregation}}
+{\Large Horizontal Database Sharding across}\\[3pt]
+{\Large \& Three PostgreSQL Nodes}\\[8pt]
+{\normalsize\textcolor{codegray}{%
+  Hash-Mod Partitioning \textbullet{} Python + JS Shard Routers \textbullet{} Scatter-Gather Aggregation}}
 
 \vspace{0.3cm}
 \textcolor{iitgngold}{\rule{\textwidth}{1.5pt}}
-
 \vspace{0.2cm}
+
 {\large\textbf{Team Name:}\ \textit{Lumos}}
-
 \vspace{0.4cm}
-{\large\textbf{Team Members}}
 
+{\large\textbf{Team Members}}
 \vspace{0.4cm}
 
 \rowcolors{2}{tablezebra}{tablezebraalt}
@@ -416,8 +418,8 @@ Akshata Pawar             & 25120026 \\
 \end{tabular}
 
 \vspace{0.5cm}
-\textbf{Instructor:}\ \ Prof. Yogesh K. Meena\\[5pt]
-\textbf{Semester:}\ \ II (2025--2026)\qquad\textbf{Date:}\ \ 15 April 2026\\[5pt]
+\textbf{Instructor:}\ \ Prof.\ Yogesh K.\ Meena\\[5pt]
+\textbf{Semester:}\ \ II (2025--2026)\qquad\textbf{Date:}\ \ 6:00 PM, 15 April 2026\\[5pt]
 
 \vfill
 \textcolor{iitgnblue}{\rule{\textwidth}{1pt}}
@@ -831,7 +833,7 @@ gateid & Only 4 values & Partial & Yes & Extreme from low cardinality & Rejected
 \subsection{Hash Function}
 
 \[
-\texttt{shard\_id} = \texttt{memberid} \bmod 3
+\boxed{\texttt{shard\_id} = \texttt{memberid} \% 3}
 \]
 
 For memberid = 1, shard\_id = 1. For memberid = 3, shard\_id = 0. For memberid = 5000, shard\_id = 2. Each positive integer maps deterministically to exactly one shard, and no lookup table is needed.
