@@ -42,6 +42,7 @@ Course context:
 - Module B shard router (JS): [assignment-4/Module_B/backend/src/utils/shardRouter.js](assignment-4/Module_B/backend/src/utils/shardRouter.js)
 - Module B shard-aware visit service: [assignment-4/Module_B/backend/src/services/personVisit.service.js](assignment-4/Module_B/backend/src/services/personVisit.service.js)
 - Assignment 4 report (PDF): [assignment-4/GateGuard_Assignment4_Report.pdf](assignment-4/GateGuard_Assignment4_Report.pdf)
+- Assignment 4 demo video: [Watch on YouTube](https://youtu.be/NDj3gfFcKAg)
 - Assignment 4 Docker orchestration: [assignment-4/docker-compose.yml](assignment-4/docker-compose.yml)
 
 ---
@@ -607,6 +608,7 @@ What can be improved next:
 
 | Deliverable | Link |
 |---|---|
+| Demo Video | [Watch on YouTube](https://youtu.be/NDj3gfFcKAg) |
 | Main Report PDF | [GateGuard_Assignment4_Report.pdf](assignment-4/GateGuard_Assignment4_Report.pdf) |
 | Module A: Sharding Notebook | [test_sharding.ipynb](assignment-4/Module_A/test_sharding.ipynb) |
 | Module A: Docker Migration Script | [migrate_to_docker_shards.py](assignment-4/Module_A/migrate_to_docker_shards.py) |
