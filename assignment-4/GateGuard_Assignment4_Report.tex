@@ -27,7 +27,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{tikz}
-\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc,decorations.pathreplacing,backgrounds,shadows,fit,matrix,shapes.symbols,bending}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta,calc,decorations.pathreplacing,decorations.markings,decorations.pathmorphing,backgrounds,shadows,fit,matrix,shapes.symbols,bending,fadings,shadings,patterns}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage{float}
@@ -40,6 +40,7 @@
 \tcbuselibrary{skins,breakable}
 \usepackage{microtype}
 \usepackage{fontawesome5}
+\usepackage{pifont}
 \usepackage{hyperref}
 
 % ======================== COLOURS ========================
@@ -64,6 +65,26 @@
 \definecolor{tablezebra}{RGB}{232,241,255}
 \definecolor{tablezebraalt}{RGB}{247,251,255}
 \definecolor{tableline}{RGB}{168,188,214}
+% --- Figure: monolith vs distributed constellation (scale-up vs scale-out) ---
+\definecolor{paneldark}{RGB}{10,15,35}
+\definecolor{panelmid}{RGB}{20,35,72}
+\definecolor{monolithred}{RGB}{185,30,40}
+\definecolor{monolightred}{RGB}{255,80,80}
+\definecolor{neoncyan}{RGB}{0,210,230}
+\definecolor{neongreen}{RGB}{60,220,120}
+\definecolor{stargold}{RGB}{255,210,60}
+\definecolor{shardblue}{RGB}{30,100,220}
+\definecolor{shardteal}{RGB}{0,170,180}
+\definecolor{shardmint}{RGB}{20,200,150}
+\newcommand{\dbcyl}[3]{% cx, cy, col
+  \fill[#3!35!panelmid] (#1-0.20,#2-0.26) rectangle (#1+0.20,#2+0.16);
+  \draw[#3!65,line width=0.45pt] (#1-0.20,#2-0.26) rectangle (#1+0.20,#2+0.16);
+  \fill[#3!55!panelmid] (#1,#2+0.16) ellipse (0.20 and 0.07);
+  \draw[#3!65,line width=0.45pt] (#1,#2+0.16) ellipse (0.20 and 0.07);
+  \fill[#3!45!panelmid] (#1,#2-0.26) ellipse (0.20 and 0.07);
+  \draw[#3!60,line width=0.40pt] (#1-0.20,#2+0.00) -- (#1+0.20,#2+0.00);
+  \draw[#3!40,line width=0.35pt] (#1-0.20,#2-0.10) -- (#1+0.20,#2-0.10);
+}
 
 % ======================== HYPERREF ========================
 \hypersetup{
@@ -2124,140 +2145,477 @@ Login by email lookup & No & Scatter-gather early-stop & 1 to 3 & Eventual \\
 
 \begin{figure}[H]
 \centering
+\makebox[\linewidth][c]{%
 \resizebox{\textwidth}{!}{%
-\begin{tikzpicture}[x=1cm,y=1cm,>=Latex]
-\colorlet{scNight}{black!94}
-\colorlet{scNightB}{iitgnblue!72!black}
-\colorlet{scSteel}{tableline!78!black}
-\colorlet{scWarn}{criticalred!84!black}
-\colorlet{scWarnSoft}{criticalred!34!black}
-\colorlet{scGood}{successgreen!78!black}
-\colorlet{scGoodSoft}{successgreen!28!black}
-\colorlet{scFlow}{iitgnblue!78!white}
-\colorlet{scText}{white!96}
-\colorlet{scMute}{white!68}
+\begin{tikzpicture}[x=1cm,y=1.30cm,>=Latex]
 
-\tikzset{
-  sc/frame/.style={rounded corners=13pt, line width=1.05pt, draw=scSteel},
-  sc/panel/.style={rounded corners=9pt, line width=0.9pt, draw=scSteel!78},
-  sc/tag/.style={rounded corners=7pt, line width=0.8pt, draw=scSteel!75, fill=black!52, text=scText, font=\scriptsize\bfseries, inner xsep=6pt, inner ysep=3pt},
-  sc/call/.style={rounded corners=4pt, line width=0.65pt, draw=scSteel!74, fill=black!36, text=scText, font=\tiny, align=center, inner xsep=5pt, inner ysep=2pt},
-  sc/metric/.style={rounded corners=10pt, line width=0.75pt, draw=scSteel!82, fill=black!44, text=scText, font=\scriptsize\bfseries, inner xsep=5pt, inner ysep=2pt},
-  sc/main/.style={-{Latex[length=3.2mm]}, line width=1.25pt, draw=scFlow},
-  sc/warn/.style={-{Latex[length=3.2mm]}, line width=1.3pt, draw=scWarn},
-  sc/good/.style={-{Latex[length=3.2mm]}, line width=1.35pt, draw=scGood!92!white},
-  sc/ghost/.style={-{Latex[length=2.7mm]}, line width=0.9pt, draw=scMute!75, dashed},
-  sc/router/.style={circle, draw=scFlow!92, fill=scFlow!20!black, line width=0.9pt, minimum size=1.35cm, text=scText, font=\scriptsize\bfseries, align=center},
-  sc/shard/.style={rounded corners=4pt, draw=scGood!86, fill=scGoodSoft!38!black, line width=0.9pt, minimum width=2.15cm, minimum height=1.1cm, text=scText, font=\scriptsize\bfseries, align=center},
-  sc/single/.style={rounded corners=4pt, draw=scWarn!90, fill=scWarnSoft!26!black, line width=0.9pt, minimum width=2.7cm, minimum height=1.2cm, text=scText, font=\scriptsize\bfseries, align=center},
-  sc/lane/.style={rounded corners=5pt, draw=scGood!60, fill=scGoodSoft!20!black, line width=0.75pt},
-  sc/stresschip/.style={rounded corners=3pt, draw=scWarn!84, fill=scWarnSoft!20!black, text=scText, font=\tiny\bfseries, inner xsep=4pt, inner ysep=1.6pt}
+%% ══════════════════════════════════════════════════════════
+%%  BACKGROUND CANVAS  28 × 16.7  (extra headroom vs original 16)
+%% ══════════════════════════════════════════════════════════
+\shade[left color=paneldark!95!monolithred,right color=paneldark!90!shardblue]
+  (-0.3,-0.3) rectangle (28.3,16.7);
+
+\shade[left color=monolithred!20!paneldark,right color=paneldark,opacity=0.55]
+  (-0.3,-0.3) rectangle (13.9,16.7);
+
+\shade[right color=shardblue!20!paneldark,left color=paneldark,opacity=0.55]
+  (14.1,-0.3) rectangle (28.3,16.7);
+
+%% Starfield
+\foreach \sx/\sy/\op in {
+  0.4/14.1/.28,  0.9/11.3/.18,  1.4/8.5/.32,  1.9/13.6/.22,
+  2.6/5.9/.20,   3.3/11.9/.28,  3.8/9.2/.20,   4.2/14.6/.26,
+  5.0/7.0/.18,   5.4/12.4/.30,  6.1/4.3/.22,   6.5/11.0/.18,
+  7.2/14.9/.28,  7.7/6.6/.20,   8.3/12.8/.25,  8.9/3.7/.18,
+  9.5/10.3/.22,  10.1/14.1/.20, 10.6/5.3/.28,  11.2/12.6/.18,
+  11.9/7.8/.25,  12.4/15.1/.20, 12.9/4.0/.22,
+  14.8/14.3/.28, 15.5/11.6/.20, 16.1/8.0/.25,  16.6/12.9/.18,
+  17.3/5.7/.30,  18.0/12.2/.20, 18.7/8.8/.25,  19.2/14.8/.28,
+  19.9/6.5/.20,  20.4/13.4/.25, 21.1/4.0/.18,  21.7/10.8/.30,
+  22.2/15.2/.22, 22.9/7.3/.18,  23.5/12.7/.28, 24.2/3.6/.20,
+  24.8/10.1/.25, 25.4/13.9/.18, 26.1/5.2/.30,  26.7/12.5/.22,
+  27.3/8.6/.18,  27.9/15.0/.28}{
+  \fill[white,opacity=\op] (\sx,\sy) circle (0.04);
+}
+\foreach \sx/\sy in {2.3/9.8,5.9/13.7,9.9/2.2,12.2/7.4,
+                     16.2/10.0,21.0/13.8,24.5/5.6,27.2/11.3}{
+  \fill[white,opacity=0.70] (\sx,\sy) circle (0.08);
+  \fill[white,opacity=0.10] (\sx,\sy) circle (0.26);
 }
 
-\begin{scope}[on background layer]
-  \fill[rounded corners=13pt, fill=scNight] (0.20,-0.05) rectangle (19.35,9.20);
-  \begin{scope}
-    \clip[rounded corners=13pt] (0.20,-0.05) rectangle (19.35,9.20);
-    \shade[inner color=scNightB!62, outer color=scNight] (9.75,4.70) circle (7.8);
-    \shade[inner color=scWarn!22, outer color=transparent!0] (4.40,5.35) circle (3.9);
-    \shade[inner color=scGood!24, outer color=transparent!0] (14.60,4.55) circle (4.1);
-  \end{scope}
-  \draw[sc/frame, draw=scSteel!88] (0.20,-0.05) rectangle (19.35,9.20);
-  \draw[rounded corners=11pt, line width=0.72pt, draw=scSteel!60, dashed] (0.48,0.23) rectangle (19.07,8.92);
+%% ══════════════════════════════════════════════════════════
+%%  HEADER BANNER
+%% ══════════════════════════════════════════════════════════
+\fill[panelmid,opacity=0.90,rounded corners=5pt]
+  (0.2,15.05) rectangle (27.8,16.15);
+\draw[stargold!50,line width=0.75pt,rounded corners=5pt]
+  (0.2,15.05) rectangle (27.8,16.15);
+
+\node[anchor=north west,font=\normalsize\bfseries\color{monolightred},text width=10.9cm,align=left]
+  at (0.45,16.15)
+  {VERTICAL SCALE-UP};
+
+\node[anchor=north east,font=\normalsize\bfseries\color{neoncyan},text width=10.9cm,align=right]
+  at (27.55,16.15)
+  {HORIZONTAL SCALE-OUT\enspace$\leftrightarrow$};
+
+%% ══════════════════════════════════════════════════════════
+%%  CENTRAL DIVIDER + VS BADGE
+%% ══════════════════════════════════════════════════════════
+\fill[white,opacity=0.03] (13.75,-0.3) rectangle (14.25,16.7);
+\draw[white!28,line width=0.45pt,dashed] (14.0,-0.3) -- (14.0,15.05);
+
+\fill[paneldark] (14.0,8.15) circle (0.88cm);
+\draw[stargold,line width=1.5pt] (14.0,8.15) circle (0.88cm);
+\draw[stargold!28,line width=2.8pt,opacity=0.16] (14.0,8.15) circle (1.20cm);
+\draw[stargold!14,line width=4.0pt,opacity=0.08] (14.0,8.15) circle (1.55cm);
+\node[font=\Large\bfseries\color{stargold}] at (14.0,8.15) {VS};
+
+%% ══════════════════════════════════════════════════════════
+%%  LEFT: THE MONOLITH SINGULARITY
+%% ══════════════════════════════════════════════════════════
+
+%% Doom aura (lighter so foreground reads cleaner)
+\fill[monolithred,opacity=0.045] (6.5,8.2) ellipse (5.6cm and 5.2cm);
+\fill[monolithred,opacity=0.02] (6.5,8.2) ellipse (7.2cm and 6.4cm);
+
+%% 3-D Monolith tower  (front, top, right faces)
+\def\MX{4.8}\def\MY{5.9}\def\MW{3.2}\def\MH{5.0}\def\DE{0.70}
+
+%% front
+\fill[monolithred!50!panelmid]
+  (\MX,\MY)--(\MX+\MW,\MY)--(\MX+\MW,\MY+\MH)--(\MX,\MY+\MH)--cycle;
+\draw[monolightred!60,line width=0.9pt]
+  (\MX,\MY)--(\MX+\MW,\MY)--(\MX+\MW,\MY+\MH)--(\MX,\MY+\MH)--cycle;
+
+%% top
+\fill[monolithred!68!panelmid]
+  (\MX,\MY+\MH)--(\MX+\DE,\MY+\MH+\DE*0.5)
+  --(\MX+\MW+\DE,\MY+\MH+\DE*0.5)--(\MX+\MW,\MY+\MH)--cycle;
+\draw[monolightred!75,line width=0.7pt]
+  (\MX,\MY+\MH)--(\MX+\DE,\MY+\MH+\DE*0.5)
+  --(\MX+\MW+\DE,\MY+\MH+\DE*0.5)--(\MX+\MW,\MY+\MH)--cycle;
+
+%% right side
+\fill[monolithred!25!panelmid]
+  (\MX+\MW,\MY)--(\MX+\MW+\DE,\MY+\DE*0.5)
+  --(\MX+\MW+\DE,\MY+\MH+\DE*0.5)--(\MX+\MW,\MY+\MH)--cycle;
+\draw[monolightred!50,line width=0.7pt]
+  (\MX+\MW,\MY)--(\MX+\MW+\DE,\MY+\DE*0.5)
+  --(\MX+\MW+\DE,\MY+\MH+\DE*0.5)--(\MX+\MW,\MY+\MH)--cycle;
+
+%% LED strips on front
+\foreach \ry/\rc in {
+  0.30/neongreen,  0.60/neongreen,
+  0.92/warnamber,  1.24/warnamber,
+  1.56/monolightred, 1.88/monolightred,
+  2.20/neongreen,  2.52/warnamber,
+  2.84/monolightred, 3.20/neongreen,
+  3.55/warnamber,  3.90/monolightred,
+  4.30/neongreen,  4.62/warnamber}{
+  \fill[\rc,opacity=0.72](\MX+0.25,\MY+\ry)rectangle(\MX+2.90,\MY+\ry+0.10);
+  \fill[\rc,opacity=0.14](\MX+0.22,\MY+\ry-0.02)rectangle(\MX+2.93,\MY+\ry+0.14);
+  \fill[white,opacity=0.65](\MX+2.95,\MY+\ry+0.04)circle(0.038);
+}
+
+%% vent slits on right face
+\foreach \vv in {0.25,0.48,0.71,0.94,1.17,1.40,1.63,1.86,2.09,2.32,
+                 2.55,2.78,3.01,3.24,3.47,3.70,3.93,4.20,4.50}{
+  \draw[monolightred!22,line width=0.28pt]
+    (\MX+\MW+0.06,\MY+\vv)--(\MX+\MW+\DE-0.06,\MY+\vv+\DE*0.24);
+}
+
+%% label inside monolith
+\node[font=\normalsize\bfseries\color{white},align=center]
+  at (\MX+\MW/2,\MY+\MH/2+0.3)
+  {\textbf{PostgreSQL}\\[3pt]\textbf{Primary}\\[6pt]
+   {\footnotesize\color{monolightred!85}ALL DATA HERE}};
+
+%% heat waves off top
+\foreach \ang/\al/\aop in {
+  88/1.1/.60,  96/1.4/.50, 104/0.9/.65,
+  112/1.5/.48, 120/1.2/.58, 128/1.0/.52, 136/1.3/.55}{
+  \draw[monolightred!55,line width=0.55pt,opacity=\aop,
+        decorate,decoration={snake,amplitude=1.6pt,segment length=5pt}]
+    (\MX+\MW/2+\DE/2,\MY+\MH+\DE*0.48)++({\al*0.01*cos(\ang)},{\al*0.01*sin(\ang)})
+    --({\MX+\MW/2+\DE/2+cos(\ang)*\al},{\MY+\MH+\DE*0.48+sin(\ang)*\al});
+}
+
+%% HARDWARE CEILING - brick wall (raised for gap under header)
+\fill[monolightred!20,opacity=0.32](0.7,13.68)rectangle(12.9,14.63);
+\foreach \bx in {0.7,1.5,2.3,3.1,3.9,4.7,5.5,6.3,7.1,7.9,8.7,9.5,10.3,11.1,11.9,12.7}{
+  \draw[monolightred!28,line width=0.28pt](\bx,13.68)--(\bx,14.63);}
+\foreach \bx in {1.1,1.9,2.7,3.5,4.3,5.1,5.9,6.7,7.5,8.3,9.1,9.9,10.7,11.5,12.3}{
+  \draw[monolightred!18,line width=0.20pt](\bx,13.68)--(\bx,14.15);
+  \draw[monolightred!18,line width=0.20pt](\bx,14.15)--(\bx,14.63);}
+\draw[monolightred!85,line width=2.0pt](0.7,14.15)--(12.9,14.15);
+\draw[monolightred!38,line width=0.7pt](0.7,13.68)--(12.9,13.68);
+\draw[monolightred!38,line width=0.7pt](0.7,14.63)--(12.9,14.63);
+
+%% Lock drawn on ceiling
+\fill[monolightred!55!paneldark,rounded corners=2pt]
+  (9.40,14.18)rectangle(10.55,14.98);
+\fill[paneldark](9.60,14.38)rectangle(10.35,14.88);
+\draw[monolightred!65,line width=0.6pt,rounded corners=1pt]
+  (9.60,14.38)rectangle(10.35,14.88);
+\fill[paneldark,rounded corners=0.5pt](9.82,14.51)rectangle(10.13,14.75);
+\draw[monolightred!75,line width=1.4pt]
+  (9.81,14.36)arc(180:0:0.095)--(10.18,14.43);
+
+\node[anchor=west,font=\footnotesize\bfseries\color{monolightred}]
+  at (10.72,14.40){HARDWARE CEILING};
+\node[anchor=west,font=\tiny\color{monolightred!65}]
+  at (10.72,14.00){physical limit - can't go beyond};
+
+%% BIG scale-up arrow hitting ceiling
+\draw[-{Latex[length=4.5mm]},line width=2.4pt,monolightred!72]
+  (\MX+\MW/2+\DE/2,\MY+\MH+\DE*0.52+0.12)--(\MX+\MW/2+\DE/2,13.63);
+\node[rotate=90,font=\footnotesize\bfseries\color{monolightred!65}]
+  at (\MX+\MW/2+\DE/2-0.75,11.25){SCALE UP};
+\node[font=\huge\bfseries\color{monolightred},opacity=0.80]
+  at (\MX+\MW/2+\DE/2,13.38){$\times$};
+
+%% Ghost bigger machine
+\fill[monolithred!10!panelmid,rounded corners=3pt,opacity=0.42]
+  (\MX-0.45,\MY+\MH+\DE*0.56+0.22)rectangle(\MX+\MW+0.60,13.45);
+\draw[monolightred!28,line width=0.45pt,rounded corners=3pt,dashed,opacity=0.60]
+  (\MX-0.45,\MY+\MH+\DE*0.56+0.22)rectangle(\MX+\MW+0.60,13.45);
+\node[font=\tiny\color{monolightred!45},align=center]
+  at (\MX+\MW/2+0.1,12.62){bigger machine\\(phantom)};
+
+%% LEFT METRIC BADGES (fixed columns; nudged down + left toward VERTICAL SCALE-UP)
+\foreach \by/\lbl/\val/\bc in {
+  10.72/CPU Util./96\%/monolightred,
+  9.82/RAM Usage/92\%/warnamber,
+  8.92/{Disk I/O}/88\%/warnamber,
+  8.02/Throughput/$1\times$/neoncyan}{
+  \fill[\bc!17!paneldark,rounded corners=3.5pt,opacity=0.88]
+    (0.52,\by-0.42)rectangle(4.12,\by+0.42);
+  \draw[\bc!52,line width=0.50pt,rounded corners=3.5pt]
+    (0.52,\by-0.42)rectangle(4.12,\by+0.42);
+  \node[anchor=west,font=\scriptsize\color{white},text width=2.35cm,align=left]
+    at (0.64,\by){\textbf{\lbl}};
+  \node[anchor=east,font=\scriptsize\bfseries,text=\bc]
+    at (4.00,\by){\val};
+}
+
+%% SPOF badge (compact triangle + exclamation; smaller type)
+\fill[monolithred!40!paneldark,rounded corners=3.5pt,opacity=0.92]
+  (7.85,4.52)rectangle(12.35,5.88);
+\draw[monolightred,line width=0.85pt,rounded corners=3.5pt]
+  (7.85,4.52)rectangle(12.35,5.88);
+\fill[monolightred!95!black] (8.38,4.68)--(8.78,5.42)--(9.18,4.68)--cycle;
+\draw[monolightred!75,line width=0.28pt]
+  (8.38,4.68)--(8.78,5.42)--(9.18,4.68)--cycle;
+\node[font=\scriptsize\bfseries,text=white] at (8.78,5.05){!};
+\node[anchor=west,font=\scriptsize\bfseries\color{monolightred}]
+  at (9.38,5.48){SINGLE POINT};
+\node[anchor=west,font=\scriptsize\bfseries\color{monolightred}]
+  at (9.38,5.18){OF FAILURE};
+\node[anchor=west,font=\tiny\color{monolightred!62}]
+  at (9.38,4.78){one node $\Rightarrow$ total outage};
+
+%% Exponential cost chart (left) - up-left under VERTICAL SCALE-UP
+\begin{scope}[xshift=0.48cm,yshift=1.48cm]
+  \fill[panelmid,rounded corners=4pt,opacity=0.82]
+    (0,0)rectangle(3.8,4.0);
+  \draw[white!14,line width=0.4pt,rounded corners=4pt]
+    (0,0)rectangle(3.8,4.0);
+  \node[font=\tiny\bfseries\color{white!60},anchor=north west]
+    at(0.12,3.92){Cost vs.\ Capacity};
+  \draw[->,white!32,line width=0.55pt]
+    (0.30,0.35)--(3.58,0.35)node[right,font=\tiny\color{white!38}]{cap.};
+  \draw[->,white!32,line width=0.55pt]
+    (0.30,0.35)--(0.30,3.76)node[above,font=\tiny\color{white!38}]{\$};
+  \draw[monolightred!88,line width=1.25pt]
+    plot[smooth,tension=0.55] coordinates
+    {(0.42,0.48)(0.85,0.55)(1.35,0.72)(1.95,1.15)(2.45,1.95)(2.95,3.05)(3.35,3.48)};
+  \draw[monolightred!52,dashed,line width=0.6pt]
+    (0.30,3.48)--(3.58,3.48);
+  \node[font=\tiny\bfseries\color{monolightred},anchor=south east]
+    at(3.52,3.50){ceiling};
+  \draw[-{Latex[length=1.8mm]},monolightred,line width=0.75pt]
+    (3.12,3.05)--(3.25,3.46);
+  \node[font=\tiny\color{white!45},align=center,anchor=north]
+    at(1.85,0.42){exponential $\nearrow$ then wall};
 \end{scope}
 
-\draw[sc/panel, draw=scWarn!66] (0.80,0.65) rectangle (9.10,8.55);
-\draw[sc/panel, draw=scGood!66] (9.70,0.65) rectangle (18.75,8.55);
-\draw[line width=0.8pt, draw=scSteel!75, dashed] (9.40,0.55) -- (9.40,8.65);
+%% ══════════════════════════════════════════════════════════
+%%  RIGHT: THE DISTRIBUTED CONSTELLATION
+%% ══════════════════════════════════════════════════════════
 
-\node[sc/tag, draw=scWarn!76, fill=scWarnSoft!16!black] at (4.95,8.72)
-  {\faIcon{bolt}\ Vertical scale-up: pressure concentrates};
-\node[sc/tag, draw=scGood!78, fill=scGoodSoft!15!black] at (14.22,8.72)
-  {\faIcon{network-wired}\ Horizontal shard scale-out: pressure distributes};
-\node[sc/tag, draw=scSteel!86, fill=black!48] at (9.40,9.02)
-  {\faIcon{route}\ Throughput architecture trade-off lens};
+\fill[shardblue,opacity=0.035](21.0,8.5)ellipse(6.2cm and 5.5cm);
 
-% Left side: bottleneck funnel scene
-\node[sc/call, draw=scWarn!66, fill=black!38, text width=2.8cm] at (1.72,7.55)
-  {Ingress pressure\\single intake path};
-\draw[sc/warn] (2.65,7.45) -- (3.25,7.15);
+%% HASH ROUTER hub
+\fill[stargold!22!panelmid](21.0,8.5)circle(1.08cm);
+\draw[stargold,line width=1.5pt](21.0,8.5)circle(1.08cm);
+\draw[stargold!32,line width=2.4pt,opacity=0.20](21.0,8.5)circle(1.42cm);
+\draw[stargold!16,line width=3.8pt,opacity=0.09](21.0,8.5)circle(1.78cm);
 
-\path[draw=scWarn!88, fill=scWarnSoft!20!black, line width=1.0pt]
-  (1.40,7.35) -- (8.20,7.35) -- (6.85,4.95) -- (5.72,2.88) -- (3.88,2.88) -- (2.75,4.95) -- cycle;
-\path[draw=scWarn!70, fill=scWarn!10!black, line width=0.8pt]
-  (2.08,6.70) -- (7.52,6.70) -- (6.48,4.95) -- (5.60,3.40) -- (4.00,3.40) -- (3.12,4.95) -- cycle;
+\node[font=\small\bfseries\color{stargold},align=center]
+  at(21.0,8.72){HASH};
+\node[font=\small\bfseries\color{stargold},align=center]
+  at(21.0,8.28){ROUTER};
 
-\node[sc/single] (singlecore) at (4.80,1.82)
-  {\faIcon{database}\ Single PostgreSQL\\critical node};
-\draw[sc/warn] (4.80,2.86) -- (4.80,2.28);
+%% spinning arrow arcs inside router
+\draw[stargold!65,line width=0.65pt,->]
+  (21.0,8.5)++(0:0.52)arc(0:115:0.52);
+\draw[stargold!65,line width=0.65pt,->]
+  (21.0,8.5)++(120:0.52)arc(120:235:0.52);
+\draw[stargold!65,line width=0.65pt,->]
+  (21.0,8.5)++(240:0.52)arc(240:355:0.52);
 
-\draw[sc/warn] (2.10,7.92) -- (3.75,7.42);
-\draw[sc/warn] (4.80,7.92) -- (4.80,7.42);
-\draw[sc/warn] (7.50,7.92) -- (5.85,7.42);
+%% orbit ring (fainter; was visually noisy behind labels)
+\draw[neoncyan!18,line width=0.55pt,dashed,opacity=0.18]
+  (21.0,8.5)ellipse(4.6cm and 4.1cm);
 
-\draw[line width=0.95pt, draw=scWarn!88, dashed] (1.25,8.06) -- (8.35,8.06);
-\node[sc/call, draw=scWarn!74, fill=black!40] at (4.80,8.28) {Hardware ceiling};
+%% THREE SHARD PLANETS (more vertical spread vs router + bottom band)
+\def\SAX{16.6}\def\SAY{12.35}
+\def\SBX{25.4}\def\SBY{12.62}
+\def\SCX{21.0}\def\SCY{5.25}
 
-\node[sc/stresschip] at (1.95,4.28) {CPU 92\%};
-\node[sc/stresschip] at (1.95,3.76) {IO wait 31\%};
-\node[sc/stresschip] at (1.95,3.24) {Queue depth 4.8x};
+%% Shard 0 (upper-left, teal)
+\fill[shardteal!32!panelmid](\SAX,\SAY)circle(1.22cm);
+\draw[shardteal,line width=1.3pt](\SAX,\SAY)circle(1.22cm);
+\draw[shardteal!26,line width=2.2pt,opacity=0.18](\SAX,\SAY)circle(1.58cm);
+\draw[shardteal!48,line width=0.58pt,opacity=0.55,rotate around={-18:(\SAX,\SAY)}]
+  (\SAX,\SAY)ellipse(1.70cm and 0.36cm);
+\dbcyl{\SAX}{\SAY+0.18}{shardteal}
+\node[font=\tiny\bfseries\color{white},align=center]
+  at(\SAX,\SAY-0.55){\texttt{Shard 0}};
 
-\node[sc/metric, draw=scWarn!78, fill=scWarnSoft!20!black] at (4.80,0.97)
-  {\texttimes\ SPOF + finite hardware envelope};
-\node[sc/call, draw=scWarn!70, fill=black!40, text width=2.75cm] at (7.45,2.08)
-  {Diminishing returns\\as machine size increases};
-\draw[sc/ghost] (6.35,2.18) -- (5.55,2.02);
+%% Shard 1 (upper-right, blue)
+\fill[shardblue!32!panelmid](\SBX,\SBY)circle(1.22cm);
+\draw[shardblue!78,line width=1.3pt](\SBX,\SBY)circle(1.22cm);
+\draw[shardblue!24,line width=2.2pt,opacity=0.18](\SBX,\SBY)circle(1.58cm);
+\draw[shardblue!48,line width=0.58pt,opacity=0.55,rotate around={22:(\SBX,\SBY)}]
+  (\SBX,\SBY)ellipse(1.70cm and 0.36cm);
+\dbcyl{\SBX}{\SBY+0.18}{shardblue}
+\node[font=\tiny\bfseries\color{white},align=center]
+  at(\SBX,\SBY-0.55){\texttt{Shard 1}};
 
-% Right side: parallel shard streams scene
-\node[sc/router] (router) at (11.10,7.06)
-  {\faIcon{route}\\Router};
-\node[sc/call, draw=scGood!72, fill=black!36, text width=2.7cm] at (12.85,7.95)
-  {Shard key routing\\fan-out by id mod N};
-\draw[sc/good] (12.00,7.60) -- (11.48,7.25);
+%% Shard 2 (bottom-centre, mint)
+\fill[shardmint!26!panelmid](\SCX,\SCY)circle(1.22cm);
+\draw[shardmint,line width=1.3pt](\SCX,\SCY)circle(1.22cm);
+\draw[shardmint!26,line width=2.2pt,opacity=0.18](\SCX,\SCY)circle(1.58cm);
+\draw[shardmint!48,line width=0.58pt,opacity=0.55,rotate around={-8:(\SCX,\SCY)}]
+  (\SCX,\SCY)ellipse(1.70cm and 0.36cm);
+\dbcyl{\SCX}{\SCY+0.18}{shardmint}
+\node[font=\tiny\bfseries\color{white},align=center]
+  at(\SCX,\SCY-0.55){\texttt{Shard 2}};
 
-\draw[sc/lane] (10.45,6.10) rectangle (16.78,6.92);
-\draw[sc/lane] (10.45,4.50) rectangle (16.78,5.32);
-\draw[sc/lane] (10.45,2.90) rectangle (16.78,3.72);
-\draw[rounded corners=5pt, draw=scMute!72, line width=0.72pt, dashed, fill=black!20] (10.45,1.35) rectangle (16.78,2.12);
+%% BEAMS Router to Shards (angles computed manually)
+%% Router to S0: dir ~147deg
+\draw[-{Latex[length=3.5mm]},shardteal!88,line width=1.4pt]
+  ({21.0+1.11*cos(147)},{8.5+1.11*sin(147)})
+  --({16.6+1.25*cos(-33)},{12.35+1.25*sin(-33)});
+\draw[-{Latex[length=2.4mm]},shardteal!38,line width=0.68pt,dashed]
+  ({16.6+1.25*cos(-26)},{12.35+1.25*sin(-26)})
+  --({21.0+1.11*cos(141)},{8.5+1.11*sin(141)});
 
-\draw[sc/good] (11.30,6.51) -- (15.95,6.51);
-\draw[sc/good] (11.30,4.91) -- (15.95,4.91);
-\draw[sc/good] (11.30,3.31) -- (15.95,3.31);
-\draw[sc/ghost] (11.30,1.74) -- (15.95,1.74);
+%% Router to S1: dir ~33deg (SBY tuned so arrowhead meets Shard 1 rim)
+\draw[-{Latex[length=3.5mm]},shardblue!88,line width=1.4pt]
+  ({21.0+1.11*cos(33)},{8.5+1.11*sin(33)})
+  --({\SBX+1.25*cos(147)},{\SBY+1.25*sin(147)});
+\draw[-{Latex[length=2.4mm]},shardblue!38,line width=0.68pt,dashed]
+  ({\SBX+1.25*cos(154)},{\SBY+1.25*sin(154)})
+  --({21.0+1.11*cos(40)},{8.5+1.11*sin(40)});
 
-\node[sc/shard] (sh0) at (17.65,6.51) {\faIcon{database}\ Shard 0};
-\node[sc/shard] (sh1) at (17.65,4.91) {\faIcon{database}\ Shard 1};
-\node[sc/shard] (sh2) at (17.65,3.31) {\faIcon{database}\ Shard 2};
-\node[rounded corners=4pt, draw=scMute!82, fill=black!26, line width=0.75pt, minimum width=2.15cm, minimum height=1.0cm, text=scMute, font=\scriptsize\bfseries, align=center]
-  (shx) at (17.65,1.74) {N+1 ghost\\expansion shard};
+%% Router to S2: dir ~270deg
+\draw[-{Latex[length=3.5mm]},shardmint!88,line width=1.4pt]
+  ({21.0+1.11*cos(270)},{8.5+1.11*sin(270)})
+  --({21.0+1.25*cos(90)},{5.25+1.25*sin(90)});
+\draw[-{Latex[length=2.4mm]},shardmint!38,line width=0.68pt,dashed]
+  ({21.0+1.25*cos(83)},{5.25+1.25*sin(83)})
+  --({21.0+1.11*cos(263)},{8.5+1.11*sin(263)});
 
-\draw[sc/good] (12.00,6.88) -- (10.78,6.58);
-\draw[sc/good] (12.00,7.00) -- (10.78,4.99);
-\draw[sc/good] (12.00,7.12) -- (10.78,3.41);
+%% Beam labels
+\node[font=\tiny\bfseries\color{shardteal!80},rotate=37]
+  at(18.65,10.85){route};
+\node[font=\tiny\bfseries\color{shardblue!80},rotate=-37]
+  at(23.35,10.98){route};
+\node[font=\tiny\bfseries\color{shardmint!80}]
+  at(21.65,6.95){route};
 
-\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,6.95) {Lane A: 1x stream};
-\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,5.35) {Lane B: 1x stream};
-\node[sc/call, draw=scGood!72, fill=black!36] at (13.55,3.75) {Lane C: 1x stream};
-\node[sc/call, draw=scMute!72, fill=black!32] at (13.55,2.12) {Elastic lane ready};
+%% EXPANSION GHOST (Shard N) — nudged up to clear Cost vs.\ Capacity (right)
+\fill[neoncyan!10!paneldark,opacity=0.62](27.1,6.28)circle(0.92cm);
+\draw[neoncyan!38,line width=0.85pt,dashed](27.1,6.28)circle(0.92cm);
+\draw[-{Latex[length=2.4mm]},neoncyan!38,line width=0.78pt,dashed]
+  ({21.0+1.11*cos(-22)},{8.5+1.11*sin(-22)})--(26.20,6.58);
+%% plus symbol
+\draw[neoncyan!68,line width=1.2pt](26.88,6.28)--(27.32,6.28);
+\draw[neoncyan!68,line width=1.2pt](27.10,6.06)--(27.10,6.50);
+\node[font=\tiny\bfseries\color{neoncyan!72},below,align=center]
+  at(27.1,5.30){Shard N\\elastic};
 
-\node[sc/metric, draw=scGood!86, fill=scGoodSoft!18!black] at (14.60,0.98)
-  {\faIcon{check-circle}\ Aggregate throughput scales with shard count};
-\node[sc/call, draw=scGood!72, fill=black!36, text width=2.8cm] at (18.28,5.90)
-  {Failure domain isolation\\limits blast radius};
-\draw[sc/ghost] (17.98,5.55) -- (17.86,5.12);
+%% APP CLIENT to Router (extra gap under title banner)
+\fill[iitgngold!22!panelmid,rounded corners=4pt]
+  (19.2,13.58)rectangle(22.8,14.70);
+\draw[iitgngold!62,line width=0.8pt,rounded corners=4pt]
+  (19.2,13.58)rectangle(22.8,14.70);
+%% laptop drawn
+\fill[iitgngold!38](19.65,14.00)rectangle(22.35,14.46);
+\draw[iitgngold!65,line width=0.38pt](19.65,14.00)rectangle(22.35,14.46);
+\fill[iitgngold!18](19.45,13.74)rectangle(22.55,14.03);
+\draw[iitgngold!55,line width=0.32pt](19.45,13.74)rectangle(22.55,14.03);
+\node[font=\footnotesize\bfseries\color{iitgngold},align=center]
+  at(21.0,14.24){GateGuard App};
+\draw[-{Latex[length=3.5mm]},iitgngold!72,line width=1.2pt]
+  (21.0,13.58)--(21.0,9.62);
+\node[font=\tiny\bfseries\color{iitgngold!62},anchor=west]
+  at(21.15,11.55){query};
 
-% Comparative overlays and legend
-\node[sc/metric, draw=scSteel!86, fill=black!46, text width=11.4cm, align=center] at (9.45,0.22)
-  {\textbf{Comparison ribbon:} Scale-up pushes one box harder (risk and ceiling rise together), while scale-out adds parallel lanes where capacity and resilience grow as shards are added.};
-
-\node[sc/call, draw=scSteel!80, fill=black!36] at (3.25,0.22) {Risk profile: concentrated};
-\node[sc/call, draw=scSteel!80, fill=black!36] at (15.70,0.22) {Risk profile: distributed};
-
-\node[sc/tag, draw=scSteel!82, fill=black!42, text=scMute] at (9.45,8.36)
-  {\faIcon{bolt}\ red vectors = pressure concentration \qquad \faIcon{database}\ green lanes = parallel throughput \qquad dashed lane = future shard elasticity};
-\end{tikzpicture}
+%% RIGHT METRIC BADGES (further down toward HORIZONTAL SCALE-OUT)
+\foreach \by/\lbl/\val/\bc in {
+  10.78/Load Balance/Equal/neongreen,
+  9.88/Fault Isolation/High/neoncyan,
+  8.98/Throughput/$3\times$/stargold,
+  8.08/Elasticity/Infinite/neongreen}{
+  \fill[\bc!14!paneldark,rounded corners=3.5pt,opacity=0.88]
+    (23.75,\by-0.42)rectangle(27.85,\by+0.42);
+  \draw[\bc!52,line width=0.50pt,rounded corners=3.5pt]
+    (23.75,\by-0.42)rectangle(27.85,\by+0.42);
+  \node[anchor=west,font=\scriptsize\color{white},text width=2.55cm,align=left]
+    at(23.88,\by){\textbf{\lbl}};
+  \node[anchor=east,font=\scriptsize\bfseries,text=\bc]
+    at(27.72,\by){\val};
 }
-\caption{Vertical scale-up vs horizontal shard scale-out}
+
+%% MINI SHARD ROW  (linear growth visual; clear band above bottom banners)
+\foreach \idx/\sx/\sc in {0/15.0/shardteal, 1/16.8/shardblue, 2/18.6/shardmint}{
+  \fill[\sc!25!panelmid,rounded corners=2.5pt](\sx,1.12)rectangle(\sx+1.52,2.62);
+  \draw[\sc!62,line width=0.62pt,rounded corners=2.5pt](\sx,1.12)rectangle(\sx+1.52,2.62);
+  \dbcyl{\sx+0.76}{2.04}{\sc}
+  \node[font=\tiny\bfseries\color{white}]at(\sx+0.76,1.35){S\idx};
+}
+\draw[-{Latex[length=3mm]},neoncyan!72,line width=1.4pt](20.32,1.87)--(21.90,1.87);
+\fill[neoncyan!12!panelmid,rounded corners=2.5pt,opacity=0.70]
+  (22.0,1.12)rectangle(23.52,2.62);
+\draw[neoncyan!42,line width=0.62pt,rounded corners=2.5pt,dashed]
+  (22.0,1.12)rectangle(23.52,2.62);
+\draw[neoncyan!62,line width=1.15pt](22.58,1.87)--(23.00,1.87);
+\draw[neoncyan!62,line width=1.15pt](22.79,1.66)--(22.79,2.08);
+\node[font=\tiny\bfseries\color{neoncyan!68}]at(22.76,1.35){add};
+\node[font=\tiny\color{white!55},align=center]
+  at(18.4,2.68){Add commodity node $\Rightarrow$ linear cost growth};
+
+%% Linear cost chart (right) - up-right under HORIZONTAL SCALE-OUT
+\begin{scope}[xshift=24.05cm,yshift=1.48cm]
+  \fill[panelmid,rounded corners=4pt,opacity=0.82]
+    (0,0)rectangle(3.8,4.0);
+  \draw[white!14,line width=0.4pt,rounded corners=4pt]
+    (0,0)rectangle(3.8,4.0);
+  \node[font=\tiny\bfseries\color{white!60},anchor=north west]
+    at(0.12,3.92){Cost vs.\ Capacity};
+  \draw[->,white!32,line width=0.55pt]
+    (0.30,0.35)--(3.58,0.35)node[right,font=\tiny\color{white!38}]{cap.};
+  \draw[->,white!32,line width=0.55pt]
+    (0.30,0.35)--(0.30,3.76)node[above,font=\tiny\color{white!38}]{\$};
+  \draw[neongreen!88,line width=1.35pt]
+    (0.38,0.48)--(3.32,3.58);
+  \fill[neongreen!90!black](3.32,3.58)circle(0.085);
+  \node[font=\tiny\bfseries\color{neongreen},anchor=west]
+    at(3.40,3.56){\ding{51}};
+  \node[font=\tiny\color{white!45},align=center,anchor=north]
+    at(1.85,0.42){linear $\nearrow$ add a node};
+\end{scope}
+
+%% ══════════════════════════════════════════════════════════
+%%  CENTRE: compact hash routing callout (mini row sits below)
+%% ══════════════════════════════════════════════════════════
+\fill[panelmid,rounded corners=3pt,opacity=0.94]
+  (11.35,3.12)rectangle(16.65,3.88);
+\draw[stargold!55,line width=0.65pt,rounded corners=3pt]
+  (11.35,3.12)rectangle(16.65,3.88);
+\node[font=\tiny\bfseries\color{stargold},align=center,text width=5.0cm]
+  at(14.0,3.50){GateGuard Hash Routing\\[1pt]
+  {\color{neoncyan}\scriptsize $\texttt{shard\_id}=\texttt{member\_id}\bmod 3$}};
+
+%% ══════════════════════════════════════════════════════════
+%%  BOTTOM SUMMARY BANNERS
+%% ══════════════════════════════════════════════════════════
+\fill[monolithred!24!paneldark,rounded corners=4pt,opacity=0.88]
+  (0.35,0.08)rectangle(13.45,1.02);
+\draw[monolightred!42,line width=0.62pt,rounded corners=4pt]
+  (0.35,0.08)rectangle(13.45,1.02);
+\node[font=\scriptsize\bfseries\color{monolightred},align=center]
+  at(6.9,0.55){$\uparrow$ Bigger hardware\enspace$\cdot$\enspace
+   \ding{55}\ Bounded by ceiling\enspace$\cdot$\enspace
+   \ding{55}\ Total outage risk};
+
+\fill[shardblue!20!paneldark,rounded corners=4pt,opacity=0.88]
+  (14.55,0.08)rectangle(27.65,1.02);
+\draw[neoncyan!38,line width=0.62pt,rounded corners=4pt]
+  (14.55,0.08)rectangle(27.65,1.02);
+\node[font=\scriptsize\bfseries\color{neoncyan},align=center]
+  at(21.1,0.55){$\leftrightarrow$ Add nodes\enspace$\cdot$\enspace
+   \ding{51}\ Linear cost\enspace$\cdot$\enspace
+   \ding{51}\ Isolated failure domains\enspace$\cdot$\enspace
+   \ding{51}\ Elastic};
+
+%% ══════════════════════════════════════════════════════════
+%%  PREMIUM OUTER FRAME + CORNER ACCENTS
+%% ══════════════════════════════════════════════════════════
+\draw[stargold!32,line width=1.2pt,rounded corners=8pt]
+  (-0.15,-0.15)rectangle(28.15,16.55);
+\draw[white!6,line width=0.5pt,rounded corners=12pt]
+  (-0.28,-0.28)rectangle(28.28,16.68);
+
+\foreach \cx/\cy/\dx/\dy in {
+  -0.15/-0.15/0.72/0, -0.15/-0.15/0/0.72,
+  28.15/-0.15/-0.72/0, 28.15/-0.15/0/0.72,
+  -0.15/16.55/0.72/0, -0.15/16.55/0/-0.72,
+  28.15/16.55/-0.72/0, 28.15/16.55/0/-0.72}{
+  \draw[stargold!72,line width=1.8pt](\cx,\cy)--+(\dx,\dy);
+}
+\foreach \cx/\cy in {-0.15/-0.15,28.15/-0.15,-0.15/16.55,28.15/16.55}{
+  \fill[stargold!48](\cx,\cy)circle(0.11);
+}
+
+\end{tikzpicture}
+}%
+}%
+\caption{Vertical scale-up vs.\ horizontal shard scale-out: one PostgreSQL node under a hardware ceiling with steep cost, versus GateGuard with $\texttt{member\_id} \bmod 3$ on three shards, near-linear node cost, and per-shard isolation.}
 \label{fig:scale_compare}
 \end{figure}
 
@@ -2287,25 +2645,102 @@ There is no global transaction coordinator. If one shard commits between two fan
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[x=0.1cm,y=1cm]
-\draw[->,line width=0.95pt] (0,0) -- (95,0) node[right]{time};
-\fill[criticalred!14,rounded corners=2pt] (50,-0.7) rectangle (65,1.1);
-\node[font=\scriptsize\bfseries\color{criticalred}] at (57.5,1.35) {consistency window};
+\resizebox{0.94\textwidth}{!}{%
+\begin{tikzpicture}[
+  x=1cm,y=1cm,
+  font=\sffamily\small,
+  >=Latex,
+  line cap=round,
+  line join=round,
+]
+% ---- local visual system: minimal educational "snapshot prism" ----
+\colorlet{framec}{iitgnblue!72!black}
+\colorlet{readc}{iitgnblue!85!black}
+\colorlet{writec}{successgreen!72!black}
+\colorlet{hazc}{criticalred!82!black}
+\colorlet{mutedc}{codegray!88!black}
 
-\draw[thick,successgreen!70!black] (10,0.45) -- (90,0.45);
-\node[left,font=\scriptsize\bfseries] at (10,0.45) {Writer};
-\filldraw[successgreen!70!black] (55,0.45) circle (0.085);
-\node[above,font=\scriptsize] at (55,0.45) {commit};
+\tikzset{
+  pane/.style={rounded corners=6pt, draw=framec!50, line width=0.65pt, fill=backcolour!94!white},
+  lane/.style={draw=readc!55, line width=0.55pt},
+  chip/.style={rounded corners=2.5pt, draw=framec!45, fill=white, inner xsep=4pt, inner ysep=2pt, font=\scriptsize},
+  event/.style={circle, inner sep=0pt, minimum size=4.8pt, draw=readc!90, fill=readc!90},
+  pulse/.style={circle, inner sep=0pt, minimum size=5.6pt, draw=writec!90, fill=writec!90},
+  arr/.style={-{Latex[length=3.0mm,width=1.9mm]}, line width=0.8pt}
+}
 
-\draw[thick,iitgnblue] (10,-0.35) -- (90,-0.35);
-\node[left,font=\scriptsize\bfseries] at (10,-0.35) {Reader};
-\filldraw[iitgnblue] (45,-0.35) circle (0.085);
-\filldraw[iitgnblue] (58,-0.35) circle (0.085);
-\filldraw[iitgnblue] (66,-0.35) circle (0.085);
-\node[below,font=\scriptsize] at (45,-0.35) {read shard 0};
-\node[below,font=\scriptsize] at (58,-0.35) {read shard 1};
-\node[below,font=\scriptsize] at (66,-0.35) {read shard 2};
-\end{tikzpicture}
+\def\W{15.2}
+\def\H{6.05}
+\def\L{2.45}
+\def\R{13.25}
+\def\yA{4.62}
+\def\yB{3.64}
+\def\yC{2.66}
+\def\yW{1.56}
+
+\begin{scope}[on background layer]
+  \fill[backcolour!96!white] (0,0) rectangle (\W,\H);
+  \draw[framec!58, line width=0.8pt, rounded corners=6pt] (0,0) rectangle (\W,\H);
+\end{scope}
+
+\node[anchor=west, font=\normalsize\bfseries, text=framec] at (0.45,5.56)
+  {Consistency window as non-global snapshot interval};
+
+% Left and right semantics (spaced to avoid overlap with t0 label)
+\node[chip, text=framec!92!black] (fanoutchip) at (\L-0.10,5.18) {fan-out start};
+\node[chip, text=framec!92!black] (mergechip) at (\R-1.12,5.00) {merge};
+\draw[framec!45, line width=0.42pt] (fanoutchip.south) -- (\L+0.03,\yA+0.18);
+\draw[framec!45, line width=0.42pt] (mergechip.south) -- ++(0,-0.34);
+
+% Read lanes (three shards)
+\foreach \y/\s in {\yA/S0,\yB/S1,\yC/S2}{
+  \draw[lane] (\L,\y) -- (\R,\y);
+  \node[anchor=east, font=\scriptsize\bfseries, text=readc!95!black] at (\L-0.44,\y) {\s};
+  \draw[arr, readc!72] (\L-0.03,\y) -- (\L+0.63,\y);
+  \draw[arr, readc!72] (\R-0.63,\y) -- (\R+0.03,\y);
+}
+
+% Read completion times
+\def\tZero{4.05}
+\def\tOne{6.72}
+\def\tTwo{10.30}
+\node[event] at (\tZero,\yA) {};
+\node[event] at (\tOne,\yB) {};
+\node[event] at (\tTwo,\yC) {};
+\node[above=2.3pt, font=\scriptsize, text=mutedc] at (\tZero,\yA) {$t_0$};
+\node[above=2.3pt, font=\scriptsize, text=mutedc] at (\tOne,\yB) {$t_1$};
+\node[above=2.3pt, font=\scriptsize, text=mutedc] at (\tTwo,\yC) {$t_2$};
+
+% Write lane and commit pulse
+\draw[draw=writec!35, line width=0.42pt] (\L,\yW) -- (\R,\yW);
+\node[anchor=east, font=\scriptsize\bfseries, text=writec!95!black] at (\L-0.44,\yW) {W};
+\def\tCommit{7.55}
+\node[pulse] at (\tCommit,\yW) {};
+\node[above=2.2pt, font=\scriptsize, text=writec!95!black] at (\tCommit,\yW) {commit};
+\draw[arr, writec!82, densely dashed] (\tCommit,\yW+0.13) -- (\tCommit,\yA-0.08);
+
+% Consistency window prism from earliest read to latest read
+\begin{scope}[on background layer]
+  \fill[hazc!10] (\tZero-0.38,\yA+0.34) -- (\tTwo+0.42,\yC-0.36) -- (\tTwo+0.42,\yW-0.35) -- (\tZero-0.38,\yW-0.35) -- cycle;
+\end{scope}
+\draw[hazc!68, line width=0.65pt] (\tZero-0.38,\yA+0.34) -- (\tTwo+0.42,\yC-0.36);
+\draw[hazc!68, line width=0.65pt] (\tZero-0.38,\yW-0.35) -- (\tTwo+0.42,\yW-0.35);
+\draw[hazc!58, <->, line width=0.62pt] (\tZero-0.18,0.66) -- (\tTwo+0.18,0.66);
+\node[font=\footnotesize\bfseries, text=hazc!95!black] at ({(\tZero+\tTwo)/2},0.94)
+  {consistency window $[t_0,t_2]$};
+
+% Soft vertical guides for educational readability
+\foreach \x in {\tZero,\tOne,\tTwo,\tCommit}{
+  \draw[codegray!22, line width=0.35pt, densely dotted] (\x,1.36) -- (\x,4.98);
+}
+
+% Compact legend line (single wrapped line avoids right-edge clipping)
+\node[anchor=south west, font=\scriptsize, text=mutedc, text width=14.2cm, align=left] at (0.45,0.10)
+  {Legend: \textcolor{readc!95!black}{$\bullet$} read response \quad
+   \textcolor{writec!95!black}{$\bullet$} unrelated write commit \quad
+   \textcolor{hazc!90!black}{$\bullet$} merged output may not be one global snapshot.};
+\end{tikzpicture}%
+}%
 \caption{Scatter-gather consistency window timeline}
 \label{fig:consistency_window}
 \end{figure}
