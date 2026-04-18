@@ -46,3 +46,7 @@ __pycache__
 
 # pdf inside the intial documents
 Intial-Documentations/*.pdf
+
+# keep these assignment-4 PDFs local only (not on GitHub)
+assignment-4/Module_B/GateGuard_Assignment2_ModuleB.pdf
+assignment-4/GateGuard_Assignment3_Report.pdf
