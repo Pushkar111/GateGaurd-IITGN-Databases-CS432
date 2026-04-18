@@ -19,7 +19,7 @@ Course context:
 - CS432 Databases
 - IIT Gandhinagar
 - Semester II, 2025-26
-- Assignment 2 (Module A + Module B) and Assignment 3 (Module A + Module B)
+- Assignment 2 (Module A + Module B), Assignment 3 (Module A + Module B), and Assignment 4 (Module A + Module B)
 
 ## Deliverables Index
 
@@ -34,6 +34,15 @@ Course context:
 - Module B stress test suite: [assignment-3/Module_B/stress_tests/](assignment-3/Module_B/stress_tests/)
 - Full report (PDF): [assignment-3/GateGuard_Assignment3_Report.pdf](assignment-3/GateGuard_Assignment3_Report.pdf)
 - Assignment 3 demo video: [Watch on YouTube](https://youtu.be/oKl7505LjB8)
+
+**Assignment 4**
+- Module A sharding proof notebook: [assignment-4/Module_A/test_sharding.ipynb](assignment-4/Module_A/test_sharding.ipynb)
+- Module A migration utility: [assignment-4/Module_A/migrate_to_docker_shards.py](assignment-4/Module_A/migrate_to_docker_shards.py)
+- Module A sharding SQL pipeline: [assignment-4/Module_A/schema/](assignment-4/Module_A/schema/)
+- Module B shard router (JS): [assignment-4/Module_B/backend/src/utils/shardRouter.js](assignment-4/Module_B/backend/src/utils/shardRouter.js)
+- Module B shard-aware visit service: [assignment-4/Module_B/backend/src/services/personVisit.service.js](assignment-4/Module_B/backend/src/services/personVisit.service.js)
+- Assignment 4 report (PDF): [assignment-4/GateGuard_Assignment4_Report.pdf](assignment-4/GateGuard_Assignment4_Report.pdf)
+- Assignment 4 Docker orchestration: [assignment-4/docker-compose.yml](assignment-4/docker-compose.yml)
 
 ---
 
@@ -163,34 +172,59 @@ IITGN-Databases-GateGuard/
 |               |-- pages/
 |               |-- styles/
 |-- assignment-3/
-    |-- Module_A/
-    |   |-- database/
-    |   |   |-- wal.py             # Write-Ahead Log engine with fsync
-    |   |   |-- transaction.py     # TransactionManager + LIFO Undo Stack
-    |   |   |-- recovery.py        # Crash recovery via WAL REDO
-    |   |   |-- consistency.py     # B+ Tree structural invariant checker
-    |   |   |-- bplustree.py       # B+ Tree order-4 (from Assignment 2)
-    |   |   |-- db_manager.py
-    |   |   |-- table.py
-    |   |-- logs/
-    |   |   |-- test_log.jsonl     # Real WAL records written during tests
-    |   |-- test_transactions.ipynb  # 5-cell ACID proof notebook
-    |-- Module_B/
-    |   |-- backend/               # Node.js + PostgreSQL API (from A2)
-    |   |-- stress_tests/
-    |       |-- race_condition_test.py      # 50-thread concurrent race test
-    |       |-- failure_simulation_test.py  # 4 failure scenario tests
-    |       |-- locust_gateguard.py         # Locust load test file
-    |       |-- load_profile_runner.py
-    |       |-- utils/
-    |       |   |-- api_client.py
-    |       |   |-- db_check.py
-    |       |-- results/
-    |           |-- race_results.json       # 50-thread raw results
-    |           |-- failure_results.json    # all 4 passed: true
-    |-- GateGuard_Assignment3_Report.pdf
-    |-- GateGuard_Assignment3_Report.tex
-    |-- screenshots/
+|   |-- Module_A/
+|   |   |-- database/
+|   |   |   |-- wal.py             # Write-Ahead Log engine with fsync
+|   |   |   |-- transaction.py     # TransactionManager + LIFO Undo Stack
+|   |   |   |-- recovery.py        # Crash recovery via WAL REDO
+|   |   |   |-- consistency.py     # B+ Tree structural invariant checker
+|   |   |   |-- bplustree.py       # B+ Tree order-4 (from Assignment 2)
+|   |   |   |-- db_manager.py
+|   |   |   |-- table.py
+|   |   |-- logs/
+|   |   |   |-- test_log.jsonl     # Real WAL records written during tests
+|   |   |-- test_transactions.ipynb  # 5-cell ACID proof notebook
+|   |-- Module_B/
+|   |   |-- backend/               # Node.js + PostgreSQL API (from A2)
+|   |   |-- stress_tests/
+|   |       |-- race_condition_test.py      # 50-thread concurrent race test
+|   |       |-- failure_simulation_test.py  # 4 failure scenario tests
+|   |       |-- locust_gateguard.py         # Locust load test file
+|   |       |-- load_profile_runner.py
+|   |       |-- utils/
+|   |       |   |-- api_client.py
+|   |       |   |-- db_check.py
+|   |       |-- results/
+|   |           |-- race_results.json       # 50-thread raw results
+|   |           |-- failure_results.json    # all 4 passed: true
+|   |-- GateGuard_Assignment3_Report.pdf
+|   |-- GateGuard_Assignment3_Report.tex
+|   |-- screenshots/
+|-- assignment-4/
+|   |-- docker-compose.yml
+|   |-- GateGuard_Assignment4_Report.tex
+|   |-- Module_A/
+|   |   |-- database/
+|   |   |-- schema/
+|   |   |   |-- 01_create_shards.sql
+|   |   |   |-- 02_migrate_data.sql
+|   |   |   |-- 03_verify_migration.sql
+|   |   |   |-- 04_add_shard_indexes.sql
+|   |   |-- migrate_to_docker_shards.py
+|   |   |-- test_sharding.ipynb
+|   |   |-- test_transactions.ipynb
+|   |-- Module_B/
+|   |   |-- backend/
+|   |   |   |-- src/
+|   |   |   |   |-- utils/shardRouter.js
+|   |   |   |   |-- services/personVisit.service.js
+|   |   |   |-- scripts/
+|   |   |   |-- sql/
+|   |   |-- frontend/
+|   |   |-- stress_tests/
+|   |-- screenshots/
+|   |   |-- as3-ss/
+|       |-- as4-ss/
 ~~~
 
 ---
@@ -569,6 +603,19 @@ What can be improved next:
 | Module B: Race Test Results | [race_results.json](assignment-3/Module_B/stress_tests/results/race_results.json) |
 | Module B: Failure Test Results | [failure_results.json](assignment-3/Module_B/stress_tests/results/failure_results.json) |
 
+### Assignment 4
+
+| Deliverable | Link |
+|---|---|
+| Main Report PDF | [GateGuard_Assignment4_Report.pdf](assignment-4/GateGuard_Assignment4_Report.pdf) |
+| Module A: Sharding Notebook | [test_sharding.ipynb](assignment-4/Module_A/test_sharding.ipynb) |
+| Module A: Docker Migration Script | [migrate_to_docker_shards.py](assignment-4/Module_A/migrate_to_docker_shards.py) |
+| Module A: 4-step SQL Pipeline | [schema/](assignment-4/Module_A/schema/) |
+| Module B: Shard Router Utility | [shardRouter.js](assignment-4/Module_B/backend/src/utils/shardRouter.js) |
+| Module B: Shard-aware Visit Service | [personVisit.service.js](assignment-4/Module_B/backend/src/services/personVisit.service.js) |
+| Docker Compose (3 shard containers) | [docker-compose.yml](assignment-4/docker-compose.yml) |
+| Screenshots and proof artifacts | [assignment-4/screenshots/as4-ss/](assignment-4/screenshots/as4-ss/) |
+
 ---
 
 ## 17) Assignment 3 Technical Highlights
@@ -601,4 +648,166 @@ What can be improved next:
 
 ---
 
-If you are reviewing this as a faculty or evaluator, start with sections 5, 7, 8, and 12 for Assignment 2 context, and section 17 for the Assignment 3 summary.
+## 18) Assignment 4 Technical Highlights
+
+### What Assignment 4 changed in plain language
+
+Assignment 4 moved GateGuard from a single-database mindset to a distributed-data mindset.
+
+Instead of asking only "does this query work?", we asked:
+- where should each row live,
+- how do we route requests deterministically,
+- how do we verify that split data is still correct,
+- and what trade-offs appear when global queries need fan-out.
+
+This was implemented as an end-to-end pipeline, not a diagram-only exercise.
+
+### Docker Compose architecture (3 shard containers)
+
+![docker-compose - Docker Compose Architecture](https://app.composecraft.com/api/export/png?shareId=69e2be1038194d75e09c09db)
+
+Shards are exposed as:
+- shard 0: localhost:5433
+- shard 1: localhost:5434
+- shard 2: localhost:5435
+
+### What we implemented concretely
+
+- Deterministic shard rule: `shard_id = id % 3`
+- Scripted sharding flow in 4 stages:
+  - `01_create_shards.sql`: create `shard_0/1/2_member` and `shard_0/1/2_personvisit`
+  - `02_migrate_data.sql`: move rows by modulo rule
+  - `03_verify_migration.sql`: count checks + overlap checks + distribution checks
+  - `04_add_shard_indexes.sql`: shard-local indexes for lookup/range paths
+- Python router in Module A for O(1) single-shard routing and scatter-gather reads
+- JavaScript router in Module B for backend-integrated routing
+- Shard-aware `personVisit.service.js` that preserves Assignment 3 race-safety (`SELECT ... FOR UPDATE`) while routing writes
+
+### Outcomes we validated
+
+- Balanced member distribution: `1666 / 1667 / 1667`
+- Balanced visit distribution: `16664 / 16673 / 16677`
+- Zero-overlap migration proof across shard tables
+- O(1) route for member-scoped operations (one hash, one shard)
+- Scatter-gather path for global dashboards and aggregate queries
+
+### Engineering trade-offs we documented
+
+- Member-scoped endpoints become fast and predictable due to deterministic routing.
+- Global endpoints require fan-out and merge, so they are inherently slower than single-shard lookups.
+- Adding more shards later requires rebalancing when using modulo partitioning.
+- Cross-shard reads accept a small consistency window in exchange for simpler shared-nothing deployment.
+
+### Assignment 4 quick run flow
+
+1. Start shard containers from [assignment-4/docker-compose.yml](assignment-4/docker-compose.yml).
+2. Run migration flow in [assignment-4/Module_A/migrate_to_docker_shards.py](assignment-4/Module_A/migrate_to_docker_shards.py).
+3. Execute notebook proof in [assignment-4/Module_A/test_sharding.ipynb](assignment-4/Module_A/test_sharding.ipynb).
+4. Verify backend routing in [assignment-4/Module_B/backend/src/utils/shardRouter.js](assignment-4/Module_B/backend/src/utils/shardRouter.js) and [assignment-4/Module_B/backend/src/services/personVisit.service.js](assignment-4/Module_B/backend/src/services/personVisit.service.js).
+
+---
+
+## 19) Assignment 4 Run and Check-Test Guide
+
+This section is the practical runbook to reproduce Assignment 4 end-to-end and verify correctness.
+
+### 19.1 Prerequisites
+
+- Docker Desktop is running.
+- Local PostgreSQL source DB has the base GateGuard data (`member`, `personvisit`, `gate`, `membertype`).
+- Python 3.10+ is available for Module A.
+- Node.js 18+ is available for Module B.
+
+### 19.2 Track A (recommended): Docker shard migration proof
+
+Start containers:
+
+~~~powershell
+cd assignment-4
+docker compose up -d
+docker compose ps
+~~~
+
+Prepare Module A environment and run migration:
+
+~~~powershell
+cd Module_A
+Copy-Item .env.example .env
+# edit .env and set LOCAL_DB_PASSWORD / shard credentials if needed
+
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+
+python migrate_to_docker_shards.py
+~~~
+
+Expected migration summary pattern:
+- shard_0 members near `1666`, visits near `16664`
+- shard_1 members near `1667`, visits near `16673`
+- shard_2 members near `1667`, visits near `16677`
+- verification result should show `PASSED`
+
+Optional direct SQL checks on Docker shards:
+
+~~~powershell
+psql -h localhost -p 5433 -U postgres -d gateguard_shard_0 -c "SELECT COUNT(*) AS members FROM shard_0_member; SELECT COUNT(*) AS visits FROM shard_0_personvisit; SELECT COUNT(*) AS wrong_members FROM shard_0_member WHERE memberid % 3 <> 0;"
+psql -h localhost -p 5434 -U postgres -d gateguard_shard_1 -c "SELECT COUNT(*) AS members FROM shard_1_member; SELECT COUNT(*) AS visits FROM shard_1_personvisit; SELECT COUNT(*) AS wrong_members FROM shard_1_member WHERE memberid % 3 <> 1;"
+psql -h localhost -p 5435 -U postgres -d gateguard_shard_2 -c "SELECT COUNT(*) AS members FROM shard_2_member; SELECT COUNT(*) AS visits FROM shard_2_personvisit; SELECT COUNT(*) AS wrong_members FROM shard_2_member WHERE memberid % 3 <> 2;"
+~~~
+
+For each shard, `wrong_members` must be `0`.
+
+### 19.3 Track B: Notebook correctness proof used in report
+
+Open and run the notebook:
+
+~~~powershell
+cd assignment-4/Module_A
+jupyter notebook test_sharding.ipynb
+~~~
+
+Run all cells in order. Key PASS signals to look for:
+- Cell 1: all six shard tables confirmed.
+- Cell 2: count integrity check passed.
+- Cell 3: zero overlap passed.
+- Cell 6: insert routing verification passed.
+- Cell 8: aggregation matches original passed.
+
+This notebook also generates the distribution chart artifact (`shard_distribution.png`).
+
+### 19.4 Track C: Backend routing sanity check (Module B)
+
+Start backend:
+
+~~~powershell
+cd assignment-4/Module_B/backend
+npm install
+Copy-Item .env.example .env
+# set DB_* values to the database that contains shard_* tables
+npm run dev
+~~~
+
+Health check:
+
+~~~powershell
+curl http://localhost:5000/api/health
+~~~
+
+Code-level routing checkpoints:
+- [assignment-4/Module_B/backend/src/utils/shardRouter.js](assignment-4/Module_B/backend/src/utils/shardRouter.js) for `getShard()`, `memberTable()`, `visitTable()`.
+- [assignment-4/Module_B/backend/src/services/personVisit.service.js](assignment-4/Module_B/backend/src/services/personVisit.service.js) for shard-aware write/read paths and preserved `SELECT ... FOR UPDATE` lock behavior.
+
+### 19.5 One-command checklist before submission
+
+Use this checklist each time before final report packaging:
+- Docker shards are up and reachable.
+- Migration summary shows PASSED.
+- Notebook cells 1 to 9 execute without failure.
+- Distribution and overlap checks remain valid.
+- Backend health endpoint returns success.
+- README links and report artifacts are up-to-date.
+
+---
+
+If you are reviewing this as a faculty or evaluator, start with sections 5, 7, 8, and 12 for Assignment 2 context, section 17 for Assignment 3, section 18 for Assignment 4 highlights, and section 19 for reproducible run and validation steps.
