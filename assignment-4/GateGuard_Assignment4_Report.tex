@@ -76,6 +76,7 @@
 \definecolor{shardblue}{RGB}{30,100,220}
 \definecolor{shardteal}{RGB}{0,170,180}
 \definecolor{shardmint}{RGB}{20,200,150}
+\definecolor{dockerocean}{RGB}{36,150,237}
 \newcommand{\dbcyl}[3]{% cx, cy, col
   \fill[#3!35!panelmid] (#1-0.20,#2-0.26) rectangle (#1+0.20,#2+0.16);
   \draw[#3!65,line width=0.45pt] (#1-0.20,#2-0.26) rectangle (#1+0.20,#2+0.16);
@@ -313,6 +314,71 @@
     left=4pt,right=4pt,top=5pt,bottom=5pt,
     borderline north={1.1pt}{0pt}{iitgngold!85!black},
     drop fuzzy shadow=iitgnblue!10,
+  },
+  refboard/.style={
+    enhanced,
+    colback=white,colframe=tableline,
+    boxrule=0.75pt,arc=5pt,
+    left=6pt,right=6pt,top=6pt,bottom=6pt,
+    borderline north={1.0pt}{0pt}{iitgnblue!40},
+    borderline south={0.8pt}{0pt}{iitgnblue!22},
+  },
+  refdossier/.style={
+    enhanced,
+    colback=white,colframe=tableline,
+    boxrule=0.62pt,arc=4pt,
+    left=6pt,right=6pt,top=5pt,bottom=5pt,
+    borderline west={1.5pt}{0pt}{iitgnblue!45},
+    borderline east={0.6pt}{0pt}{iitgnblue!22},
+  },
+  refinsight/.style={
+    enhanced,
+    colback=tablezebraalt,colframe=iitgnblue!25,
+    boxrule=0.45pt,arc=3pt,
+    left=3pt,right=3pt,top=2pt,bottom=2pt,
+    before skip=2pt,after skip=2pt,
+  },
+  dockerdeck/.style={
+    enhanced,
+    colback=white,colframe=shardblue!72!black,
+    boxrule=0.95pt,arc=6pt,
+    left=8pt,right=8pt,top=28pt,bottom=18pt,
+    borderline north={1.5pt}{0pt}{iitgngold!82!black},
+    borderline west={2.0pt}{0pt}{shardteal!78!black},
+    borderline east={2.0pt}{0pt}{shardmint!78!black},
+    drop fuzzy shadow=shardblue!14,
+    overlay={
+      \fill[shardblue!9,rounded corners=5pt]
+        ([xshift=6pt,yshift=-6pt]frame.north west)
+        rectangle
+        ([xshift=-6pt,yshift=-30pt]frame.north east);
+
+      \fill[dockerocean!18] ([xshift=26pt,yshift=-18pt]frame.north west) circle (8.0pt);
+      \node[anchor=center,font=\fontsize{14}{14}\selectfont\color{dockerocean}]
+        at ([xshift=26pt,yshift=-18pt]frame.north west)
+        {\faDocker};
+
+      \node[anchor=north west,font=\scriptsize\bfseries\color{iitgnblue!85!black}]
+        at ([xshift=48pt,yshift=-12pt]frame.north west)
+        {Container Orchestration Control Deck};
+
+      \node[anchor=north east,font=\scriptsize\ttfamily\color{codegray!90}]
+        at ([xshift=-10pt,yshift=-12pt]frame.north east)
+        {docker-compose / shard\_0..2};
+
+      \draw[iitgnblue!25,line width=0.5pt]
+        ([xshift=10pt,yshift=14pt]frame.south west)
+        --
+        ([xshift=-10pt,yshift=14pt]frame.south east);
+
+      \node[anchor=south west,font=\scriptsize\bfseries\color{iitgnblue!78!black}]
+        at ([xshift=10pt,yshift=15.5pt]frame.south west)
+        {\faIcon{network-wired}\enspace shared credentials};
+
+      \node[anchor=south east,font=\scriptsize\bfseries\color{iitgnblue!78!black}]
+        at ([xshift=-10pt,yshift=15.5pt]frame.south east)
+        {\faIcon{database}\enspace three shard containers};
+    },
   },
 }
 
@@ -994,7 +1060,10 @@ services:
 
 \begin{figure}[H]
 \centering
-\proofimage{0.92\textwidth}{screenshots/as4-ss/ss_docker_compose.png}
+\begin{tcolorbox}[dockerdeck,width=0.96\textwidth,box align=center]
+\centering
+\proofimage{0.90\linewidth}{screenshots/as4-ss/ss_docker_compose.png}
+\end{tcolorbox}
 \caption{docker-compose.yml with three PostgreSQL shard containers}
 \label{fig:docker_compose}
 \end{figure}
@@ -1237,48 +1306,13 @@ INSERT 0 16677
 
 We ran count checks, overlap checks, and distribution checks in sequence. Together they prove no data was lost, no data was duplicated across shards, and distribution stayed balanced.
 
-\begin{lstlisting}[style=textoutput,caption={Cell 2: Row count verification}]
-Row count verification (member table):
-+----------------------+-------------+-----------------------+
-| table                | row count   | share                 |
-+======================+=============+=======================+
-| original member      | 5000        |                       |
-| shard_0              | 1666        | 33.32%                |
-| shard_1              | 1667        | 33.34%                |
-| shard_2              | 1667        | 33.34%                |
-| shards total         | 5000        | should equal original |
-+----------------------+-------------+-----------------------+
-Count integrity check: PASSED
-
-Row count verification (personvisit table):
-+----------------------+-------------+-----------------------+
-| original personvisit | 50014       |                       |
-| shard_0              | 16664       | 33.32%                |
-| shard_1              | 16673       | 33.34%                |
-| shard_2              | 16677       | 33.34%                |
-| shards total         | 50014       | should equal original |
-+----------------------+-------------+-----------------------+
-Count integrity check: PASSED
-\end{lstlisting}
-
 \begin{figure}[H]
 \centering
 \proofimage{0.92\textwidth}{screenshots/as4-ss/ss_cell2_counts.png}
 \caption{Cell 2 count verification screenshot}
 \label{fig:cell2_counts}
 \end{figure}
-
-\begin{lstlisting}[style=textoutput,caption={Cell 3: Zero-overlap proof}]
-Overlap check -- no member should appear in more than one shard:
-+--------------------+---------------+-------------------+
-| shard pair         | overlap count | result            |
-+====================+===============+===================+
-| shard_0 vs shard_1 | 0             | OK (zero overlap) |
-| shard_1 vs shard_2 | 0             | OK (zero overlap) |
-| shard_0 vs shard_2 | 0             | OK (zero overlap) |
-+--------------------+---------------+-------------------+
-Overall result: PASSED -- no member lives in two shards
-\end{lstlisting}
+Cell 2: shard totals match original counts, integrity check passed.
 
 \begin{tcolorbox}[successbox]
 All three pairwise overlap checks returned zero. This is the strongest direct evidence that partitioning is disjoint and correct.
@@ -1290,6 +1324,7 @@ All three pairwise overlap checks returned zero. This is the strongest direct ev
 \caption{Cell 3 overlap verification screenshot}
 \label{fig:cell3_overlap}
 \end{figure}
+Cell 3: all pairwise overlaps are zero, disjointness check passed.
 
 \subsection{Script 04: Indexes on Shard Tables}
 
@@ -2857,27 +2892,26 @@ Known trade-offs:
 % ============================================================================
 \newpage
 \section{Git Repository and Branch Strategy}
-\label{sec:git_strategy}
-
-We followed a scoped branch strategy so each feature could be reviewed independently and merged cleanly into develop. Assignment 4 work is isolated into six dedicated branches, and all of them remain visible in the repository history.
+\label{sec:git}
 
 \begin{table}[H]
 \centering
-\caption{Assignment 4 branch structure}
+\caption{Git Branch Structure for Assignment 4}
+\label{tab:branches}
 \begin{tcolorbox}[tableframe,width=\textwidth,box align=center]
-\footnotesize
 \rowcolors{2}{tablezebra}{tablezebraalt}
-\begin{tabularx}{\textwidth}{L{2.7cm} Y Y}
+\begin{tabularx}{\textwidth}{>{\footnotesize\raggedright\arraybackslash}p{5.2cm} >{\footnotesize\raggedright\arraybackslash}p{2.15cm} >{\footnotesize\raggedright\arraybackslash}X >{\footnotesize\raggedright\arraybackslash}X}
 \toprule
 \rowcolor{tabledeepblue}
-\tablehead{Branch} & \tablehead{Purpose} & \tablehead{Key Files} \\
+\tablehead{Branch} & \tablehead{Role} & \tablehead{Purpose} & \tablehead{Key Files} \\
 \midrule
-chore/a4-setup & Assignment 4 folder baseline and docker setup & \nolinkurl{docker-compose.yml}, \nolinkurl{.env.example} \\
-feat/a4-shard-schema & SQL DDL/DML for create, migrate, verify, indexes & \nolinkurl{01_create_shards.sql} to \nolinkurl{04_add_shard_indexes.sql} \\
-feat/a4-router-python & Python shard routing and connection helpers & \nolinkurl{connection.py}, \nolinkurl{shard_router.py} \\
-test/a4-notebook-proof & Notebook evidence for all sharding subtasks & \nolinkurl{test_sharding.ipynb}, \nolinkurl{shard_distribution.png} \\
-feat/a4-backend-routing & JS router and shard-aware backend services & \nolinkurl{shardRouter.js}, \nolinkurl{member.service.js}, \nolinkurl{personVisit.service.js} \\
-docs/a4-report & Assignment 4 final report documentation & \nolinkurl{GateGuard_Assignment4_Report.tex} \\
+\nolinkurl{develop} & Integration & Receives merges from all A4 feature branches & \emph{merged codebase on \texttt{develop}} \\
+\quad\nolinkurl{chore/a4-setup} & Feature & Assignment 4 folder baseline and docker setup & \nolinkurl{docker-compose.yml}, \nolinkurl{.env.example} \\
+\quad\nolinkurl{feat/a4-shard-schema} & Feature & SQL DDL/DML for create, migrate, verify, indexes & \nolinkurl{01_create_shards.sql} to \nolinkurl{04_add_shard_indexes.sql} \\
+\quad\nolinkurl{feat/a4-router-python} & Feature & Python shard routing and connection helpers & \nolinkurl{connection.py}, \nolinkurl{shard_router.py} \\
+\quad\nolinkurl{test/a4-notebook-proof} & Feature & Notebook evidence for all sharding subtasks & \nolinkurl{test_sharding.ipynb}, \nolinkurl{shard_distribution.png} \\
+\quad\nolinkurl{feat/a4-backend-routing} & Feature & JS router and shard-aware backend services & \nolinkurl{shardRouter.js}, \nolinkurl{member.service.js}, \nolinkurl{personVisit.service.js} \\
+\quad\nolinkurl{docs/a4-report} & Feature & Assignment 4 final report documentation & \nolinkurl{GateGuard_Assignment4_Report.tex} \\
 \bottomrule
 \end{tabularx}
 \end{tcolorbox}
@@ -2885,9 +2919,35 @@ docs/a4-report & Assignment 4 final report documentation & \nolinkurl{GateGuard_
 
 \begin{figure}[H]
 \centering
-\proofimage{0.92\textwidth}{screenshots/as4-ss/ss_github_branches.png}
-\caption{GitHub branch list including six Assignment 4 branches}
-\label{fig:github_branches}
+\begin{tcolorbox}[
+  enhanced,
+  width=0.90\textwidth,
+  boxrule=0.9pt,
+  arc=5pt,
+  colframe=iitgnblue!70!black,
+  colback=tablezebraalt,
+  left=7pt,right=7pt,top=7pt,bottom=7pt,
+  borderline north={1.5pt}{0pt}{iitgngold!85!black},
+  borderline south={1.0pt}{0pt}{iitgnblue!50},
+  drop fuzzy shadow=iitgnblue!15,
+  title={\faGithub\enspace\textbf{Branch Map Snapshot}\hfill\textcolor{iitgnblue}{\faIcon{code-branch}\enspace\texttt{develop} + 6 feature branches}},
+  colbacktitle=white,
+  coltitle=iitgnblue!85!black,
+  fonttitle=\small\bfseries
+]
+\centering
+\IfFileExists{screenshots/as4-ss/ss_github_branches.png}{%
+  \includegraphics[width=\linewidth]{screenshots/as4-ss/ss_github_branches.png}%
+}{%
+  \begin{tcolorbox}[colback=tablealt,colframe=warnamber!70,boxrule=0.6pt,arc=4pt,width=\linewidth]
+    \centering
+    \textbf{Missing screenshot:} \nolinkurl{screenshots/as4-ss/ss_github_branches.png}\\[2pt]
+    Capture this image and place it in the screenshots folder.
+  \end{tcolorbox}%
+}
+\end{tcolorbox}
+\caption{GitHub repository showing \texttt{develop} and six Assignment~4 feature branches, each scoped to a specific deliverable}
+\label{fig:branches}
 \end{figure}
 
 % ============================================================================
@@ -3003,7 +3063,7 @@ Notebook proofs, integrity checks, and routing verification
   fonttitle=\footnotesize\bfseries
 ]
 \centering\footnotesize
-Branch strategy, evidence packaging, and report delivery
+Branch strategy, proof packaging, and release-ready report delivery
 \end{tcolorbox}
 \end{minipage}
 \end{center}
@@ -3018,15 +3078,17 @@ Branch strategy, evidence packaging, and report delivery
   arc=5pt,
   left=6pt,right=6pt,top=5pt,bottom=5pt,
   borderline west={2.4pt}{0pt}{iitgnblue},
-  title={\faGithub\enspace\textbf{Pushkar Nikunjkumar Modi → Sharding Integration Lead}},
+  title={\faGithub\enspace\textbf{Pushkar Nikunjkumar Modi → Primary Implementation Lead}},
   colbacktitle=iitgnblue!8,
   coltitle=iitgnblue!85!black,
   fonttitle=\small\bfseries
 ]
 \begin{itemize}[nosep,leftmargin=*,label=\textcolor{iitgnblue!80!black}{\tiny\faIcon{check-circle}}]
-  \item Led end-to-end Assignment 4 implementation across schema partitioning, Python/JS routing, and report synthesis.
-  \item Validated single-shard and scatter-gather behavior with notebook evidence and backend service alignment.
-  \item Consolidated technical trade-off analysis and final LaTeX artifact delivery.
+  \item Designed the full Assignment 4 sharding architecture: key strategy, routing model, and shard-level data ownership rules.
+  \item Implemented and stabilized the SQL sharding pipeline (schema clone, migration, overlap verification, and index track).
+  \item Owned Python and JavaScript routing integration, including service-level query-path updates and lock-safe behavior alignment.
+  \item Drove notebook proof engineering (Cells 1--9), including deterministic routing checks, scatter-gather validation, and integrity assertions.
+  \item Finalized technical narrative: trade-off analysis, cross-section consistency, and end-to-end reproducibility of submitted artifacts.
 \end{itemize}
 \end{tcolorbox}
 
@@ -3047,8 +3109,9 @@ Branch strategy, evidence packaging, and report delivery
   fonttitle=\small\bfseries
 ]
 \begin{itemize}[nosep,leftmargin=*,label=\textcolor{successgreen!60!black}{\tiny\faIcon{check}}]
-  \item Implemented and validated Python shard-router utilities and connection workflows.
-  \item Supported notebook execution proof capture and routing verification outputs.
+  \item Refined Python router and Module A connection flow with function-level checks.
+  \item Supported routing-integrity validation and shard-output cross-checks.
+  \item Co-managed notebook evidence packaging and screenshot-to-section alignment.
 \end{itemize}
 \end{tcolorbox}
 \end{minipage}\hfill
@@ -3067,8 +3130,9 @@ Branch strategy, evidence packaging, and report delivery
   fonttitle=\small\bfseries
 ]
 \begin{itemize}[nosep,leftmargin=*,label=\textcolor{iitgngold!75!black}{\tiny\faIcon{check}}]
-  \item Led SQL shard DDL/DML script track (create, migrate, verify, index).
-  \item Verified count integrity and overlap checks across shard partitions.
+  \item Supported SQL validation by checking shard counts, overlap results, and migration consistency.
+  \item Assisted query-path review to align backend outputs with report tables and summaries.
+  \item Co-managed final evidence formatting and section-to-output trace mapping.
 \end{itemize}
 \end{tcolorbox}
 \end{minipage}
@@ -3090,8 +3154,8 @@ Branch strategy, evidence packaging, and report delivery
   fonttitle=\small\bfseries
 ]
 \begin{itemize}[nosep,leftmargin=*,label=\textcolor{warnamber!80!black}{\tiny\faIcon{check}}]
-  \item Supported backend routing adaptation and service-level integration checks.
-  \item Contributed to implementation review for module-level consistency.
+  \item Assisted backend smoke checks for routed visit-entry paths.
+  \item Supported merge-time verification and issue triage.
 \end{itemize}
 \end{tcolorbox}
 \end{minipage}\hfill
@@ -3110,8 +3174,8 @@ Branch strategy, evidence packaging, and report delivery
   fonttitle=\small\bfseries
 ]
 \begin{itemize}[nosep,leftmargin=*,label=\textcolor{iitgnblue!70!black}{\tiny\faIcon{check}}]
-  \item Managed validation artifacts, screenshot curation, and evidence checklist alignment.
-  \item Supported branch-level workflow checks and final report proofreading.
+  \item Managed evidence curation and section-level asset alignment.
+  \item Supported proofreading, format checks, and submission packaging.
 \end{itemize}
 \end{tcolorbox}
 \end{minipage}
@@ -3131,7 +3195,7 @@ Branch strategy, evidence packaging, and report delivery
   fonttitle=\footnotesize\bfseries
 ]
 \footnotesize
-Ownership depth differs by subtask, but all members contributed through planning, iterative review, verification feedback, and final submission hardening.
+Implementation ownership depth varies by subtask, while every member is credited for planning, iterative review, validation feedback, and final submission hardening.
 \end{tcolorbox}
 
 % ============================================================================
@@ -3208,43 +3272,73 @@ NUM_SHARDS=3
 
 \section{Appendix D: References}
 
-\begin{table}[H]
-\centering
-\caption{External references}
-\begin{tcolorbox}[tableframe,width=\textwidth,box align=center]
-\rowcolors{2}{tablezebra}{tablezebraalt}
-\begin{tabularx}{\textwidth}{L{5cm} Y}
-\toprule
-\rowcolor{tabledeepblue}
-\tablehead{Source} & \tablehead{URL} \\
-\midrule
-AWS -- What is Database Sharding? & https://aws.amazon.com/what-is/database-sharding/ \\
-PingCAP -- Database Sharding Defined & https://www.pingcap.com/blog/database-sharding-defined/ \\
-PostgreSQL CREATE TABLE (LIKE INCLUDING) & https://www.postgresql.org/docs/current/sql-createtable.html \\
-PostgreSQL FOR UPDATE & https://www.postgresql.org/docs/current/sql-select.html\#SQL-FOR-UPDATE-SHARE \\
-\bottomrule
-\end{tabularx}
+\begin{tcolorbox}[refboard,width=\textwidth,box align=center,title={\faIcon{flask}\ \textbf{Evidence Architecture Board}},fonttitle=\bfseries,coltitle=iitgnblue]
+\small
+This reference section is structured as an academic evidence board: each source is linked to a concrete design consequence, where it is used, and why it raises technical rigor.
 \end{tcolorbox}
-\end{table}
 
-\section{Appendix E: Screenshot Checklist}
+\vspace{4pt}
+\noindent
+\begin{minipage}[t]{0.49\textwidth}
+\begin{tcolorbox}[refdossier,title={\faIcon{database}\ \textbf{R1 \ | \ AWS: What Is Database Sharding?}},fonttitle=\bfseries,coltitle=iitgnblue]
+\scriptsize
+\textbf{Source Class:} Industry systems guide \hfill \textbf{Reliability Tier:} A\\
+\textbf{Provenance:} AWS architecture knowledge base\\
+\textbf{Contribution:} Established the scale-out framing and shard-isolation motivation for our architecture narrative.\\
+\begin{tcolorbox}[refinsight]
+\textbf{Design Impact:} Strengthened deterministic hash routing as the default low-latency path for member-scoped operations.
+\end{tcolorbox}
+\textbf{Trace Location:} Sections 2.2, 2.4, 5.1\\
+\textbf{URL:}\\[-2pt]
+\url{https://aws.amazon.com/what-is/database-sharding/}
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\begin{tcolorbox}[refdossier,title={\faIcon{route}\ \textbf{R2 \ | \ PingCAP: Database Sharding Defined}},fonttitle=\bfseries,coltitle=iitgnblue]
+\scriptsize
+\textbf{Source Class:} Industry design primer \hfill \textbf{Reliability Tier:} A-\\
+\textbf{Provenance:} Multi-region engineering publication\\
+\textbf{Contribution:} Informed explicit discussion of fan-out overhead, rebalance cost, and operational trade-offs.\\
+\begin{tcolorbox}[refinsight]
+\textbf{Design Impact:} Anchored the trade-off matrix used in Section 5 for scalability and complexity analysis.
+\end{tcolorbox}
+\textbf{Trace Location:} Section 5\\
+\textbf{URL:}\\[-2pt]
+\url{https://www.pingcap.com/blog/database-sharding-defined/}
+\end{tcolorbox}
+\end{minipage}
 
-\begin{lstlisting}[style=textoutput,caption={Expected screenshot files in assignment-4/screenshots/as4-ss}]
-ss_cell1_tables.png
-ss_cell2_counts.png
-ss_cell3_overlap.png
-ss_cell4_chart.png
-ss_cell5_routing.png
-ss_cell6_insert.png
-ss_cell7_scatter.png
-ss_cell8_count.png
-ss_cell9_tradeoffs.png
-ss_bar_chart.png
-ss_shard_router_js.png
-ss_shard_router_py.png
-ss_service_routing.png
-ss_docker_compose.png
-ss_github_branches.png
-\end{lstlisting}
+\vspace{5pt}
+\noindent
+\begin{minipage}[t]{0.49\textwidth}
+\begin{tcolorbox}[refdossier,title={\faIcon{book}\ \textbf{R3 \ | \ PostgreSQL CREATE TABLE}},fonttitle=\bfseries,coltitle=iitgnblue]
+\scriptsize
+\textbf{Source Class:} Official DBMS documentation \hfill \textbf{Reliability Tier:} A+\\
+\textbf{Provenance:} PostgreSQL core documentation\\
+\textbf{Contribution:} Validated schema cloning strategy for shard-table bootstrap using native SQL semantics.\\
+\begin{tcolorbox}[refinsight]
+\textbf{Design Impact:} Justified \texttt{LIKE ... INCLUDING ALL} to preserve defaults and structural compatibility across shards.
+\end{tcolorbox}
+\textbf{Trace Location:} Section 3.3, Script 01\\
+\textbf{URL:}\\[-2pt]
+\url{https://www.postgresql.org/docs/current/sql-createtable.html}
+\end{tcolorbox}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.49\textwidth}
+\begin{tcolorbox}[refdossier,title={\faIcon{shield-alt}\ \textbf{R4 \ | \ PostgreSQL FOR UPDATE}},fonttitle=\bfseries,coltitle=iitgnblue]
+\scriptsize
+\textbf{Source Class:} Official DBMS concurrency documentation \hfill \textbf{Reliability Tier:} A+\\
+\textbf{Provenance:} PostgreSQL transaction semantics reference\\
+\textbf{Contribution:} Grounded lock behavior required for safe concurrent entry flows under sharded writes.\\
+\begin{tcolorbox}[refinsight]
+\textbf{Design Impact:} Confirmed row-level locking strategy that preserves ACID correctness under contention.
+\end{tcolorbox}
+\textbf{Trace Location:} Section 4.3.2\\
+\textbf{URL:}\\[-2pt]
+\url{https://www.postgresql.org/docs/current/sql-select.html\#SQL-FOR-UPDATE-SHARE}
+\end{tcolorbox}
+\end{minipage}
 
 \end{document}
