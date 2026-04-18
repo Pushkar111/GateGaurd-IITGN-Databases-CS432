@@ -664,7 +664,7 @@ This was implemented as an end-to-end pipeline, not a diagram-only exercise.
 
 ### Docker Compose architecture (3 shard containers)
 
-![docker-compose - Docker Compose Architecture](https://app.composecraft.com/api/export/png?shareId=69e2be1038194d75e09c09db)
+![docker-compose - Docker Compose Architecture](assignment-4/screenshots/as4-ss/ss_docker_compose.png)
 
 Shards are exposed as:
 - shard 0: localhost:5433
@@ -697,6 +697,22 @@ Shards are exposed as:
 - Global endpoints require fan-out and merge, so they are inherently slower than single-shard lookups.
 - Adding more shards later requires rebalancing when using modulo partitioning.
 - Cross-shard reads accept a small consistency window in exchange for simpler shared-nothing deployment.
+
+### Assignment 4 Git branch strategy
+
+| Branch | Purpose |
+|---|---|
+| develop | Integration branch that receives all Assignment 4 feature merges |
+| chore/a4-setup | Assignment 4 folder baseline and Docker setup |
+| feat/a4-shard-schema | SQL shard pipeline (create, migrate, verify, indexes) |
+| feat/a4-router-python | Python shard routing and connection helpers |
+| test/a4-notebook-proof | Notebook evidence for Assignment 4 sharding proof |
+| feat/a4-backend-routing | JavaScript shard router and shard-aware backend services |
+| docs/a4-report | Assignment 4 report writing and documentation polish |
+
+Branch map screenshot:
+
+![Assignment 4 Git branches](assignment-4/screenshots/as4-ss/ss_github_branches.png)
 
 ### Assignment 4 quick run flow
 
