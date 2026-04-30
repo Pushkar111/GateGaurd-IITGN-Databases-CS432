@@ -12,9 +12,24 @@ const { getClient }   = require('../config/db');
 const AppError        = require('../utils/AppError');
 const { parsePagination, buildPagination } = require('../utils/helpers');
 const { ROLES }       = require('../utils/constants');
-const { memberTable, allMemberTables, visitTable } = require('../utils/shardRouter');
+const { getShard, memberTable, visitTable } = require('../utils/shardRouter');
+const shardDb = require('../config/shardDb');
 
 const MEMBER_SORT_COLUMNS = new Set(['memberid', 'name', 'email', 'createdat']);
+
+function shardQuery() {
+  const physical = shardDb.physicalShardsEnabled();
+  return physical
+    ? (shardId, text, params) => shardDb.queryShard(shardId, text, params)
+    : (_shardId, text, params) => require('../config/db').query(text, params);
+}
+
+async function bumpShardSequence(shardId, tableName, column) {
+  await shardDb.queryShard(
+    shardId,
+    `SELECT setval(pg_get_serial_sequence('${tableName}', '${column}'), (SELECT COALESCE(MAX(${column}), 1) FROM ${tableName}))`
+  );
+}
 
 function parsePositiveInt(value, fieldName) {
   const parsed = Number(value);
@@ -75,8 +90,8 @@ function sortValue(row, sortBy) {
 
 async function getAll(actor, queryParams = {}) { // eslint-disable-line no-unused-vars
   const { page, limit, offset } = parsePagination(queryParams);
-  const db = require('../config/db');
-  const tables = allMemberTables();
+  const q = shardQuery();
+  const physical = shardDb.physicalShardsEnabled();
   const search = typeof queryParams.search === 'string' ? queryParams.search.trim() : '';
   const typeId = parseOptionalPositiveInt(queryParams.typeId, 'typeId');
   const { sortBy, sortDir } = resolveSortOptions(queryParams);
@@ -84,11 +99,13 @@ async function getAll(actor, queryParams = {}) { // eslint-disable-line no-unuse
   let allMembers = [];
   let grandTotal = 0;
 
-  for (const table of tables) {
+  for (let sid = 0; sid < 3; sid++) {
+    const table = memberTable(sid);
     const { where, params } = buildMemberWhere(search, typeId);
     const listLimitIndex = params.length + 1;
 
-    const { rows } = await db.query(
+    const { rows } = await q(
+      physical ? sid : 0,
       `SELECT
          m.memberid      AS "MemberID",
          m.name          AS "Name",
@@ -108,7 +125,8 @@ async function getAll(actor, queryParams = {}) { // eslint-disable-line no-unuse
     );
     allMembers = allMembers.concat(rows);
 
-    const { rows: countRows } = await db.query(
+    const { rows: countRows } = await q(
+      physical ? sid : 0,
       `SELECT COUNT(*) AS total FROM ${table} m ${where}`,
       params
     );
@@ -137,9 +155,10 @@ async function getAll(actor, queryParams = {}) { // eslint-disable-line no-unuse
 async function getById(id, actor) { // eslint-disable-line no-unused-vars
   const memberId = parsePositiveInt(id, 'memberId');
   const table = memberTable(memberId);
-  const db = require('../config/db');
+  const q = shardQuery();
 
-  const { rows } = await db.query(
+  const { rows } = await q(
+    shardDb.physicalShardsEnabled() ? getShard(memberId) : 0,
     `SELECT
        m.memberid      AS "MemberID",
        m.name          AS "Name",
@@ -168,13 +187,17 @@ async function create(data) {
   const created = await memberModel.create(data);
   const newMember = await memberModel.findById(created.MemberID);
 
-  // replicate into the correct shard table
+  // replicate into the correct shard table (same DB or Docker shard host)
   const table = memberTable(created.MemberID);
-  const db = require('../config/db');
-  await db.query(
+  const sid = getShard(created.MemberID);
+  const q = shardQuery();
+  const createdAt = newMember.CreatedAt ?? newMember.createdat;
+  const updatedAt = newMember.UpdatedAt ?? newMember.updatedat ?? createdAt;
+  await q(
+    shardDb.physicalShardsEnabled() ? sid : 0,
     `INSERT INTO ${table}
        (memberid, name, email, contactnumber, image, age, department, typeid, createdat, updatedat)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, COALESCE($10::timestamptz, NOW()))
      ON CONFLICT (memberid) DO NOTHING`,
     [
       newMember.MemberID ?? newMember.memberid,
@@ -185,10 +208,13 @@ async function create(data) {
       newMember.Age ?? newMember.age ?? null,
       newMember.Department ?? newMember.department ?? null,
       newMember.TypeID ?? newMember.typeid,
-      newMember.CreatedAt ?? newMember.createdat,
-      newMember.UpdatedAt ?? newMember.updatedat ?? null,
+      createdAt,
+      updatedAt,
     ]
   );
+  if (shardDb.physicalShardsEnabled()) {
+    await bumpShardSequence(sid, table, 'memberid');
+  }
 
   return newMember;
 }
@@ -208,7 +234,7 @@ async function update(id, data) {
 
   // keep shard table in sync with the update
   const table = memberTable(memberId);
-  const db = require('../config/db');
+  const q = shardQuery();
   const setClauses = [];
   const values = [];
   let idx = 1;
@@ -222,7 +248,8 @@ async function update(id, data) {
 
   if (setClauses.length > 0) {
     values.push(memberId);
-    await db.query(
+    await q(
+      shardDb.physicalShardsEnabled() ? getShard(memberId) : 0,
       `UPDATE ${table} SET ${setClauses.join(', ')}, updatedat = NOW() WHERE memberid = $${idx}`,
       values
     );
@@ -247,6 +274,13 @@ async function deleteMember(id, actor) {
       if (err.code === '23503') throw new AppError('Cannot delete member - they have existing visit records. Remove visits first.', 409);
       throw err;
     }
+    if (shardDb.physicalShardsEnabled()) {
+      const sid = getShard(memberId);
+      const st = visitTable(memberId);
+      const sm = memberTable(memberId);
+      await shardDb.queryShard(sid, `DELETE FROM ${st} WHERE personid = $1`, [memberId]);
+      await shardDb.queryShard(sid, `DELETE FROM ${sm} WHERE memberid = $1`, [memberId]);
+    }
     return { deleted: true, memberId };
   }
 
@@ -258,9 +292,10 @@ async function deleteMember(id, actor) {
       'DELETE FROM personvisit WHERE personid = $1', [memberId]
     );
 
-    // also remove from the shard table
-    const shardVisitTable = visitTable(memberId);
-    await client.query(`DELETE FROM ${shardVisitTable} WHERE personid = $1`, [memberId]);
+    if (!shardDb.physicalShardsEnabled()) {
+      const shardVisitTable = visitTable(memberId);
+      await client.query(`DELETE FROM ${shardVisitTable} WHERE personid = $1`, [memberId]);
+    }
 
     const { rows: ownedVehicles } = await client.query(
       'SELECT vehicleid FROM vehicle WHERE ownerid = $1', [memberId]
@@ -271,6 +306,17 @@ async function deleteMember(id, actor) {
     let deletedVehicleVisitsForOwnedVehicles = 0;
 
     if (ownedVehicleIds.length) {
+      if (shardDb.physicalShardsEnabled()) {
+        const { rows: pvRows } = await client.query(
+          'SELECT visitid, personid FROM personvisit WHERE vehicleid = ANY($1::int[])',
+          [ownedVehicleIds]
+        );
+        for (const row of pvRows) {
+          const sid = getShard(row.personid);
+          const st = visitTable(row.personid);
+          await shardDb.queryShard(sid, `DELETE FROM ${st} WHERE visitid = $1`, [row.visitid]);
+        }
+      }
       const pvResult = await client.query(
         'DELETE FROM personvisit WHERE vehicleid = ANY($1::int[])', [ownedVehicleIds]
       );
@@ -289,11 +335,20 @@ async function deleteMember(id, actor) {
     );
     if (!deletedRows[0]) throw new AppError(`Member with ID ${memberId} not found.`, 404);
 
-    // remove from shard table
-    const shardMemberTable = memberTable(memberId);
-    await client.query(`DELETE FROM ${shardMemberTable} WHERE memberid = $1`, [memberId]);
+    if (!shardDb.physicalShardsEnabled()) {
+      const shardMemberTable = memberTable(memberId);
+      await client.query(`DELETE FROM ${shardMemberTable} WHERE memberid = $1`, [memberId]);
+    }
 
     await client.query('COMMIT');
+
+    if (shardDb.physicalShardsEnabled()) {
+      const sid = getShard(memberId);
+      const st = visitTable(memberId);
+      const sm = memberTable(memberId);
+      await shardDb.queryShard(sid, `DELETE FROM ${st} WHERE personid = $1`, [memberId]);
+      await shardDb.queryShard(sid, `DELETE FROM ${sm} WHERE memberid = $1`, [memberId]);
+    }
 
     return {
       deleted: true,

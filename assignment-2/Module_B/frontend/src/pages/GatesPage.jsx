@@ -2,6 +2,7 @@
 // Gates & Occupancy — SVG radial rings, slide-in detail panel, CRUD
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -343,22 +344,23 @@ export default function GatesPage() {
       )}
 
       {/* ── Detail Panel (slide from right) ─────────────────────── */}
-      <AnimatePresence>
-        {panelOpen && selected && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              variants={backdropVariants} initial="initial" animate="animate" exit="exit"
-              onClick={() => setPanelOpen(false)}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            />
-            {/* Panel */}
-            <motion.div
-              variants={slideInRight} initial="initial" animate="animate" exit="exit"
-              className="fixed inset-y-0 right-0 z-50 w-full max-w-sm
-                         bg-[hsl(228_40%_7%)] border-l border-white/[0.08]
-                         flex flex-col overflow-hidden"
-            >
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {panelOpen && selected && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                variants={backdropVariants} initial="initial" animate="animate" exit="exit"
+                onClick={() => setPanelOpen(false)}
+                className="fixed inset-0 z-[120] bg-black/50 backdrop-blur-sm"
+              />
+              {/* Panel */}
+              <motion.div
+                variants={slideInRight} initial="initial" animate="animate" exit="exit"
+                className="fixed inset-y-0 right-0 z-[130] w-full max-w-sm
+                           bg-[hsl(228_40%_7%)] border-l border-white/[0.08]
+                           flex flex-col overflow-hidden"
+              >
               {/* Panel header */}
               <div className="flex items-center justify-between p-5 border-b border-white/[0.08]">
                 <div>
@@ -452,10 +454,12 @@ export default function GatesPage() {
                   )}
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Add Gate Modal */}
       <Dialog.Root open={showAdd} onOpenChange={setShowAdd}>

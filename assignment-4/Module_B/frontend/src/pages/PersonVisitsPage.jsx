@@ -22,7 +22,7 @@ import DataTable       from '@/components/shared/DataTable';
 import SavedViewsBar   from '@/components/shared/SavedViewsBar';
 import ConfirmDialog   from '@/components/shared/ConfirmDialog';
 import { useSavedViews } from '@/hooks/useSavedViews';
-import { cn, getInitials, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
+import { cn, getInitials, formatDate, formatVisitDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, scaleIn, backdropVariants, slideInRight } from '@/lib/motion';
 
 // Member combobox
@@ -130,7 +130,7 @@ function buildColumns(navigate, onDelete, canDelete) {
     { header: 'Exit Gate',  id: 'xg', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{v.ExitGateName  || v.exitgatename  || '-'}</span> },
     { header: 'Entry Time', id: 'et', cell: ({ row: { original: v } }) => <span className="text-white/60 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
     { header: 'Exit Time',  id: 'xt', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{(v.ExitTime || v.exittime) ? formatDate(v.ExitTime || v.exittime) : '-'}</span> },
-    { header: 'Duration',   id: 'dur',cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
+    { header: 'Duration',   id: 'dur',cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatVisitDuration(v)}</span> },
     { header: 'Vehicle',    id: 'veh',cell: ({ row: { original: v } }) => (v.VehiclePlate || v.vehicleplate || v.VehicleReg || v.vehiclereg) ? <span className="plate text-[10px]">{v.VehiclePlate || v.vehicleplate || v.VehicleReg || v.vehiclereg}</span> : <span className="text-white/25">-</span> },
     {
       header: 'Status', id: 'status',

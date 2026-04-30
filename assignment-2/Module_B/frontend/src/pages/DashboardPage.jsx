@@ -213,7 +213,7 @@ export default function DashboardPage() {
   const activePersons  = stats?.activePersonVisits  ?? 0;
   const activeVehicles = stats?.activeVehicleVisits ?? 0;
   const totalMembers   = stats?.totalMembers        ?? 0;
-  const canManageMasterData = hasRole('Admin', 'SuperAdmin');
+  const canManageMasterData = hasRole('Guard', 'Admin', 'SuperAdmin');
   const isGuard = hasRole('Guard');
   const isSuperAdmin = hasRole('SuperAdmin');
   const isAdmin = hasRole('Admin');
@@ -240,7 +240,7 @@ export default function DashboardPage() {
   // Format trend dates to short day names
   const trendData = trend.map((t) => ({
     ...t,
-    date:         t.date ? formatDate(t.date + 'T00:00:00', 'EEE') : t.date,
+    date:         t.date ? formatDate(t.date + 'T00:00:00', 'dd MMM') : t.date,
     personVisits: t.personVisits  ?? t.personvisits  ?? 0,
     vehicleVisits:t.vehicleVisits ?? t.vehiclevisits ?? 0,
   }));
@@ -315,7 +315,7 @@ export default function DashboardPage() {
             <div className="rounded-xl border border-indigo-500/25 bg-indigo-500/10 p-3">
               <p className="text-[10px] uppercase tracking-widest text-indigo-300/80 font-semibold">Shift Throughput</p>
               <p className="text-xl font-bold text-indigo-200 mt-1">{trendData.reduce((sum, d) => sum + d.personVisits + d.vehicleVisits, 0)}</p>
-              <p className="text-xs text-white/55 mt-1">Entries captured over last 7 days</p>
+              <p className="text-xs text-white/55 mt-1">Entries captured over last 15 days</p>
             </div>
             <div className="rounded-xl border border-amber-500/25 bg-amber-500/10 p-3">
               <p className="text-[10px] uppercase tracking-widest text-amber-300/80 font-semibold">Recommended Action</p>
@@ -429,7 +429,7 @@ export default function DashboardPage() {
         >
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp size={16} className="text-indigo-400" />
-            <h3 className="text-sm font-semibold text-white/70">Visit Trend - Last 7 Days</h3>
+            <h3 className="text-sm font-semibold text-white/70">Visit Trend - Last 15 Days</h3>
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={trendData} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>

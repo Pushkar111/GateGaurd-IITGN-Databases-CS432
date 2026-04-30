@@ -14,7 +14,8 @@ const BASE_SELECT = `
   m.department    AS "Department",
   m.typeid        AS "TypeID",
   mt.typename     AS "TypeName",
-  m.createdat     AS "CreatedAt"
+  m.createdat     AS "CreatedAt",
+  m.updatedat     AS "UpdatedAt"
 `;
 
 async function findAll({ limit = 20, offset = 0, search = '', typeId = null, sortBy = 'memberid', order = 'ASC' } = {}) {

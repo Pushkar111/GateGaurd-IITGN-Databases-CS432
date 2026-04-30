@@ -3,7 +3,13 @@
 
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { format, formatDistanceToNow, differenceInMinutes, differenceInHours } from 'date-fns';
+import {
+  format,
+  formatDistanceToNow,
+  differenceInMinutes,
+  parseISO,
+  isValid,
+} from 'date-fns';
 
 /**
  * Merge Tailwind classes safely - handles conflicts, conditional classes.
@@ -27,15 +33,40 @@ export function formatDate(date, fmt = 'dd MMM yyyy, HH:mm') {
   }
 }
 
+/** Parse API / DB timestamps consistently (ISO with Z/offset vs ambiguous strings). */
+function parseTimestamp(value) {
+  if (value == null || value === '') return null;
+  if (value instanceof Date) return isValid(value) ? value : null;
+  if (typeof value === 'number') {
+    const d = new Date(value);
+    return isValid(d) ? d : null;
+  }
+  const s = String(value).trim();
+  if (!s || s.toLowerCase() === 'null') return null;
+  if (/^\d{4}-\d{2}-\d{2}T/.test(s)) {
+    const d = parseISO(s);
+    if (isValid(d)) return d;
+  }
+  const d = new Date(s);
+  return isValid(d) ? d : null;
+}
+
 /**
  * Human-readable duration between two timestamps.
  * e.g. "2h 15m" or "45m" or "3d 4h"
+ * @param {string|Date|null|undefined} end - omit or null for "duration until now" (active visit)
  */
 export function formatDuration(start, end) {
-  if (!start) return '--';
-  const endDate  = end ? new Date(end) : new Date();
-  const startDate = new Date(start);
-  const totalMins = differenceInMinutes(endDate, startDate);
+  const startDate = parseTimestamp(start);
+  if (!startDate) return '--';
+
+  const hasEnd = end != null && end !== '' && String(end).trim().toLowerCase() !== 'null';
+  const endDate = hasEnd ? parseTimestamp(end) : new Date();
+  if (!endDate) return '--';
+
+  let totalMins = differenceInMinutes(endDate, startDate);
+  if (!Number.isFinite(totalMins)) return '--';
+  if (totalMins < 0) totalMins = 0;
 
   if (totalMins < 1) return '< 1m';
   if (totalMins < 60) return `${totalMins}m`;
@@ -47,6 +78,18 @@ export function formatDuration(start, end) {
   const days = Math.floor(hours / 24);
   const remHours = hours % 24;
   return remHours > 0 ? `${days}d ${remHours}h` : `${days}d`;
+}
+
+/**
+ * Duration for a visit row: respects IsActive so a stray ExitTime never skews "open" duration.
+ */
+export function formatVisitDuration(visit) {
+  if (!visit) return '--';
+  const start = visit.EntryTime ?? visit.entrytime;
+  const exitRaw = visit.ExitTime ?? visit.exittime;
+  const flag = visit.IsActive ?? visit.isactive;
+  const treatAsOpen = flag === true || (flag !== false && (exitRaw == null || exitRaw === ''));
+  return formatDuration(start, treatAsOpen ? null : exitRaw);
 }
 
 /**

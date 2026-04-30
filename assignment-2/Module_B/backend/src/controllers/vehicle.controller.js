@@ -38,7 +38,7 @@ async function update(req, res, next) {
 async function deleteVehicle(req, res, next) {
   try {
     const old    = await vehicleService.getById(req.params.id);
-    const result = await vehicleService.delete(req.params.id);
+    const result = await vehicleService.delete(req.params.id, req.user);
     await writeAuditRecord({ user: req.user, tableName: 'Vehicle', recordId: Number(req.params.id), action: ACTIONS.DELETE, oldValue: old, method: req.method, endpoint: req.originalUrl, statusCode: 200, ip: req.ip });
     return sendSuccess(res, result);
   } catch (err) { next(err); }

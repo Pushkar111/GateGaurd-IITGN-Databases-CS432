@@ -22,7 +22,7 @@ import DataTable     from '@/components/shared/DataTable';
 import EmptyState    from '@/components/shared/EmptyState';
 import StatCard      from '@/components/shared/StatCard';
 import ConfirmDialog from '@/components/shared/ConfirmDialog';
-import { cn, getInitials, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
+import { cn, getInitials, formatDate, formatVisitDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, fadeInUp, scaleIn, backdropVariants } from '@/lib/motion';
 
 const AVATAR_GRADIENTS = [
@@ -50,7 +50,7 @@ const editSchema = z.object({
 const visitColumns = [
   { header: 'Entry Time',  id: 'entry',    cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
   { header: 'Exit Time',   id: 'exit',     cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{(v.ExitTime || v.exittime) ? formatDate(v.ExitTime || v.exittime) : <span className="badge badge-success text-[10px]">Active</span>}</span> },
-  { header: 'Duration',    id: 'duration', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
+  { header: 'Duration',    id: 'duration', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatVisitDuration(v)}</span> },
   { header: 'Entry Gate',  id: 'gate',     cell: ({ row: { original: v } }) => <span className="text-white/70 text-xs">{v.EntryGateName || v.entrygatename || '-'}</span> },
   { header: 'Status',      id: 'status',   cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Completed</span> },
 ];

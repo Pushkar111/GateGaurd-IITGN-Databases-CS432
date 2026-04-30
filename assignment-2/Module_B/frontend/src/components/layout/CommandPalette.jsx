@@ -53,6 +53,7 @@ export default function CommandPalette({ open, onOpenChange }) {
 
   const debouncedQuery = useDebounce(query, 250);
   const canSeeAdmin = hasRole('Admin', 'SuperAdmin');
+  const canManageMasterData = hasRole('Guard', 'Admin', 'SuperAdmin');
   const isGuard = hasRole('Guard');
   const { mainNav, adminNav } = buildAppNavigation({ canSeeAdmin });
   const navItems = [...mainNav, ...adminNav].map((item) => ({
@@ -62,7 +63,7 @@ export default function CommandPalette({ open, onOpenChange }) {
 
   const actionItems = buildDashboardQuickActions({
     isGuard,
-    canManageMasterData: canSeeAdmin,
+    canManageMasterData,
   }).map((action) => ({
     ...action,
     icon: iconMap[action.iconKey] || Activity,

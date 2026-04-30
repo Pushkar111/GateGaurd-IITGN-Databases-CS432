@@ -18,7 +18,7 @@ import DataTable      from '@/components/shared/DataTable';
 import StatCard       from '@/components/shared/StatCard';
 import EmptyState     from '@/components/shared/EmptyState';
 import ConfirmDialog  from '@/components/shared/ConfirmDialog';
-import { cn, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
+import { cn, formatDate, formatVisitDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, fadeInUp, scaleIn } from '@/lib/motion';
 
 const MAX_CAP = 20;
@@ -51,7 +51,7 @@ function buildPersonCols(gateId) {
     },
   },
   { header: 'Time',       id: 'time', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
-  { header: 'Duration',   id: 'dur',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
+  { header: 'Duration',   id: 'dur',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatVisitDuration(v)}</span> },
   { header: 'Status',     id: 'st',   cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
   ];
 }
@@ -60,7 +60,7 @@ const vehicleCols = [
   { header: 'Plate',    id: 'pl',   cell: ({ row: { original: v } }) => <span className="plate text-xs">{v.RegistrationNumber || v.registrationnumber || '-'}</span> },
   { header: 'Model',    id: 'mod',  cell: ({ row: { original: v } }) => <span className="text-white/60 text-xs">{v.Model || v.model || '-'}</span> },
   { header: 'Time',     id: 'time', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
-  { header: 'Duration', id: 'dur',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
+  { header: 'Duration', id: 'dur',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatVisitDuration(v)}</span> },
   { header: 'Status',   id: 'st',   cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
 ];
 

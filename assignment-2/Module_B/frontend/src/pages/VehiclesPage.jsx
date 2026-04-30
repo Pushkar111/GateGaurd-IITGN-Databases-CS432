@@ -322,8 +322,8 @@ function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
 export default function VehiclesPage() {
   const navigate    = useNavigate();
   const { hasRole } = useAuth();
-  const canEdit     = hasRole('Admin', 'SuperAdmin');
-  const canDelete   = hasRole('SuperAdmin');
+  const canEdit     = hasRole('Guard', 'Admin', 'SuperAdmin');
+  const canDelete   = hasRole('Guard', 'Admin', 'SuperAdmin');
 
   const [vehicles,     setVehicles]     = useState([]);
   const [total,        setTotal]        = useState(0);

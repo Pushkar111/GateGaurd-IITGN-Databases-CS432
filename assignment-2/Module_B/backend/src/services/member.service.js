@@ -1,56 +1,12 @@
 // src/services/member.service.js
 const memberModel     = require('../models/member.model');
 const memberTypeModel = require('../models/memberType.model');
+const { getClient }   = require('../config/db');
 const AppError        = require('../utils/AppError');
 const { parsePagination, buildPagination } = require('../utils/helpers');
-
-function isPrivileged(actor) {
-  const role = String(actor?.role || '').toLowerCase();
-  return role === 'admin' || role === 'superadmin';
-}
-
-async function resolveLinkedMemberId(actor) {
-  if (!actor) return null;
-  if (actor.memberId !== null && actor.memberId !== undefined) {
-    const numeric = Number(actor.memberId);
-    return Number.isNaN(numeric) ? null : numeric;
-  }
-
-  // fallback: attempt a deterministic email mapping from username
-  if (actor.username) {
-    const mapped = await memberModel.findIdByEmail(`${actor.username}@iitgn.ac.in`);
-    if (mapped) return Number(mapped);
-  }
-
-  return null;
-}
-
-async function assertCanReadMember(actor, targetMemberId) {
-  if (!actor) throw new AppError('Authentication required.', 401);
-  if (isPrivileged(actor)) return;
-
-  const linkedMemberId = await resolveLinkedMemberId(actor);
-  if (!linkedMemberId) {
-    throw new AppError('No linked member profile found for this account.', 403);
-  }
-
-  if (Number(targetMemberId) !== Number(linkedMemberId)) {
-    throw new AppError('You can only access your own member profile.', 403);
-  }
-}
+const { ROLES }       = require('../utils/constants');
 
 async function getAll(actor, queryParams = {}) {
-  // Guards are restricted to their linked member profile only.
-  if (!isPrivileged(actor)) {
-    const linkedMemberId = await resolveLinkedMemberId(actor);
-    if (!linkedMemberId) {
-      throw new AppError('No linked member profile found for this account.', 403);
-    }
-    const member = await memberModel.findById(linkedMemberId);
-    const members = member ? [member] : [];
-    return { members, pagination: buildPagination(members.length, 1, 1) };
-  }
-
   const { page, limit, offset } = parsePagination(queryParams);
   const filters = {
     search:  queryParams.search  || '',
@@ -67,7 +23,6 @@ async function getAll(actor, queryParams = {}) {
 }
 
 async function getById(id, actor) {
-  await assertCanReadMember(actor, id);
   const member = await memberModel.findById(Number(id));
   if (!member) throw new AppError(`Member with ID ${id} not found.`, 404);
   return member;
@@ -93,16 +48,91 @@ async function update(id, data) {
   return memberModel.findById(updated.MemberID);
 }
 
-async function deleteMember(id) {
-  const existing = await memberModel.findById(Number(id));
+function canCascadeDelete(actor) {
+  return actor?.role === ROLES.GUARD || actor?.role === ROLES.SUPERADMIN;
+}
+
+async function deleteMember(id, actor) {
+  const memberId = Number(id);
+  const existing = await memberModel.findById(memberId);
   if (!existing) throw new AppError(`Member with ID ${id} not found.`, 404);
+
+  if (!canCascadeDelete(actor)) {
+    try {
+      await memberModel.delete(memberId);
+    } catch (err) {
+      if (err.code === '23503') throw new AppError('Cannot delete member — they have existing visit records. Remove visits first.', 409);
+      throw err;
+    }
+    return { deleted: true, memberId };
+  }
+
+  const client = await getClient();
   try {
-    await memberModel.delete(Number(id));
+    await client.query('BEGIN');
+
+    const { rowCount: deletedPersonVisits } = await client.query(
+      'DELETE FROM personvisit WHERE personid = $1',
+      [memberId]
+    );
+
+    const { rows: ownedVehicles } = await client.query(
+      'SELECT vehicleid FROM vehicle WHERE ownerid = $1',
+      [memberId]
+    );
+    const ownedVehicleIds = ownedVehicles.map((row) => row.vehicleid);
+
+    let deletedPersonVisitsForOwnedVehicles = 0;
+    let deletedVehicleVisitsForOwnedVehicles = 0;
+
+    if (ownedVehicleIds.length) {
+      const pvResult = await client.query(
+        'DELETE FROM personvisit WHERE vehicleid = ANY($1::int[])',
+        [ownedVehicleIds]
+      );
+      deletedPersonVisitsForOwnedVehicles = pvResult.rowCount || 0;
+
+      const vvResult = await client.query(
+        'DELETE FROM vehiclevisit WHERE vehicleid = ANY($1::int[])',
+        [ownedVehicleIds]
+      );
+      deletedVehicleVisitsForOwnedVehicles = vvResult.rowCount || 0;
+
+      // Keep vehicles but detach them from the soon-to-be deleted member.
+      await client.query(
+        'UPDATE vehicle SET ownerid = NULL WHERE ownerid = $1',
+        [memberId]
+      );
+    }
+
+    const { rows: deletedRows } = await client.query(
+      'DELETE FROM member WHERE memberid = $1 RETURNING memberid',
+      [memberId]
+    );
+
+    if (!deletedRows[0]) {
+      throw new AppError(`Member with ID ${id} not found.`, 404);
+    }
+
+    await client.query('COMMIT');
+
+    return {
+      deleted: true,
+      memberId,
+      cascade: {
+        enabledForRole: actor?.role || null,
+        deletedPersonVisits,
+        deletedPersonVisitsForOwnedVehicles,
+        deletedVehicleVisitsForOwnedVehicles,
+      },
+    };
   } catch (err) {
+    await client.query('ROLLBACK');
     if (err.code === '23503') throw new AppError('Cannot delete member — they have existing visit records. Remove visits first.', 409);
     throw err;
+  } finally {
+    client.release();
   }
-  return { deleted: true, memberId: Number(id) };
 }
 
 async function getTypes() {
