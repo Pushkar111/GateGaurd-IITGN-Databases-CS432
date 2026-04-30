@@ -331,8 +331,8 @@ function buildColumns(navigate, onEdit, onDelete, canEdit, canDelete) {
 export default function MembersPage() {
   const navigate              = useNavigate();
   const { hasRole }           = useAuth();
-  const canEdit               = hasRole('Admin', 'SuperAdmin');
-  const canDelete             = hasRole('SuperAdmin');
+  const canEdit               = hasRole('Guard', 'Admin', 'SuperAdmin');
+  const canDelete             = hasRole('Guard', 'Admin', 'SuperAdmin');
 
   const [members,      setMembers]      = useState([]);
   const [total,        setTotal]        = useState(0);

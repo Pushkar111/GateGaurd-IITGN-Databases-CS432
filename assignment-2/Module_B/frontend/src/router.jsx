@@ -184,6 +184,10 @@ const router = createBrowserRouter([
       </Suspense>
     ),
   },
-]);
+], {
+  future: {
+    v7_startTransition: true,
+  },
+});
 
 export default router;

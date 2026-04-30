@@ -57,7 +57,7 @@ class GateGuardUser(HttpUser):
         time.sleep(random.uniform(0, 2))
         with self.client.post(
             "/api/auth/login",
-            json={"username": "admin", "password": "admin123"},
+            json={"username": "admin", "password": "Admin@123"},
             catch_response=True,
             name="/api/auth/login",
         ) as resp:

@@ -10,93 +10,38 @@
   "successes": 1,
   "conflicts": 49,
   "other_errors": 0,
-  "avg_latency_ms": 184.8,
+  "avg_latency_ms": 484.7,
   "active_visits_post_race": 1,
   "invariant_ok": true,
   "all_visit_rows": [
     {
-      "visitid": 1570,
-      "entrytime": "2026-03-18 22:42:21.094630",
-      "exittime": "2026-03-19 05:16:21.094630"
+      "visitid": 50028,
+      "entrytime": "2026-04-14 14:39:42.966752",
+      "exittime": "2026-04-14 14:40:40.027200"
     },
     {
-      "visitid": 6570,
-      "entrytime": "2026-03-18 06:42:21.094630",
-      "exittime": "2026-03-27 19:19:52.514534"
+      "visitid": 50029,
+      "entrytime": "2026-04-14 14:40:46.850034",
+      "exittime": "2026-04-14 15:14:01.516214"
     },
     {
-      "visitid": 11570,
-      "entrytime": "2026-03-18 19:42:21.094630",
-      "exittime": "2026-03-27 19:19:52.514534"
+      "visitid": 50031,
+      "entrytime": "2026-04-14 15:15:05.792494",
+      "exittime": "2026-04-14 15:15:16.318635"
     },
     {
-      "visitid": 16570,
-      "entrytime": "2026-03-16 04:42:21.094630",
-      "exittime": "2026-03-16 11:17:21.094630"
+      "visitid": 50032,
+      "entrytime": "2026-04-14 15:15:24.082927",
+      "exittime": "2026-04-14 15:15:27.980202"
     },
     {
-      "visitid": 21570,
-      "entrytime": "2026-03-19 18:42:21.094630",
-      "exittime": "2026-03-19 21:32:21.094630"
+      "visitid": 50033,
+      "entrytime": "2026-04-14 15:15:35.940378",
+      "exittime": "2026-04-14 16:25:06.521844"
     },
     {
-      "visitid": 26570,
-      "entrytime": "2026-03-20 19:42:21.094630",
-      "exittime": "2026-03-20 21:00:21.094630"
-    },
-    {
-      "visitid": 31570,
-      "entrytime": "2026-03-14 19:42:21.094630",
-      "exittime": "2026-03-27 19:19:52.514534"
-    },
-    {
-      "visitid": 36570,
-      "entrytime": "2026-03-18 06:42:21.094630",
-      "exittime": "2026-03-18 11:39:21.094630"
-    },
-    {
-      "visitid": 41570,
-      "entrytime": "2026-03-15 11:42:21.094630",
-      "exittime": "2026-03-15 19:22:21.094630"
-    },
-    {
-      "visitid": 46570,
-      "entrytime": "2026-03-16 09:42:21.094630",
-      "exittime": "2026-03-16 17:18:21.094630"
-    },
-    {
-      "visitid": 50001,
-      "entrytime": "2026-03-27 19:27:40.814394",
-      "exittime": "2026-03-28 17:26:18.683067"
-    },
-    {
-      "visitid": 50010,
-      "entrytime": "2026-03-28 17:26:28.533127",
-      "exittime": "2026-03-28 17:29:44.518042"
-    },
-    {
-      "visitid": 50012,
-      "entrytime": "2026-03-28 17:38:09.552726",
-      "exittime": "2026-03-28 19:27:43.048967"
-    },
-    {
-      "visitid": 50013,
-      "entrytime": "2026-03-28 19:28:51.061081",
-      "exittime": "2026-04-05 14:31:19.538939"
-    },
-    {
-      "visitid": 50024,
-      "entrytime": "2026-04-05 14:34:34.071582",
-      "exittime": "2026-04-05 14:34:58.227088"
-    },
-    {
-      "visitid": 50025,
-      "entrytime": "2026-04-05 15:10:11.425676",
-      "exittime": "2026-04-05 15:18:23.754738"
-    },
-    {
-      "visitid": 50026,
-      "entrytime": "2026-04-05 15:34:00.731774",
+      "visitid": 50034,
+      "entrytime": "2026-04-14 16:25:09.623966",
       "exittime": null
     }
   ],
@@ -113,662 +58,7 @@
           }
         }
       },
-      "latency_ms": 99.17
-    },
-    {
-      "thread": 9,
-      "status_code": 201,
-      "body": {
-        "success": true,
-        "data": {
-          "visit": {
-            "VisitID": 50026,
-            "MemberID": 1,
-            "MemberName": "Member_1",
-            "MemberEmail": "member1@iitgn.ac.in",
-            "EntryGateID": 1,
-            "EntryGateName": "Main Gate",
-            "ExitGateID": null,
-            "ExitGateName": null,
-            "VehicleID": null,
-            "VehicleReg": null,
-            "EntryTime": "2026-04-05T10:04:00.731Z",
-            "ExitTime": null,
-            "IsActive": true
-          }
-        }
-      },
-      "latency_ms": 114.43
-    },
-    {
-      "thread": 41,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 114.87
-    },
-    {
-      "thread": 8,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 118.76
-    },
-    {
-      "thread": 36,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 125.31
-    },
-    {
-      "thread": 14,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 129.35
-    },
-    {
-      "thread": 31,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 130.07
-    },
-    {
-      "thread": 30,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 133.87
-    },
-    {
-      "thread": 25,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 139.67
-    },
-    {
-      "thread": 11,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 142.62
-    },
-    {
-      "thread": 27,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 147.34
-    },
-    {
-      "thread": 1,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 148.15
-    },
-    {
-      "thread": 48,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 151.75
-    },
-    {
-      "thread": 5,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 154.43
-    },
-    {
-      "thread": 24,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 161.28
-    },
-    {
-      "thread": 6,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 154.26
-    },
-    {
-      "thread": 35,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 167.13
-    },
-    {
-      "thread": 42,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 169.01
-    },
-    {
-      "thread": 49,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 176.76
-    },
-    {
-      "thread": 37,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 171.38
-    },
-    {
-      "thread": 16,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 179.33
-    },
-    {
-      "thread": 21,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 181.17
-    },
-    {
-      "thread": 0,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 187.72
-    },
-    {
-      "thread": 15,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 189.59
-    },
-    {
-      "thread": 43,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 189.79
-    },
-    {
-      "thread": 7,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 190.94
-    },
-    {
-      "thread": 45,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 193.86
-    },
-    {
-      "thread": 18,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 199.19
-    },
-    {
-      "thread": 20,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 200.78
-    },
-    {
-      "thread": 38,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 198.67
-    },
-    {
-      "thread": 12,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 205.41
-    },
-    {
-      "thread": 29,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 206.69
-    },
-    {
-      "thread": 32,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 207.71
-    },
-    {
-      "thread": 19,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 210.46
-    },
-    {
-      "thread": 4,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 211.71
-    },
-    {
-      "thread": 23,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 214.3
-    },
-    {
-      "thread": 47,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 214.37
-    },
-    {
-      "thread": 13,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 218.82
-    },
-    {
-      "thread": 2,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 222.8
-    },
-    {
-      "thread": 33,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 221.34
-    },
-    {
-      "thread": 39,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 221.99
-    },
-    {
-      "thread": 10,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 223.9
-    },
-    {
-      "thread": 3,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 228.99
-    },
-    {
-      "thread": 44,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 227.12
-    },
-    {
-      "thread": 34,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 231.23
-    },
-    {
-      "thread": 22,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 221.82
-    },
-    {
-      "thread": 17,
-      "status_code": 400,
-      "body": {
-        "success": false,
-        "error": {
-          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
-          "fields": {
-            "memberId": "Active visit already exists"
-          }
-        }
-      },
-      "latency_ms": 236.34
+      "latency_ms": 101.87
     },
     {
       "thread": 28,
@@ -782,7 +72,564 @@
           }
         }
       },
-      "latency_ms": 229.85
+      "latency_ms": 119.76
+    },
+    {
+      "thread": 43,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 117.44
+    },
+    {
+      "thread": 13,
+      "status_code": 201,
+      "body": {
+        "success": true,
+        "data": {
+          "visit": {
+            "VisitID": 50034,
+            "MemberID": 1,
+            "MemberName": "Member One Restored",
+            "MemberEmail": "member1.restore@iitgn.ac.in",
+            "EntryGateID": 1,
+            "EntryGateName": "Main Gate",
+            "ExitGateID": null,
+            "ExitGateName": null,
+            "VehicleID": null,
+            "VehicleReg": null,
+            "EntryTime": "2026-04-14T10:55:09.623Z",
+            "ExitTime": null,
+            "IsActive": true
+          }
+        }
+      },
+      "latency_ms": 127.75
+    },
+    {
+      "thread": 14,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 131.6
+    },
+    {
+      "thread": 21,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 122.47
+    },
+    {
+      "thread": 10,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 137.43
+    },
+    {
+      "thread": 11,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 133.13
+    },
+    {
+      "thread": 20,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 141.01
+    },
+    {
+      "thread": 2,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 146.09
+    },
+    {
+      "thread": 25,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 143.97
+    },
+    {
+      "thread": 17,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 116.0
+    },
+    {
+      "thread": 42,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 124.39
+    },
+    {
+      "thread": 33,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 136.78
+    },
+    {
+      "thread": 34,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 146.18
+    },
+    {
+      "thread": 44,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 128.77
+    },
+    {
+      "thread": 32,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 160.13
+    },
+    {
+      "thread": 3,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 155.91
+    },
+    {
+      "thread": 48,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 126.14
+    },
+    {
+      "thread": 0,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 162.04
+    },
+    {
+      "thread": 4,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 130.71
+    },
+    {
+      "thread": 27,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 130.2
+    },
+    {
+      "thread": 8,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 170.03
+    },
+    {
+      "thread": 49,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 182.94
+    },
+    {
+      "thread": 31,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 179.26
+    },
+    {
+      "thread": 24,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 171.98
+    },
+    {
+      "thread": 35,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 167.76
+    },
+    {
+      "thread": 16,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 182.58
+    },
+    {
+      "thread": 15,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 184.19
+    },
+    {
+      "thread": 36,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 170.65
+    },
+    {
+      "thread": 29,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 192.23
+    },
+    {
+      "thread": 37,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 185.98
+    },
+    {
+      "thread": 19,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 177.28
+    },
+    {
+      "thread": 12,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 199.27
+    },
+    {
+      "thread": 6,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 238.39
+    },
+    {
+      "thread": 9,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 368.14
+    },
+    {
+      "thread": 45,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 579.53
+    },
+    {
+      "thread": 1,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 583.82
+    },
+    {
+      "thread": 30,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 711.7
+    },
+    {
+      "thread": 41,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 827.34
+    },
+    {
+      "thread": 18,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1012.16
     },
     {
       "thread": 46,
@@ -796,7 +643,21 @@
           }
         }
       },
-      "latency_ms": 229.91
+      "latency_ms": 1123.42
+    },
+    {
+      "thread": 22,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1263.82
     },
     {
       "thread": 40,
@@ -810,7 +671,91 @@
           }
         }
       },
-      "latency_ms": 293.46
+      "latency_ms": 1369.4
+    },
+    {
+      "thread": 38,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1623.96
+    },
+    {
+      "thread": 5,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1649.22
+    },
+    {
+      "thread": 39,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1760.96
+    },
+    {
+      "thread": 47,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 1882.81
+    },
+    {
+      "thread": 23,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 2008.28
+    },
+    {
+      "thread": 7,
+      "status_code": 400,
+      "body": {
+        "success": false,
+        "error": {
+          "message": "Member already has an active visit. Please record an exit before recording a new entry.",
+          "fields": {
+            "memberId": "Active visit already exists"
+          }
+        }
+      },
+      "latency_ms": 2126.82
     }
   ]
 }

@@ -31,4 +31,25 @@ function allMemberTables() {
   return Array.from({ length: NUM_SHARDS }, (_, i) => `shard_${i}_member`);
 }
 
-module.exports = { getShard, memberTable, visitTable, allVisitTables, allMemberTables, NUM_SHARDS };
+/** JOIN fragment for Docker shard DBs (no global `member` / `vehicle` tables). */
+function physicalShardVisitJoin(shardId) {
+  const sid = Number(shardId);
+  const pv = `shard_${sid}_personvisit`;
+  const mm = `shard_${sid}_member`;
+  return `
+    FROM ${pv} pv
+    LEFT JOIN ${mm} m ON m.memberid = pv.personid
+    LEFT JOIN gate eg ON eg.gateid = pv.entrygateid
+    LEFT JOIN gate xg ON xg.gateid = pv.exitgateid
+  `;
+}
+
+module.exports = {
+  getShard,
+  memberTable,
+  visitTable,
+  allVisitTables,
+  allMemberTables,
+  NUM_SHARDS,
+  physicalShardVisitJoin,
+};

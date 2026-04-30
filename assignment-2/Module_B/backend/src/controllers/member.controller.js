@@ -38,7 +38,7 @@ async function update(req, res, next) {
 async function deleteMember(req, res, next) {
   try {
     const old    = await memberService.getById(req.params.id, req.user);
-    const result = await memberService.delete(req.params.id);
+    const result = await memberService.delete(req.params.id, req.user);
     await writeAuditRecord({ user: req.user, tableName: 'Member', recordId: Number(req.params.id), action: ACTIONS.DELETE, oldValue: old, method: req.method, endpoint: req.originalUrl, statusCode: 200, ip: req.ip });
     return sendSuccess(res, result);
   } catch (err) { next(err); }

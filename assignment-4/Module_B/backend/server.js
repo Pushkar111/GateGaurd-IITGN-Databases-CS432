@@ -8,11 +8,15 @@ const app    = require('./src/app');
 const env    = require('./src/config/env');
 const logger = require('./src/utils/logger');
 const { pool } = require('./src/config/db');
+const { endShardPools, physicalShardsEnabled } = require('./src/config/shardDb');
 const authModel = require('./src/models/auth.model');
 
 const server = app.listen(env.PORT, () => {
   logger.info(`GateGuard API running on port ${env.PORT} (${env.NODE_ENV})`);
   logger.info(`Health check: http://localhost:${env.PORT}/api/health`);
+  if (physicalShardsEnabled()) {
+    logger.info('Physical Docker shards: USE_PHYSICAL_SHARDS=true (see .env.example)');
+  }
   
   // Clean up expired OTPs and blacklisted tokens every hour
   setInterval(async () => {
@@ -33,6 +37,7 @@ async function shutdown(signal) {
   logger.info(`${signal} received - shutting down gracefully...`);
   server.close(async () => {
     try {
+      await endShardPools();
       await pool.end();
       logger.info('PostgreSQL pool closed.');
       process.exit(0);

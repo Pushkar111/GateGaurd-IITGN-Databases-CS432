@@ -32,6 +32,7 @@ Author: GateGuard Team, IIT Gandhinagar CS432
 """
 
 import uuid
+import threading
 from contextlib import contextmanager
 
 from .wal        import WALWriter
@@ -78,7 +79,7 @@ class Transaction:
         self.txn_id     = txn_id
         self._db        = db
         self._wal       = wal
-        self._undo_stack: list = []   # list of (op, table_name, key, before_val)
+        self._undo_stack: list = []    # list of (op, table_name, key, before_val)
         self._active    = True
         self._committed = False
 
@@ -199,7 +200,7 @@ class Transaction:
         self._committed = True
         print(f"committed txn {self.txn_id} yay!")
 
-    def rollback(self):
+    def rollback(self): 
         """
         Roll back all operations in this transaction in reverse order.
 
@@ -304,6 +305,7 @@ class TransactionManager:
         self._db          = db
         self._wal         = wal
         self._current_txn: Transaction | None = None
+        self._lock        = threading.Lock()   # makes begin() safe when two threads race
 
     def begin(self, name: str = "") -> Transaction:
         """
@@ -315,19 +317,24 @@ class TransactionManager:
 
         Raises:
             TransactionError: if another transaction is still active.
-        """
-        if self._current_txn is not None and self._current_txn.is_active:
-            raise TransactionError(
-                f"TransactionManager already has an active transaction "
-                f"('{self._current_txn.txn_id}'). "
-                f"Commit or rollback the current transaction first."
-            )
 
-        slug    = f"{name}-" if name else ""
-        txn_id  = f"txn-{slug}{uuid.uuid4().hex[:8]}"
-        txn     = Transaction(txn_id, self._db, self._wal)
-        self._current_txn = txn
-        return txn
+        Thread safety: the check-and-set is protected by self._lock so two
+        threads calling begin() at the exact same instant cannot both pass
+        the active-transaction guard.
+        """
+        with self._lock:
+            if self._current_txn is not None and self._current_txn.is_active:
+                raise TransactionError(
+                    f"another transaction is already running "
+                    f"('{self._current_txn.txn_id}'). "
+                    f"wait for it to commit or rollback first."
+                )
+
+            slug    = f"{name}-" if name else ""
+            txn_id  = f"txn-{slug}{uuid.uuid4().hex[:8]}"
+            txn     = Transaction(txn_id, self._db, self._wal)
+            self._current_txn = txn
+            return txn
 
     @contextmanager
     def transaction(self, name: str = ""):

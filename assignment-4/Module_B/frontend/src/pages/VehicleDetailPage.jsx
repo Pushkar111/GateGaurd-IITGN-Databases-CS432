@@ -24,7 +24,7 @@ import DataTable        from '@/components/shared/DataTable';
 import StatCard         from '@/components/shared/StatCard';
 import EmptyState       from '@/components/shared/EmptyState';
 import ConfirmDialog    from '@/components/shared/ConfirmDialog';
-import { cn, getInitials, formatDate, formatDuration, formatRelativeTime } from '@/lib/utils';
+import { cn, getInitials, formatDate, formatVisitDuration, formatRelativeTime } from '@/lib/utils';
 import { pageVariants, fadeInUp, scaleIn, backdropVariants } from '@/lib/motion';
 import { useDebounce as useDebounceHook } from '@/hooks/useDebounce';
 
@@ -89,7 +89,7 @@ const visitCols = [
   { header: 'Exit Gate',  id: 'xg',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{v.ExitGateName  || v.exitgatename  || '-'}</span> },
   { header: 'Entry Time', id: 'et',  cell: ({ row: { original: v } }) => <span className="text-white/60 text-xs">{formatDate(v.EntryTime || v.entrytime)}</span> },
   { header: 'Exit Time',  id: 'xt',  cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{(v.ExitTime || v.exittime) ? formatDate(v.ExitTime || v.exittime) : '-'}</span> },
-  { header: 'Duration',   id: 'dur', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatDuration(v.EntryTime || v.entrytime, v.ExitTime || v.exittime)}</span> },
+  { header: 'Duration',   id: 'dur', cell: ({ row: { original: v } }) => <span className="text-white/50 text-xs">{formatVisitDuration(v)}</span> },
   { header: 'Status',     id: 'st',  cell: ({ row: { original: v } }) => (v.IsActive || v.isactive) ? <span className="badge badge-success text-[10px]">Active</span> : <span className="badge badge-muted text-[10px]">Done</span> },
 ];
 

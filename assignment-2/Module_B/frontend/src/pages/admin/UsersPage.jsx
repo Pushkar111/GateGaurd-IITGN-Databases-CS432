@@ -403,7 +403,7 @@ export default function UsersPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/[0.07]">
-                {['#', 'Username', 'Role', 'Created', 'Actions'].map((h) => (
+                {['#', 'Username', 'Role', 'Created', ...(isSA ? ['Actions'] : [])].map((h) => (
                   <th key={h} className="px-4 py-3 text-left text-[11px] font-semibold text-white/30 uppercase tracking-widest">{h}</th>
                 ))}
               </tr>
@@ -430,15 +430,13 @@ export default function UsersPage() {
                       <RoleBadge role={role} />
                     </td>
                     <td className="px-4 py-3 text-white/40 text-xs">{created ? formatDate(created, 'dd MMM yyyy') : '—'}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1">
-                        {isSA && (
+                    {isSA && (
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1">
                           <button onClick={() => setEditUser(u)}
                             className="p-1.5 rounded-lg hover:bg-indigo-500/15 text-white/30 hover:text-indigo-400 transition-colors">
                             <Pencil size={13} />
                           </button>
-                        )}
-                        {isSA && (
                           <Tooltip.Provider delayDuration={200}>
                             <Tooltip.Root>
                               <Tooltip.Trigger asChild>
@@ -466,9 +464,9 @@ export default function UsersPage() {
                               )}
                             </Tooltip.Root>
                           </Tooltip.Provider>
-                        )}
-                      </div>
-                    </td>
+                        </div>
+                      </td>
+                    )}
                   </motion.tr>
                 );
               })}

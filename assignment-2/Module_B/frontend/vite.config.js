@@ -14,7 +14,15 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
     port: 5173,
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      '.ngrok-free.app',
+      '.ngrok.io',
+      '.ngrok.app',
+    ],
     proxy: {
       // forward all /api requests to the backend during development
       '/api': {

@@ -17,7 +17,8 @@ const vehicleVisitModel = require('../models/vehicleVisit.model');
 const AppError          = require('../utils/AppError');
 const { parsePagination, buildPagination } = require('../utils/helpers');
 const { getClient }     = require('../config/db');
-const { visitTable, allVisitTables } = require('../utils/shardRouter');
+const shardDb           = require('../config/shardDb');
+const { getShard, visitTable, physicalShardVisitJoin } = require('../utils/shardRouter');
 
 const SHARD_VISIT_SELECT = `
   pv.visitid        AS "VisitID",
@@ -34,6 +35,37 @@ const SHARD_VISIT_SELECT = `
   pv.exittime       AS "ExitTime",
   CASE WHEN pv.exittime IS NULL THEN true ELSE false END AS "IsActive"
 `;
+
+// Docker shard DBs have no global `vehicle` table — omit license plate join.
+const PHYSICAL_SHARD_VISIT_SELECT = `
+  pv.visitid        AS "VisitID",
+  pv.personid       AS "MemberID",
+  COALESCE(m.name, CONCAT('Member #', pv.personid::text)) AS "MemberName",
+  m.email           AS "MemberEmail",
+  pv.entrygateid    AS "EntryGateID",
+  COALESCE(eg.name, CONCAT('Gate #', pv.entrygateid::text)) AS "EntryGateName",
+  pv.exitgateid     AS "ExitGateID",
+  COALESCE(xg.name, CONCAT('Gate #', pv.exitgateid::text)) AS "ExitGateName",
+  pv.vehicleid      AS "VehicleID",
+  NULL::text        AS "VehicleReg",
+  pv.entrytime      AS "EntryTime",
+  pv.exittime       AS "ExitTime",
+  CASE WHEN pv.exittime IS NULL THEN true ELSE false END AS "IsActive"
+`;
+
+function visitShardQuery() {
+  const physical = shardDb.physicalShardsEnabled();
+  return physical
+    ? (shardId, text, params) => shardDb.queryShard(shardId, text, params)
+    : (_shardId, text, params) => require('../config/db').query(text, params);
+}
+
+async function bumpVisitSequence(shardId, tableName) {
+  await shardDb.queryShard(
+    shardId,
+    `SELECT setval(pg_get_serial_sequence('${tableName}', 'visitid'), (SELECT COALESCE(MAX(visitid), 1) FROM ${tableName}))`
+  );
+}
 
 function parsePositiveInt(value, fieldName) {
   const parsed = Number(value);
@@ -146,14 +178,19 @@ async function getAll(queryParams = {}) {
 
   // memberId provided -> route to single shard (O(1)).
   if (memberId !== null) {
-    const table = visitTable(memberId);
-    const db = require('../config/db');
-    const fromClause = shardVisitFromClause(table);
+    const physical = shardDb.physicalShardsEnabled();
+    const sid = getShard(memberId);
+    const q = visitShardQuery();
+    const fromClause = physical
+      ? physicalShardVisitJoin(sid)
+      : shardVisitFromClause(visitTable(memberId));
+    const selectList = physical ? PHYSICAL_SHARD_VISIT_SELECT : SHARD_VISIT_SELECT;
     const { whereClause, params } = buildVisitWhere(filters);
     const listLimitIndex = params.length + 1;
 
-    const { rows: visits } = await db.query(
-      `SELECT ${SHARD_VISIT_SELECT}
+    const { rows: visits } = await q(
+      physical ? sid : 0,
+      `SELECT ${selectList}
        ${fromClause}
        ${whereClause}
        ORDER BY pv.entrytime DESC
@@ -161,7 +198,8 @@ async function getAll(queryParams = {}) {
       [...params, limit, offset]
     );
 
-    const { rows: countRows } = await db.query(
+    const { rows: countRows } = await q(
+      physical ? sid : 0,
       `SELECT COUNT(*) AS total
        ${fromClause}
        ${whereClause}`,
@@ -171,7 +209,8 @@ async function getAll(queryParams = {}) {
     const { whereClause: activeWhereClause, params: activeParams } = buildVisitWhere(activeFilters);
     const total = parseInt(countRows[0].total, 10);
 
-    const { rows: activeRows } = await db.query(
+    const { rows: activeRows } = await q(
+      physical ? sid : 0,
       `SELECT COUNT(*) AS cnt
        ${fromClause}
        ${activeWhereClause}`,
@@ -186,8 +225,8 @@ async function getAll(queryParams = {}) {
   }
 
   // no memberId - scatter-gather across all shards (fan-out then merge)
-  const db     = require('../config/db');
-  const tables = allVisitTables();
+  const physical = shardDb.physicalShardsEnabled();
+  const q = visitShardQuery();
   let allVisits = [];
   let grandTotal = 0;
   let totalActive = 0;
@@ -195,12 +234,16 @@ async function getAll(queryParams = {}) {
   const { whereClause, params } = buildVisitWhere(filters);
   const { whereClause: activeWhereClause, params: activeParams } = buildVisitWhere(activeFilters);
 
-  for (const table of tables) {
-    const fromClause = shardVisitFromClause(table);
+  for (let sid = 0; sid < 3; sid++) {
+    const fromClause = physical
+      ? physicalShardVisitJoin(sid)
+      : shardVisitFromClause(visitTable(sid));
+    const selectList = physical ? PHYSICAL_SHARD_VISIT_SELECT : SHARD_VISIT_SELECT;
     const listLimitIndex = params.length + 1;
 
-    const { rows } = await db.query(
-      `SELECT ${SHARD_VISIT_SELECT}
+    const { rows } = await q(
+      physical ? sid : 0,
+      `SELECT ${selectList}
        ${fromClause}
        ${whereClause}
        ORDER BY pv.entrytime DESC
@@ -209,7 +252,8 @@ async function getAll(queryParams = {}) {
     );
     allVisits = allVisits.concat(rows);
 
-    const { rows: countRows } = await db.query(
+    const { rows: countRows } = await q(
+      physical ? sid : 0,
       `SELECT COUNT(*) AS total
        ${fromClause}
        ${whereClause}`,
@@ -217,7 +261,8 @@ async function getAll(queryParams = {}) {
     );
     grandTotal += parseInt(countRows[0].total, 10);
 
-    const { rows: activeRows } = await db.query(
+    const { rows: activeRows } = await q(
+      physical ? sid : 0,
       `SELECT COUNT(*) AS cnt
        ${fromClause}
        ${activeWhereClause}`,
@@ -252,7 +297,7 @@ async function recordEntry(data) {
   //
   // Assignment-4 routing: write-through strategy.
   //   Step A: INSERT into base personvisit → source of truth, generates canonical visitid.
-  //   Step B: Mirror row into shard_N_personvisit → proves O(1) routing in notebook.
+  //   Step B: Mirror row into shard_N_personvisit (same DB or Docker shard host).
   //
   const memberId = parsePositiveInt(data.memberId, 'memberId');
   const entryGateId = parsePositiveInt(data.entryGateId, 'entryGateId');
@@ -261,12 +306,29 @@ async function recordEntry(data) {
     : parsePositiveInt(data.vehicleId, 'vehicleId');
 
   const shardTable = visitTable(memberId);
-  const client     = await getClient();
+  const shardId = getShard(memberId);
+  const physical = shardDb.physicalShardsEnabled();
+  const db = require('../config/db');
+  const client = await getClient();
 
   try {
+    if (physical) {
+      const { rows: activeRows } = await shardDb.queryShard(
+        shardId,
+        `SELECT visitid FROM ${shardTable} WHERE personid = $1 AND exittime IS NULL LIMIT 1`,
+        [memberId]
+      );
+      if (activeRows.length > 0) {
+        throw new AppError(
+          'Member already has an active visit. Please record an exit before recording a new entry.',
+          400,
+          { memberId: 'Active visit already exists' }
+        );
+      }
+    }
+
     await client.query('BEGIN');
 
-    // lock the member row to block concurrent entry requests for the same member
     const { rows: memberRows } = await client.query(
       'SELECT memberid FROM member WHERE memberid = $1 FOR UPDATE',
       [memberId]
@@ -276,40 +338,59 @@ async function recordEntry(data) {
       throw new AppError(`Member with ID ${memberId} not found.`, 404);
     }
 
-    // check for open visit in SHARD table (routing-aware, lock still held)
-    const { rows: activeRows } = await client.query(
-      `SELECT visitid FROM ${shardTable} WHERE personid = $1 AND exittime IS NULL LIMIT 1`,
-      [memberId]
-    );
-    if (activeRows.length > 0) {
-      await client.query('ROLLBACK');
-      throw new AppError(
-        'Member already has an active visit. Please record an exit before recording a new entry.',
-        400,
-        { memberId: 'Active visit already exists' }
+    if (!physical) {
+      const { rows: activeRows } = await client.query(
+        `SELECT visitid FROM ${shardTable} WHERE personid = $1 AND exittime IS NULL LIMIT 1`,
+        [memberId]
       );
+      if (activeRows.length > 0) {
+        await client.query('ROLLBACK');
+        throw new AppError(
+          'Member already has an active visit. Please record an exit before recording a new entry.',
+          400,
+          { memberId: 'Active visit already exists' }
+        );
+      }
     }
 
-    // Step A - insert into base personvisit (generates the canonical visitid via SERIAL)
     const { rows: baseRows } = await client.query(
       `INSERT INTO personvisit (personid, entrygateid, vehicleid, entrytime)
        VALUES ($1, $2, $3, NOW())
-       RETURNING visitid AS "VisitID"`,
+       RETURNING visitid AS "VisitID", entrytime AS "EntryTime"`,
       [memberId, entryGateId, vehicleId]
     );
-    const newVisitId = baseRows[0]['VisitID'];
+    const newVisitId = baseRows[0].VisitID;
+    const entryTime = baseRows[0].EntryTime;
 
-    // Step B - write-through to the correct shard table using the same visitid
-    await client.query(
-      `INSERT INTO ${shardTable} (visitid, personid, entrygateid, vehicleid, entrytime)
-       VALUES ($1, $2, $3, $4, NOW())
-       ON CONFLICT (visitid) DO NOTHING`,
-      [newVisitId, memberId, entryGateId, vehicleId]
-    );
+    if (!physical) {
+      await client.query(
+        `INSERT INTO ${shardTable} (visitid, personid, entrygateid, vehicleid, entrytime)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (visitid) DO NOTHING`,
+        [newVisitId, memberId, entryGateId, vehicleId, entryTime]
+      );
+    }
 
     await client.query('COMMIT');
 
-    // sync vehicle visit outside the lock
+    if (physical) {
+      try {
+        await shardDb.queryShard(
+          shardId,
+          `INSERT INTO ${shardTable} (visitid, personid, entrygateid, vehicleid, entrytime)
+           VALUES ($1, $2, $3, $4, $5)
+           ON CONFLICT (visitid) DO NOTHING`,
+          [newVisitId, memberId, entryGateId, vehicleId, entryTime]
+        );
+        await bumpVisitSequence(shardId, shardTable);
+      } catch (err) {
+        try {
+          await db.query('DELETE FROM personvisit WHERE visitid = $1', [newVisitId]);
+        } catch (_) { /* best-effort rollback */ }
+        throw err;
+      }
+    }
+
     if (vehicleId) {
       const existingVehicleVisit = await vehicleVisitModel.findActiveByVehicle(vehicleId);
       if (!existingVehicleVisit) {
@@ -317,9 +398,7 @@ async function recordEntry(data) {
       }
     }
 
-    // read back from base table (source of truth) - returns fully formatted visit object
     return personVisitModel.findById(newVisitId);
-
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) { /* ignore secondary error */ }
     throw err;
@@ -343,6 +422,7 @@ async function recordExit(visitId, exitGateId) {
   }
   const shardTable = visitTable(memberId);
   const db         = require('../config/db');
+  const q = visitShardQuery();
 
   // update base table (keeps all read paths correct)
   await db.query(
@@ -350,8 +430,8 @@ async function recordExit(visitId, exitGateId) {
     [parsedExitGateId, parsedVisitId]
   );
 
-  // write-through: mirror exit to shard table
-  await db.query(
+  await q(
+    shardDb.physicalShardsEnabled() ? getShard(memberId) : 0,
     `UPDATE ${shardTable} SET exittime = NOW(), exitgateid = $1 WHERE visitid = $2`,
     [parsedExitGateId, parsedVisitId]
   );
@@ -380,10 +460,13 @@ async function deleteVisit(id) {
     throw new AppError(`Cannot resolve shard route for visit ${visitId}.`, 500);
   }
   const shardTable = visitTable(memberId);
-  const db         = require('../config/db');
+  const q = visitShardQuery();
 
-  // delete from shard table first, then base table
-  await db.query(`DELETE FROM ${shardTable} WHERE visitid = $1`, [visitId]);
+  await q(
+    shardDb.physicalShardsEnabled() ? getShard(memberId) : 0,
+    `DELETE FROM ${shardTable} WHERE visitid = $1`,
+    [visitId]
+  );
   await personVisitModel.delete(visitId);
 
   return { deleted: true, visitId };

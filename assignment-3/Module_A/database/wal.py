@@ -84,7 +84,7 @@ class WALWriter:
             with open(self.path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(record, default=str) + "\n")
                 f.flush()
-                os.fsync(f.fileno())
+                os.fsync(f.fileno()) # ensure durability on disk --> it used to forced writes to disk from os buffer
 
     # -- Public log methods ------------------------------------------------
 

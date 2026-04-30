@@ -100,8 +100,8 @@ export default function VehicleDetailPage() {
   const { id }      = useParams();
   const navigate    = useNavigate();
   const { hasRole } = useAuth();
-  const canEdit     = hasRole('Admin', 'SuperAdmin');
-  const canDelete   = hasRole('SuperAdmin');
+  const canEdit     = hasRole('Guard', 'Admin', 'SuperAdmin');
+  const canDelete   = hasRole('Guard', 'Admin', 'SuperAdmin');
 
   const [vehicle,      setVehicle]      = useState(null);
   const [vehicleTypes, setVehicleTypes] = useState([]);

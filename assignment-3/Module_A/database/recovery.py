@@ -61,7 +61,7 @@ class RecoveryManager:
         print("\n" + "=" * 62)
         print("  [RECOVERY] Scanning WAL for crash recovery...")
 
-        all_records = self._reader.read_all()
+        all_records = self._reader.read_all() 
 
         if not all_records:
             print("  [RECOVERY] WAL is empty - nothing to recover.")
@@ -92,7 +92,7 @@ class RecoveryManager:
         print()
 
         # -- Redo pass: replay all committed transactions -----------------
-        for txn_id in committed_ids:
+        for txn_id in committed_ids: 
             records = sorted(
                 groups.get(txn_id, []),
                 key=lambda r: r.get("seq", 0)
